@@ -96,7 +96,13 @@ class FinalShowdownTokenGate(Range):
     or goal condition.
     Determines how many Pizza Planet Tokens are needed for your goal.
     Selecting a higher number than your total pool will force the pool to a
-    higher number."""
+    higher number.
+    Note: a gate can never require more tokens than there are check
+    locations to hold them. If it would, the gate is automatically lowered
+    to fit so the seed still generates and stays winnable. The number of
+    available locations depends on which sanities you enable, so turn on
+    more sanities (Coinsanity, Lifesanity, Batterysanity, etc.) if you want
+    higher gates to stick."""
     display_name = "Final Showdown Token Gate"
     range_start = 10
     range_end = 99
@@ -121,7 +127,13 @@ class BombsAwayTokenGate(Range):
     """NOTE: This does nothing if you didn't select Linear Mode.
     Determines how many Pizza Planet Tokens are needed to fight Bombs Away!
     Selecting a higher number than your total pool will force the pool to a
-    higher number."""
+    higher number.
+    Note: a gate can never require more tokens than there are check
+    locations to hold them. If it would, the gate is automatically lowered
+    to fit so the seed still generates and stays winnable. The number of
+    available locations depends on which sanities you enable, so turn on
+    more sanities (Coinsanity, Lifesanity, Batterysanity, etc.) if you want
+    higher gates to stick."""
     display_name = "Bombs Away! Token Gate"
     range_start = 1
     range_end = 20
@@ -132,7 +144,13 @@ class SlimeTimeTokenGate(Range):
     """NOTE: This does nothing if you didn't select Linear Mode.
     Determines how many Pizza Planet Tokens are needed to fight Slime Time.
     Selecting a higher number than your total pool will force the pool to a
-    higher number."""
+    higher number.
+    Note: a gate can never require more tokens than there are check
+    locations to hold them. If it would, the gate is automatically lowered
+    to fit so the seed still generates and stays winnable. The number of
+    available locations depends on which sanities you enable, so turn on
+    more sanities (Coinsanity, Lifesanity, Batterysanity, etc.) if you want
+    higher gates to stick."""
     display_name = "Slime Time Token Gate"
     range_start = 5
     range_end = 40
@@ -144,7 +162,13 @@ class ToyBarnEncounterTokenGate(Range):
     Determines how many Pizza Planet Tokens are needed to fight Toy Barn
     Encounter.
     Selecting a higher number than your total pool will force the pool to a
-    higher number."""
+    higher number.
+    Note: a gate can never require more tokens than there are check
+    locations to hold them. If it would, the gate is automatically lowered
+    to fit so the seed still generates and stays winnable. The number of
+    available locations depends on which sanities you enable, so turn on
+    more sanities (Coinsanity, Lifesanity, Batterysanity, etc.) if you want
+    higher gates to stick."""
     display_name = "Toy Barn Encounter Token Gate"
     range_start = 10
     range_end = 60
@@ -156,7 +180,13 @@ class EvilEmperorZurgTokenGate(Range):
     Determines how many Pizza Planet Tokens are needed to fight The Evil
     Emperor Zurg.
     Selecting a higher number than your total pool will force the pool to a
-    higher number."""
+    higher number.
+    Note: a gate can never require more tokens than there are check
+    locations to hold them. If it would, the gate is automatically lowered
+    to fit so the seed still generates and stays winnable. The number of
+    available locations depends on which sanities you enable, so turn on
+    more sanities (Coinsanity, Lifesanity, Batterysanity, etc.) if you want
+    higher gates to stick."""
     display_name = "The Evil Emperor Zurg Token Gate"
     range_start = 15
     range_end = 80
@@ -167,7 +197,13 @@ class LinearFinalShowdownTokenGate(Range):
     """NOTE: This does nothing if you didn't select Linear Mode.
     Determines how many Pizza Planet Tokens are needed for your goal.
     Selecting a higher number than your total pool will force the pool to a
-    higher number."""
+    higher number.
+    Note: a gate can never require more tokens than there are check
+    locations to hold them. If it would, the gate is automatically lowered
+    to fit so the seed still generates and stays winnable. The number of
+    available locations depends on which sanities you enable, so turn on
+    more sanities (Coinsanity, Lifesanity, Batterysanity, etc.) if you want
+    higher gates to stick."""
     display_name = "Final Showdown Token Gate"
     range_start = 20
     range_end = 99
@@ -179,12 +215,20 @@ class LinearFinalShowdownTokenGate(Range):
 # ============================================================
 
 class Movesanity(Choice):
-    """Movesanity will shuffle every single thing Buzz can do. If you choose
-    this setting, I highly recommend pairing it with other sanities.
+    """Movesanity shuffles every single thing Buzz can do into the item pool,
+    which means you START WITH NO MOVES and must find them as checks -- including
+    Double Jump, Ledge Grab, and Pole Climb.
+    Because almost every location needs those basic moves, you MUST pair this with
+    other sanities (lifesanity, batterysanity, green_laser_sanity, rexsanity,
+    hint_block_sanity, coinsanity) and/or more starting_levels so there are enough
+    no-move locations at the start to place your first moves. If your settings are
+    too sparse (e.g. Movesanity with no other sanities and a single starting level),
+    generation will stop and tell you to enable more sanities or pick a LITE option.
     Movesanity LITE (Weapons) only shuffles Buzz's attack abilities:
-    Laser, Spin, Stomp, and Visor.
+    Laser, Spin, Stomp, and Visor. You still start with all movement moves.
     Movesanity LITE (Traversal) only shuffles Buzz's movement abilities:
-    Double Jump, Pole Climb, Ledge Grab, Pole Vault, Push, and Rope Sliding."""
+    Double Jump, Pole Climb, Ledge Grab, Pole Vault, Push, and Rope Sliding.
+    You still start with all attack abilities."""
     display_name = "Movesanity"
     option_off = 0
     option_on = 1
@@ -371,7 +415,7 @@ class OnScreenItemFeed(Choice):
     option_sent = 1
     option_received = 2
     option_both = 3
-    default = 2
+    default = 3
 
 
 # ============================================================

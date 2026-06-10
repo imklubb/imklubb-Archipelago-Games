@@ -79,11 +79,11 @@ ANDYS_HOUSE_COINS: List[CoinEntry] = [
     # Coin 32
     ([], ['Stomp', 'Spin', 'Laser'], [], [], None, [], [], [], []),
     # Coin 33
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
+    (['Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
     # Coin 34
-    (['Double Jump', 'Ledge Grab', 'Push'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
+    (['Double Jump', 'Ledge Grab', 'Push'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
     # Coin 35
-    (['Double Jump', 'Ledge Grab', 'Push'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
+    (['Double Jump', 'Ledge Grab', 'Push'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
     # Coin 36
     (['Double Jump', 'Ledge Grab', 'Push', 'Pole Climb', 'Rope Sliding', 'Visor'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
     # Coin 37

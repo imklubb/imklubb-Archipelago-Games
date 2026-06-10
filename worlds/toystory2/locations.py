@@ -383,7 +383,10 @@ LOCATION_TABLE: Dict[str, TS2LocationData] = {
     # PROSPECTOR SHOWDOWN
     # ══════════════════════════════════════════════════════
 
-    "Prospector Showdown - Defeat GOAL":    TS2LocationData("Prospector Showdown", None, None),
+    # "Prospector Showdown - Defeat GOAL" is the Victory event; it is created
+    # explicitly in __init__.py create_regions(). Do NOT list it here too —
+    # that would create it twice and crash generation ("already exists in
+    # the location cache").
 
     # ══════════════════════════════════════════════════════
     # HINT BLOCK SANITY  (IDs 1027-1044)

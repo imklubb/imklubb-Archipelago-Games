@@ -1,0 +1,121 @@
+Archipelago (0.6.8) logging initialized on Windows-11-10.0.26200-SP0 running Python 3.13.13
+P1 Weights: 61-0.yaml >> Toy Story 2 Template, generated with https://github.com/Eijebong/Archipelago-fuzzer/tree/0.6.2
+Generating for 1 player, 68275453513967669388 Seed 83956124 with plando: items, connections, texts, bosses
+Archipelago Version 0.6.8  -  Seed: 83956124
+
+Found 83 World Types:
+ Adventure                               : v0.0.0  | Items:   15 | Locations:    24
+ A Hat in Time                           : v0.0.0  | Items:   58 | Locations:   480
+ A Link to the Past                      : v5.1.0  | Items:  146 | Locations:   286
+ APQuest                                 : v2.0.0  | Items:    7 | Locations:     7
+ Aquaria                                 : v0.0.0  | Items:  135 | Locations:   219
+ Blasphemous                             : v0.0.0  | Items:  204 | Locations:   306
+ Bomb Rush Cyberfunk                     : v1.0.6  | Items:  165 | Locations:   247
+ Bumper Stickers                         : v1.0.0  | Items:   12 | Locations:   100
+ Choo-Choo Charles                       : v0.0.0  | Items:   43 | Locations:   691
+ Celeste 64                              : v1.3.1  | Items:   24 | Locations:    56
+ Celeste (Open World)                    : v1.0.7  | Items:  177 | Locations:  1215
+ ChecksFinder                            : v0.0.0  | Items:    3 | Locations:    25
+ Civilization VI                         : v0.0.0  | Items:  167 | Locations:   278
+ Castlevania 64                          : v0.0.0  | Items:   36 | Locations:   352
+ Castlevania - Circle of the Moon        : v0.0.0  | Items:   31 | Locations:   125
+ Dark Souls III                          : v0.0.0  | Items: 1204 | Locations:  1506
+ DLCQuest                                : v0.0.0  | Items:   51 | Locations: 18913
+ DOOM 1993                               : v0.0.0  | Items:  195 | Locations:   474
+ DOOM II                                 : v0.0.0  | Items:  178 | Locations:   479
+ EarthBound                              : v4.3.1  | Items:  274 | Locations:   526
+ Factorio                                : v0.0.0  | Items:  233 | Locations:  7176
+ Faxanadu                                : v0.0.0  | Items:   30 | Locations:   110
+ Final Fantasy                           : v1.0.0  | Items:  194 | Locations:   267
+ Final Fantasy Mystic Quest              : v0.0.0  | Items:   67 | Locations:   266
+ Heretic                                 : v0.0.0  | Items:  269 | Locations:  1014
+ Hollow Knight                           : v0.0.0  | Items:  249 | Locations:   740
+ Hylics 2                                : v0.0.0  | Items:   70 | Locations:   166
+ Inscryption                             : v0.0.0  | Items:   42 | Locations:   100
+ Jak and Daxter: The Precursor Legacy    : v1.1.5  | Items:   75 | Locations:  4239
+ Kirby's Dream Land 3                    : v0.0.0  | Items:   24 | Locations:   876
+ Kingdom Hearts                          : v0.0.0  | Items:  215 | Locations:   714
+ Kingdom Hearts 2                        : v2.0.0  | Items:  293 | Locations:   724
+ Links Awakening DX                      : v2.0.2  | Items:  118 | Locations:   255
+ Landstalker - The Treasures of King Nole: v1.8.7  | Items:   62 | Locations:   292
+ Lingo                                   : v5.0.0  | Items:  276 | Locations:   872
+ Lufia II Ancient Cave                   : v0.0.0  | Items:  415 | Locations:   123
+ Super Mario Land 2                      : v0.0.0  | Items: 2725 | Locations:  2657
+ Meritous                                : v1.0.0  | Items:   23 | Locations:   104
+ The Messenger                           : v0.0.0  | Items:   64 | Locations:   136
+ Mario & Luigi Superstar Saga            : v1.10.2 | Items:  146 | Locations:   600
+ Mega Man 2                              : v0.3.3  | Items:   23 | Locations:    71
+ Mega Man 3                              : v0.1.8  | Items:   27 | Locations:   170
+ MegaMan Battle Network 3                : v0.0.0  | Items:  224 | Locations:   263
+ Muse Dash                               : v1.5.33 | Items:  737 | Locations:  1444
+ Noita                                   : v1.4.0  | Items:   32 | Locations:   672
+ Ocarina of Time                         : v7.0.0  | Items:  143 | Locations:  1623
+ Old School Runescape                    : v0.0.0  | Items:   86 | Locations:   169
+ Overcooked! 2                           : v0.0.0  | Items:   45 | Locations:    43
+ Paint                                   : v0.5.2  | Items:   27 | Locations:   380
+ Pokemon Emerald                         : v2.5.0  | Items:  291 | Locations:  1338
+ Pokemon Red and Blue                    : v0.0.0  | Items:  207 | Locations:   709
+ Raft                                    : v0.0.0  | Items:  325 | Locations:   154
+ Risk of Rain 2                          : v1.5.0  | Items:   59 | Locations:  1262
+ Sonic Adventure 2 Battle                : v2.4.2  | Items:  182 | Locations:  2555
+ Satisfactory                            : v2.2.0  | Items:  805 | Locations:   706
+ Saving Princess                         : v1.0.0  | Items:   20 | Locations:    36
+ Starcraft 2                             : v4.0.0  | Items: 1716 | Locations:  3668
+ shapez                                  : v0.0.0  | Items:   67 | Locations:  3543
+ Shivers                                 : v2.7.5  | Items:   76 | Locations:   117
+ A Short Hike                            : v0.0.0  | Items:   37 | Locations:   131
+ Super Metroid                           : v0.0.0  | Items:   24 | Locations:   101
+ Super Mario 64                          : v0.0.0  | Items:   40 | Locations:   164
+ Super Mario World                       : v2.1.1  | Items:   29 | Locations:   765
+ SMZ3                                    : v0.0.0  | Items:  151 | Locations:   316
+ Secret of Evermore                      : v0.50.1 | Items:  165 | Locations:   913
+ Stardew Valley                          : v7.4.0  | Items: 1060 | Locations:  4051
+ Subnautica                              : v0.0.0  | Items:  104 | Locations:   181
+ Terraria                                : v0.0.0  | Items:  188 | Locations:   159
+ Timespinner                             : v1.38.0 | Items:  202 | Locations:   748
+ The Legend of Zelda                     : v1.0.0  | Items:   33 | Locations:   155
+ Toy Story 2                             : v1.0.3  | Items:   73 | Locations:  1041
+ TUNIC                                   : v4.2.7  | Items:  182 | Locations:  6860
+ The Wind Waker                          : v0.0.0  | Items:  152 | Locations:   313
+ Undertale                               : v0.0.0  | Items:   85 | Locations:   122
+ VVVVVV                                  : v0.0.0  | Items:   20 | Locations:    20
+ Wargroove                               : v1.0.0  | Items:   31 | Locations:    38
+ The Witness                             : v8.0.0  | Items:  271 | Locations:  1004
+ Yacht Dice                              : v2.1.4  | Items:   47 | Locations:  1000
+ Yoshi's Island                          : v1.0.0  | Items:   69 | Locations:   235
+ Yu-Gi-Oh! 2006                          : v0.0.0  | Items:  172 | Locations:   165
+ Zillion                                 : v0.0.0  | Items:   12 | Locations:  1555
+
+Creating MultiWorld.
+Creating Items.
+[Toy Story 2] Player 1: requested 55 Pizza Planet Tokens but only 41 fit the available locations; capped to fit.
+Calculating Access Rules.
+Running Item Plando.
+Running Pre Main Fill.
+Filling the multiworld with 135 items.
+Traceback (most recent call last):
+  File "D:\Caleb Pryor\Documents\TS2 AP\TS2 Public Release\Toy-Story-2-Archipelago\fuzz.py", line 660, in gen_wrapper
+    mw = call_generate(yaml_path, args, output_path)
+  File "D:\Caleb Pryor\Documents\TS2 AP\TS2 Public Release\Toy-Story-2-Archipelago\fuzz.py", line 623, in call_generate
+    return ERmain(erargs, seed)
+  File "D:\Caleb Pryor\Documents\TS2 AP\TS2 Public Release\Toy-Story-2-Archipelago\Main.py", line 201, in main
+    distribute_items_restrictive(multiworld, get_settings().generator.panic_method)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Caleb Pryor\Documents\TS2 AP\TS2 Public Release\Toy-Story-2-Archipelago\Fill.py", line 590, in distribute_items_restrictive
+    fill_restrictive(multiworld, maximum_exploration_state, defaultlocations, progitempool, swap=True,
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     name="Progression", single_player_placement=single_player)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Caleb Pryor\Documents\TS2 AP\TS2 Public Release\Toy-Story-2-Archipelago\Fill.py", line 246, in fill_restrictive
+    raise FillError(f"No more spots to place {len(unplaced_items)} items. Remaining locations are invalid.\n"
+    ...<5 lines>...
+                    f"{', '.join(str(place) for place in placements)}", multiworld=multiworld)
+Fill.FillError: No more spots to place 1 items. Remaining locations are invalid.
+Unplaced items:
+Grappling Hook - Elevator Hop (Player 1)
+Unfilled locations:
+Al's Toy Barn - Give Potato Head His Arm, Al's Toy Barn - Missing Toys Token, Elevator Hop - Race Token, Al's Penthouse - Missing Toys Token, Andy's House - Green Laser, Construction Yard - Boss Token, Airport Infiltration - Boss Token, Airport Infiltration - Passenger Tike (Top of Jet), Al's Toy Barn - Talk to Rex, Construction Yard - Missing Toys Token, Elevator Hop - Hidden Token, Al's Toy Barn - Hamm's 50 Coins Token, Andy's House - Race Token, Al's Toy Barn - Chick (End of Long Aisle), Al's Penthouse - Critter (Woody Room), Elevator Hop - Hamm's 50 Coins Token, Al's Space Land - Race Token, Tarmac Trouble - Boss Token, Airport Infiltration - Race Token, Andy's House - Boss Token, Elevator Hop - Mouse (Top of Elevator), Alleys and Gullies - Green Laser, Al's Penthouse - Boss Token, Andy's Neighborhood - Hidden Token, Andy's House - Talk to Rex, Elevator Hop - Missing Foot, Construction Yard - Worker Tike (Filing Cabinets), Tarmac Trouble - Luggage (Zone 4), Andy's House - Missing Ear, Al's Toy Barn - Chick (Near Basketballs), Elevator Hop - Mouse (Next to Rex), Andy's House - Give Potato Head His Ear, Elevator Hop - Mouse (Electrical Room), Andy's House - Sheep (Living Room), Andy's Neighborhood - Soldier (Clothes Line), Elevator Hop - Boss Token, Alleys and Gullies - Duck (Rain Gutter), Tarmac Trouble - Race Token, Andy's Neighborhood - Hamm's 50 Coins Token, Tarmac Trouble - Talk to Rex, Andy's House - Sheep (Kitchen), Construction Yard - Missing Eye, Tarmac Trouble - Green Laser, Alleys and Gullies - Race Token, Alleys and Gullies - Duck (Hidden Near Race), Construction Yard - Hamm's 50 Coins Token
+Already placed 89:
+Alleys and Gullies - Missing Toys Token, Construction Yard - Worker Tike (Construction Floor 1), Airport Infiltration - Missing Mouth, Al's Space Land - Alien (Planet Mobile), Alleys and Gullies - Duck (Incline Parasol), Tarmac Trouble - Luggage (Top of Plane), Elevator Hop - Green Laser, Alleys and Gullies - Duck (Window Sill), Construction Yard - Race Token, Toy Barn Encounter - Defeat Reward 2, Construction Yard - Give Potato Head His Eye, Al's Toy Barn - Chick (Shipping Boxes), Al's Space Land - Missing Toys Token, Al's Toy Barn - Chick (Complete Race), Airport Infiltration - Passenger Tike (Near Start), Al's Penthouse - Critter (Living Room), Alleys and Gullies - Boss Token, Airport Infiltration - Give Potato Head His Mouth, Andy's Neighborhood - Green Laser, Alleys and Gullies - Hidden Token, Al's Space Land - Hidden Token, Al's Penthouse - Critter (Kitchen), Andy's Neighborhood - Soldier (Pool Plant), Tarmac Trouble - Luggage (Zone 2 Cart), Tarmac Trouble - Luggage (Zone 6 Conveyor Belt), Elevator Hop - Missing Toys Token, Elevator Hop - Mouse (Control Room), Construction Yard - Hidden Token, Al's Toy Barn - Boss Token, Tarmac Trouble - Missing Toys Token, Andy's Neighborhood - Soldier (Swing), Andy's House - Hamm's 50 Coins Token, Al's Penthouse - Hamm's 50 Coins Token, Alleys and Gullies - Talk to Rex, Elevator Hop - Talk to Rex, Al's Toy Barn - Race Token, Airport Infiltration - Talk to Rex, Al's Penthouse - Critter (Bathroom), Andy's House - Hidden Token, Slime Time - Defeat Reward 2, Airport Infiltration - Passenger Tike (Scaffolding), Andy's Neighborhood - Boss Token, Al's Space Land - Alien (Ballpit), Tarmac Trouble - Luggage (Zone 8), Andy's House - Missing Toys Token, Al's Penthouse - Hidden Token, Construction Yard - Green Laser, Airport Infiltration - Hamm's 50 Coins Token, Al's Space Land - Alien (End of Race), Airport Infiltration - Missing Toys Token, Airport Infiltration - Passenger Tike (Near Boss Arena), Al's Toy Barn - Chick (Gumball Machines), Andy's House - Sheep (Basement), Al's Space Land - Hamm's 50 Coins Token, Andy's Neighborhood - Talk to Rex, Slime Time - Green Laser, Andy's Neighborhood - Missing Toys Token, Al's Space Land - Alien (End of Zurg Aisle), The Evil Emperor Zurg - Defeat Reward 2, Elevator Hop - Give Potato Head His Foot, Al's Toy Barn - Green Laser, Tarmac Trouble - Hamm's 50 Coins Token, Al's Space Land - Alien (Middle of Zurg Aisle), Andy's House - Sheep (Garage), Andy's Neighborhood - Soldier (Molehill), Airport Infiltration - Passenger Tike (Top of Conveyor Belts), Construction Yard - Worker Tike (Boss Arena), Andy's Neighborhood - Race Token, Al's Penthouse - Green Laser, Construction Yard - Talk to Rex, Airport Infiltration - Hidden Token, Alleys and Gullies - Duck (Pool Behind Construction), Andy's House - Sheep (Attic), Elevator Hop - Mouse (Side of Elevator Shaft), Al's Space Land - Boss Token, Alleys and Gullies - Hamm's 50 Coins Token, Al's Penthouse - Critter (Train Bed), Construction Yard - Worker Tike (Bulldozer), Al's Toy Barn - Hidden Token, Tarmac Trouble - Hidden Token, Andy's Neighborhood - Soldier (Tree), Construction Yard - Worker Tike (Wheelbarrow), Airport Infiltration - Green Laser, Al's Toy Barn - Missing Arm, Bombs Away! - Defeat Reward 2, Al's Penthouse - Talk to Rex, Al's Space Land - Talk to Rex, Al's Penthouse - Race Token, Al's Space Land - Green Laser
+All Placements:
+[(Andy's House - Hamm's 50 Coins Token, Progressive Laser), (Andy's House - Missing Toys Token, Chick), (Andy's House - Hidden Token, Soldier), (Andy's House - Sheep (Basement), Alien), (Andy's House - Sheep (Attic), Duck), (Andy's House - Sheep (Garage), Progressive Laser), (Andy's Neighborhood - Missing Toys Token, Chick), (Andy's Neighborhood - Race Token, Missing Foot), (Andy's Neighborhood - Boss Token, Luggage), (Andy's Neighborhood - Soldier (Molehill), Critter), (Andy's Neighborhood - Soldier (Swing), Sheep), (Andy's Neighborhood - Soldier (Pool Plant), Passenger Tike), (Andy's Neighborhood - Soldier (Tree), Mouse), (Andy's Neighborhood - Green Laser, Toy Barn Encounter Unlock), (Andy's Neighborhood - Talk to Rex, Rope Sliding), (Bombs Away! - Defeat Reward 1, Final Showdown Ticket), (Bombs Away! - Defeat Reward 2, Visor), (Construction Yard - Race Token, Stomp), (Construction Yard - Hidden Token, Hover Boots - Airport Infiltration), (Construction Yard - Worker Tike (Wheelbarrow), Alien), (Construction Yard - Worker Tike (Bulldozer), Hover Boots - Al's Toy Barn), (Construction Yard - Worker Tike (Construction Floor 1), Critter), (Construction Yard - Worker Tike (Boss Arena), Sheep), (Construction Yard - Give Potato Head His Eye, Andy's Neighborhood Unlock), (Construction Yard - Green Laser, Worker Tike), (Construction Yard - Talk to Rex, Slime Time Unlock), (Alleys and Gullies - Hamm's 50 Coins Token, Chick), (Alleys and Gullies - Missing Toys Token, Cosmic Shield - Al's Penthouse), (Alleys and Gullies - Hidden Token, Rocket Boots - Alleys and Gullies), (Alleys and Gullies - Boss Token, Missing Mouth), (Alleys and Gullies - Duck (Pool Behind Construction), Passenger Tike), (Alleys and Gullies - Duck (Incline Parasol), Mouse), (Alleys and Gullies - Duck (Window Sill), Grappling Hook - Alleys and Gullies), (Alleys and Gullies - Talk to Rex, Missing Arm), (Slime Time - Defeat Reward 1, Final Showdown Ticket), (Slime Time - Defeat Reward 2, Pole Vault), (Slime Time - Green Laser, Missing Eye), (Al's Toy Barn - Race Token, The Evil Emperor Zurg Unlock), (Al's Toy Barn - Hidden Token, Luggage), (Al's Toy Barn - Boss Token, Alien), (Al's Toy Barn - Chick (Complete Race), Soldier), (Al's Toy Barn - Chick (Gumball Machines), Push), (Al's Toy Barn - Chick (Shipping Boxes), Missing Ear), (Al's Toy Barn - Missing Arm, Luggage), (Al's Toy Barn - Green Laser, Spin), (Al's Space Land - Hamm's 50 Coins Token, Mouse), (Al's Space Land - Missing Toys Token, Alien), (Al's Space Land - Hidden Token, Critter), (Al's Space Land - Boss Token, Passenger Tike), (Al's Space Land - Alien (Ballpit), Rocket Boots - Al's Toy Barn), (Al's Space Land - Alien (Planet Mobile), Tarmac Trouble Unlock), (Al's Space Land - Alien (End of Race), Luggage), (Al's Space Land - Alien (Middle of Zurg Aisle), Passenger Tike), (Al's Space Land - Alien (End of Zurg Aisle), Mouse), (Al's Space Land - Green Laser, Bombs Away! Unlock), (Al's Space Land - Talk to Rex, Ledge Grab), (Toy Barn Encounter - Defeat Reward 1, Final Showdown Ticket), (Toy Barn Encounter - Defeat Reward 2, Andy's House Unlock), (Elevator Hop - Missing Toys Token, Alleys and Gullies Unlock), (Elevator Hop - Mouse (Control Room), Soldier), (Elevator Hop - Mouse (Side of Elevator Shaft), Disc Launcher - Construction Yard), (Elevator Hop - Give Potato Head His Foot, Al's Toy Barn Unlock), (Elevator Hop - Green Laser, Rocket Boots - Andy's Neighborhood), (Elevator Hop - Talk to Rex, Construction Yard Unlock), (Al's Penthouse - Hamm's 50 Coins Token, Sheep), (Al's Penthouse - Race Token, Progressive Laser), (Al's Penthouse - Hidden Token, Worker Tike), (Al's Penthouse - Critter (Living Room), Critter), (Al's Penthouse - Critter (Kitchen), Sheep), (Al's Penthouse - Critter (Bathroom), Worker Tike), (Al's Penthouse - Critter (Train Bed), Sheep), (Al's Penthouse - Green Laser, Chick), (Al's Penthouse - Talk to Rex, Elevator Hop Unlock), (The Evil Emperor Zurg - Defeat Reward 1, Final Showdown Ticket), (The Evil Emperor Zurg - Defeat Reward 2, Final Showdown Unlock), (Airport Infiltration - Hamm's 50 Coins Token, Alien), (Airport Infiltration - Missing Toys Token, Duck), (Airport Infiltration - Hidden Token, Duck), (Airport Infiltration - Passenger Tike (Near Start), Disc Launcher - Al's Toy Barn), (Airport Infiltration - Passenger Tike (Top of Conveyor Belts), Worker Tike), (Airport Infiltration - Passenger Tike (Near Boss Arena), Soldier), (Airport Infiltration - Passenger Tike (Scaffolding), Worker Tike), (Airport Infiltration - Missing Mouth, Duck), (Airport Infiltration - Give Potato Head His Mouth, Mouse), (Airport Infiltration - Green Laser, Duck), (Airport Infiltration - Talk to Rex, Passenger Tike), (Tarmac Trouble - Hamm's 50 Coins Token, Disc Launcher - Alleys and Gullies), (Tarmac Trouble - Missing Toys Token, Chick), (Tarmac Trouble - Hidden Token, Luggage), (Tarmac Trouble - Luggage (Top of Plane), Double Jump), (Tarmac Trouble - Luggage (Zone 2 Cart), Critter), (Tarmac Trouble - Luggage (Zone 8), Pole Climb), (Tarmac Trouble - Luggage (Zone 6 Conveyor Belt), Soldier), (Prospector Showdown - Defeat GOAL, Victory)]

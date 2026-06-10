@@ -884,14 +884,15 @@ def set_rules(world: "ToyStory2World") -> None:
     rule("Andy's House - Battery (Andy's Room)",
          lambda state: (
              (has_all_moves(state, player, ['Push', 'Pole Climb', 'Visor']) and has_any_move(state, player, ['Double Jump', 'Ledge Grab'])) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_all_moves(state, player, ['Pole Climb']) and has_any_move(state, player, ['Ledge Grab', 'Double Jump']))
+             (skips in (SKIPS_EASY, SKIPS_HARD) and has_all_moves(state, player, ['Pole Climb', 'Double Jump', 'Ledge Grab']))
          ))
 
     rule("Andy's House - Battery (Attic)",
          lambda state: (
-             has_all_moves(state, player, ["Push", "Pole Climb", "Pole Vault"]) or
+             has_all_moves(state, player, ["Push", "Pole Climb", "Pole Vault", "Ledge Grab", "Double Jump"]) or
              (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Pole Climb", "Pole Vault", "Double Jump"]))
+              has_all_moves(state, player, ["Pole Climb"]) and
+              has_any_move(state, player, ["Double Jump", "Ledge Grab"]))
          ))
 
     rule("Andy's House - Battery (Basement)",
@@ -1031,7 +1032,8 @@ def set_rules(world: "ToyStory2World") -> None:
     rule("Construction Yard - Race Token",
          lambda state: (
              has_all_moves(state, player, ["Double Jump", "Ledge Grab"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player))
+             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player)) or
+             (skips == SKIPS_HARD)
          ))
 
     rule("Construction Yard - Hidden Token",
@@ -1873,12 +1875,14 @@ def set_rules(world: "ToyStory2World") -> None:
     # default required move set; the Easy/Hard skip branches relax it. "No
     # requirements" locations get no rule (reachable once the region is).
     rule("Andy's House - Hint Block (Andy's Room Bookshelf)",
-         lambda state: has_all_moves(state, player, ["Double Jump", "Ledge Grab"]))
+         lambda state: (
+             has_all_moves(state, player, ["Double Jump", "Ledge Grab"]) or
+             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player))
+         ))
     rule("Andy's House - Hint Block (Andy's Room Bed)",
          lambda state: (
              has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Push"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab"]))
+             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player))
          ))
     rule("Andy's House - Hint Block (Andy's Room Dresser Shelf)",
          lambda state: (

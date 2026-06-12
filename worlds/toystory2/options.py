@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from Options import (
-    Choice, Toggle, DefaultOnToggle, Range, PerGameCommonOptions, OptionGroup
+    Choice, Toggle, DefaultOnToggle, Range, PerGameCommonOptions, OptionGroup,
+    StartInventoryPool,
 )
 
 
@@ -509,6 +510,8 @@ class DeathLink(Toggle):
 
 @dataclass
 class ToyStory2Options(PerGameCommonOptions):
+    # Item & Location (opt-in: not auto-added by AP, must be declared to work)
+    start_inventory_from_pool:          StartInventoryPool
     # Game
     game_mode:                          GameMode
     skips:                              Skips

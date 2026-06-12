@@ -660,8 +660,14 @@ class ToyStory2World(World):
         # ── LEVEL UNLOCKS (Open Mode only) ───────────────────
         if self._is_open_mode():
             starting = set(self._starting_levels)
+            # The Final Showdown Unlock item only matters when the goal includes
+            # the "level unlock" condition; otherwise the Prospector is gated by
+            # tokens/bosses (in both logic and game), so the item would be dead.
+            goal_needs_unlock = options.goal_conditions.value in (2, 4, 5, 6)
             for level_unlock in LEVEL_UNLOCK_ITEMS:
                 if level_unlock == "Final Showdown Unlock":
+                    if not goal_needs_unlock:
+                        continue  # gated by tokens/bosses, not an item
                     level_name = "Prospector Showdown"
                 else:
                     level_name = level_unlock.replace(" Unlock", "")

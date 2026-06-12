@@ -245,21 +245,45 @@ def boss_defeats(state: CollectionState, player: int) -> int:
 # LEVEL ACCESS RULES
 # ============================================================
 
+def final_showdown_goal_met(state: CollectionState, player: int, world: "ToyStory2World") -> bool:
+    """Open mode: whether the Prospector Showdown is reachable, based on the
+    chosen GOAL CONDITIONS. This mirrors the in-game unlock (computed in
+    ts2_client.py and honored by check_prospector_unlock in the Lua): the final
+    level opens on tokens / bosses / the Final Showdown Unlock item per the goal,
+    NOT by always requiring the unlock item. (Previously can_access_level forced
+    the Final Showdown Unlock onto every open-mode path, so a tokens-only goal
+    still demanded the item — disagreeing with the actual game.)"""
+    options = world.options
+    goal = options.goal_conditions.value
+    needs_tokens = goal in (GOAL_TOKENS, GOAL_T_AND_B, GOAL_T_AND_U, GOAL_T_B_U)
+    needs_bosses = goal in (GOAL_BOSSES, GOAL_T_AND_B, GOAL_B_AND_U, GOAL_T_B_U)
+    needs_unlock = goal in (GOAL_UNLOCK, GOAL_T_AND_U, GOAL_B_AND_U, GOAL_T_B_U)
+    if needs_tokens and token_count(state, player) < options.final_showdown_token_gate.value:
+        return False
+    if needs_bosses and boss_defeats(state, player) < options.defeated_bosses_required.value:
+        return False
+    if needs_unlock and not state.has("Final Showdown Unlock", player):
+        return False
+    return True
+
+
 def can_access_level(state: CollectionState, player: int, level: str, world: "ToyStory2World") -> bool:
     options = world.options
     mode = options.game_mode.value
 
     if mode == GAME_MODE_OPEN:
         # Only the randomly-chosen starting levels are free; everything else
-        # needs its unlock item. The Prospector Showdown level's unlock item is
-        # named "Final Showdown Unlock" (the only level whose unlock item name
-        # doesn't follow the "{level} Unlock" pattern).
+        # needs its unlock item.
         starting = getattr(world, "_starting_levels", [])
         if level in starting:
             return True
-        unlock_item = ("Final Showdown Unlock" if level == "Prospector Showdown"
-                       else f"{level} Unlock")
-        return state.has(unlock_item, player)
+        # The Prospector Showdown (final level) is special: it opens on the
+        # chosen GOAL CONDITIONS (matching the in-game unlock), not on a
+        # dedicated unlock item — except when the goal IS "level unlock", which
+        # final_showdown_goal_met handles.
+        if level == "Prospector Showdown":
+            return final_showdown_goal_met(state, player, world)
+        return state.has(f"{level} Unlock", player)
 
     else:  # Linear
         # Mirror the Lua's apply_linear_area exactly:

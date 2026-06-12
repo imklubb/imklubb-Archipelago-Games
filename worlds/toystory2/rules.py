@@ -681,9 +681,38 @@ def _als_penthouse_coins_40_43(state: CollectionState, player: int, skips: int) 
             return True
     return False
 
+def _andys_garage_rule(state: CollectionState, player: int, skips: int, base_moves: List[str]) -> bool:
+    # Andy's House garage logic. Base = base_moves ; Easy = Double Jump + Ledge
+    # Grab ; Hard = Double Jump. Easy is shared into Hard (middle branch); Hard
+    # additionally allows the easier Double-Jump-only route.
+    if has_all_moves(state, player, base_moves):
+        return True
+    if skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player) and has_ledge_grab(state, player):
+        return True
+    if skips == SKIPS_HARD and has_double_jump(state, player):
+        return True
+    return False
+
+def _andys_house_coins_58_67(state: CollectionState, player: int, skips: int) -> bool:
+    return _andys_garage_rule(state, player, skips, ["Double Jump", "Ledge Grab", "Pole Climb"])
+
+def _andys_house_coin_68(state: CollectionState, player: int, skips: int) -> bool:
+    return _andys_garage_rule(state, player, skips, ["Double Jump", "Ledge Grab", "Pole Climb", "Pole Vault"])
+
 def _get_coin_override(level: str, idx: int):
     overrides = {
         ("Andy's House", 49): _andys_house_coin_50,
+        ("Andy's House", 57): _andys_house_coins_58_67,
+        ("Andy's House", 58): _andys_house_coins_58_67,
+        ("Andy's House", 59): _andys_house_coins_58_67,
+        ("Andy's House", 60): _andys_house_coins_58_67,
+        ("Andy's House", 61): _andys_house_coins_58_67,
+        ("Andy's House", 62): _andys_house_coins_58_67,
+        ("Andy's House", 63): _andys_house_coins_58_67,
+        ("Andy's House", 64): _andys_house_coins_58_67,
+        ("Andy's House", 65): _andys_house_coins_58_67,
+        ("Andy's House", 66): _andys_house_coins_58_67,
+        ("Andy's House", 67): _andys_house_coin_68,
         ("Andy's Neighborhood", 54): _andys_neighborhood_coin_55,
         ("Construction Yard", 71): _construction_yard_coin_72,
         ("Alleys and Gullies", 29): _alleys_coins_30_31,
@@ -1088,11 +1117,8 @@ def set_rules(world: "ToyStory2World") -> None:
          ))
 
     rule("Andy's House - Sheep (Garage)",
-         lambda state: (
-             has_all_moves(state, player, ["Ledge Grab", "Double Jump", "Pole Climb", "Pole Vault"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab"]))
-         ))
+         lambda state: _andys_garage_rule(state, player, skips,
+                                          ["Double Jump", "Ledge Grab", "Pole Climb", "Pole Vault"]))
 
     rule("Andy's House - Missing Ear",
          lambda state: (
@@ -1120,14 +1146,15 @@ def set_rules(world: "ToyStory2World") -> None:
          ))
 
     rule("Andy's House - Life (Garage)",
+         lambda state: _andys_garage_rule(state, player, skips,
+                                          ["Double Jump", "Ledge Grab", "Pole Climb"]))
+
+    rule("Andy's House - Green Laser",
          lambda state: (
-             has_all_moves(state, player, ["Ledge Grab", "Double Jump", "Pole Climb"]) or
+             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]) or
              (skips in (SKIPS_EASY, SKIPS_HARD) and
               has_double_jump(state, player) and has_ledge_grab(state, player))
          ))
-
-    rule("Andy's House - Green Laser",
-         lambda state: has_all_moves(state, player, ["Ledge Grab", "Double Jump", "Pole Climb"]))
 
     rule("Andy's House - Battery (Andy's Room)",
          lambda state: (
@@ -1148,11 +1175,8 @@ def set_rules(world: "ToyStory2World") -> None:
          lambda state: has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]))
 
     rule("Andy's House - Battery (Garage)",
-         lambda state: (
-             has_all_moves(state, player, ["Ledge Grab", "Double Jump", "Pole Climb"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab"]))
-         ))
+         lambda state: _andys_garage_rule(state, player, skips,
+                                          ["Double Jump", "Ledge Grab", "Pole Climb"]))
 
     rule("Andy's House - Battery (Living Room)",
          lambda state: (
@@ -2164,11 +2188,8 @@ def set_rules(world: "ToyStory2World") -> None:
          lambda state: has_pole_climb(state, player))
     # Bottom of Stairs - No requirements
     rule("Andy's House - Hint Block (Top of Garage)",
-         lambda state: (
-             has_all_moves(state, player, ["Ledge Grab", "Double Jump", "Pole Climb"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab"]))
-         ))
+         lambda state: _andys_garage_rule(state, player, skips,
+                                          ["Double Jump", "Ledge Grab", "Pole Climb"]))
     rule("Andy's House - Hint Block (Living Room Recliner)",
          lambda state: (
              has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]) or

@@ -85,9 +85,9 @@ ANDYS_HOUSE_COINS: List[CoinEntry] = [
     # Coin 35
     (['Double Jump', 'Ledge Grab', 'Push'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
     # Coin 36
-    (['Double Jump', 'Ledge Grab', 'Push', 'Pole Climb', 'Rope Sliding', 'Visor'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
+    (['Double Jump', 'Ledge Grab', 'Push', 'Pole Climb', 'Rope Sliding', 'Visor'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
     # Coin 37
-    (['Double Jump', 'Ledge Grab', 'Push', 'Pole Climb', 'Rope Sliding', 'Visor'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
+    (['Double Jump', 'Ledge Grab', 'Push', 'Pole Climb', 'Rope Sliding', 'Visor'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
     # Coin 38
     ([], ['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], None, [], [], [], []),
     # Coin 39
@@ -107,11 +107,11 @@ ANDYS_HOUSE_COINS: List[CoinEntry] = [
     # Coin 46
     (['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], [], None, [], [], [], []),
     # Coin 47
-    (['Push', 'Pole Climb', 'Pole Vault', 'Ledge Grab', 'Double Jump'], [], [], [], 'Easy', ['Pole Climb', 'Double Jump', 'Ledge Grab'], [], [], []),
+    (['Push', 'Pole Climb', 'Ledge Grab'], ['Double Jump', 'Pole Vault'], [], [], 'Easy', ['Pole Climb', 'Double Jump'], ['Pole Vault', 'Ledge Grab'], [], []),
     # Coin 48
-    (['Push', 'Pole Climb', 'Pole Vault', 'Ledge Grab', 'Double Jump'], [], [], [], 'Easy', ['Pole Climb', 'Double Jump', 'Ledge Grab'], [], [], []),
+    (['Push', 'Pole Climb', 'Ledge Grab'], ['Double Jump', 'Pole Vault'], [], [], 'Easy', ['Pole Climb', 'Double Jump'], ['Pole Vault', 'Ledge Grab'], [], []),
     # Coin 49
-    (['Push', 'Pole Climb', 'Pole Vault', 'Ledge Grab', 'Double Jump'], [], [], [], 'Easy', ['Pole Climb', 'Double Jump', 'Ledge Grab'], [], [], []),
+    (['Push', 'Pole Climb', 'Ledge Grab'], ['Double Jump', 'Pole Vault'], [], [], 'Easy', ['Pole Climb', 'Double Jump'], ['Pole Vault', 'Ledge Grab'], [], []),
     # Coin 50
     (['Push', 'Pole Climb', 'Pole Vault', 'Ledge Grab', 'Double Jump'], ['Laser', 'Spin', 'Stomp'], [], [], 'Easy', ['Pole Climb', 'Double Jump', 'Ledge Grab'], [], [], []),
     # Coin 51
@@ -344,13 +344,13 @@ ANDYS_NEIGHBORHOOD_COINS: List[CoinEntry] = [
     # Coin 70
     (['Double Jump', 'Pole Climb', 'Pole Vault'], [], [], [], None, [], [], [], []),
     # Coin 71
-    (['Double Jump', 'Pole Climb', 'Pole Vault'], [], [], [], 'Easy', ['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], []),
+    (['Double Jump', 'Pole Climb', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], []),
     # Coin 72
-    (['Double Jump', 'Pole Climb', 'Pole Vault'], [], [], [], 'Easy', ['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], []),
+    (['Double Jump', 'Pole Climb', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], []),
     # Coin 73
-    (['Double Jump', 'Pole Climb', 'Pole Vault'], [], [], [], 'Easy', ['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], []),
+    (['Double Jump', 'Pole Climb', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], []),
     # Coin 74
-    (['Double Jump', 'Pole Climb', 'Pole Vault'], [], [], [], 'Easy', ['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], []),
+    (['Double Jump', 'Pole Climb', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], []),
     # Coin 75
     ([], ['Double Jump'], [], ['Rocket Boots'], None, [], [], [], []),
     # Coin 76

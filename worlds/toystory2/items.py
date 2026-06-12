@@ -109,6 +109,7 @@ ITEM_TABLE: Dict[str, TS2ItemData] = {
     # -- FILLER --
     "1 Life":                   TS2ItemData(BASE_ID + 61, filler),
     "Extra Battery":            TS2ItemData(BASE_ID + 62, filler),
+    "Invincible Buzz":          TS2ItemData(BASE_ID + 73, filler),
 
     # -- MISSING TOYS (per coin level; progression class) --
     "Sheep":            TS2ItemData(BASE_ID + 63, prog),
@@ -214,7 +215,7 @@ TRAP_ITEMS = {
 }
 
 FILLER_ITEMS = {
-    "1 Life", "Extra Battery",
+    "1 Life", "Extra Battery", "Invincible Buzz",
 }
 
 # Missing toy items: item name -> level id. Each is Progressive with 5 copies in

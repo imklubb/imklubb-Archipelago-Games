@@ -41,7 +41,7 @@ logger = logging.getLogger("Client")
 # ============================================================
 # GAME IDENTITY
 # ============================================================
-# PS1 game header bytes at ROM address 0x9C50 - "SCUS-94     " etc
+# PS1 game header bytes at ROM address 0x9C50 - "SLUS-00893" etc
 # We validate by checking a known memory signature instead
 GAME_NAME_ADDR    = (0x0A16A4, 4, "MainRAM")   # Should be 0x54532032 ("TS2\x00") in our shared area
 VALIDATE_ADDR     = (0x1FFFD0, 1, "MainRAM")    # We write 0xAB here on init to confirm shared mem
@@ -209,6 +209,7 @@ SHARED_DEATH_LINK_QUEUE         = (0x1FF986, 1, "MainRAM")
 # Filler items
 SHARED_FILLER_EXTRA_LIFE        = (0x1FF987, 1, "MainRAM")
 SHARED_FILLER_HEALTH_UP         = (0x1FF988, 1, "MainRAM")
+SHARED_FILLER_INVINCIBLE_BUZZ   = (0x1FF96B, 1, "MainRAM")
 
 # Mr. Potato Head parts collected flags
 SHARED_EAR_COLLECTED            = (0x1FF989, 1, "MainRAM")
@@ -419,6 +420,17 @@ TOKEN_LEVEL_NAME_BY_LEVEL = {
     7: "Al's Toy Barn", 8: "Al's Space Land", 9: "Toy Barn Encounter",
     10: "Elevator Hop", 11: "Al's Penthouse", 12: "The Evil Emperor Zurg",
     13: "Airport Infiltration", 14: "Tarmac Trouble", 15: "Prospector Showdown",
+}
+
+# In-game level id -> PopTracker tab title (autotab via AP data storage).
+# Boss levels (3,6,9,12,15) all share the single "Bosses" tab; unknown ids
+# (menu/hub) are intentionally absent so the tracker tab is left unchanged.
+LEVEL_TO_TAB = {
+    1: "Andy's House", 2: "Andy's Neighborhood", 4: "Construction Yard",
+    5: "Alleys and Gullies", 7: "Al's Toy Barn", 8: "Al's Space Land",
+    10: "Elevator Hop", 11: "Al's Penthouse", 13: "Airport Infiltration",
+    14: "Tarmac Trouble",
+    3: "Bosses", 6: "Bosses", 9: "Bosses", 12: "Bosses", 15: "Bosses",
 }
 TOKEN_BIT_TO_NAME = {
     1:  "Hamm's 50 Coins Token",
@@ -653,11 +665,16 @@ class ToyStory2Client(BizHawkClient):
         self._gameplay_started: bool = False
         self._last_seen_level: int = -1
         self._level_stable_ticks: int = 0
+        self._last_pub_tab: Optional[str] = None  # autotab: last tab pushed to data storage
         # Delivered-count trackers for queue items (traps/filler). We track how
         # many of each we have pushed into the game's delivery queue so we never
         # rely on reading the RAM counter back (the Lua consumes/decrements it).
         # Keyed by RAM address (int). Reset on connect; rebuilt from items.
         self._delivered: dict = {}
+        # Set on each connect; consumed on the first _process_items pass to seed
+        # _delivered from already-received items when resyncing into an in-progress
+        # game (so one-shot filler/traps are not replayed). See _process_items.
+        self._seed_delivered: bool = False
 
     def _location_map(self, ctx: "BizHawkClientContext") -> dict:
         """Build (and cache) a location name -> id map. We derive it from our own
@@ -739,7 +756,12 @@ class ToyStory2Client(BizHawkClient):
             self._rex_baseline_high = None
             self._last_seen_level = -1
             self._level_stable_ticks = 0
+            self._last_pub_tab = None
             self._delivered = {}
+            # Defer one seeding pass: if we're resyncing into a game that already
+            # has progress, already-received one-shot filler/traps must NOT be
+            # replayed (lives refilled, batteries re-granted, traps re-fired).
+            self._seed_delivered = True
             # On-screen item feed tracking
             self._feed_item_index = 0
             self._feed_checked = set()
@@ -814,6 +836,10 @@ class ToyStory2Client(BizHawkClient):
             # Process received items
             await self._process_items(ctx)
 
+            # Publish the current tracker tab (autotab) every tick, independent of
+            # checks, so the PopTracker pack switches tabs even on a fresh seed.
+            await self._publish_autotab(ctx)
+
             # Publish the current level's despawn masks (derived from the server's
             # checked_locations) to the one-direction despawn-seed bytes. Done every
             # tick so it survives a BizHawk reset without needing a reconnect.
@@ -867,13 +893,15 @@ class ToyStory2Client(BizHawkClient):
             (1 if sd.get("hint_block_sanity", 0)    else 0) << 6
         )
 
-        # Build QOL byte: bit0=autosave, bit1=disc-fill, bit2=fallAnim, bit3=skipCutscenes, bit4=autocoins
+        # Build QOL byte: bit0=autosave, bit1=disc-fill, bit2=fallAnim, bit3=skipCutscenes, bit4=autocoins, bit5=startFullHealth, bit6=neverGameOver
         qol_byte = (
             (1 if sd.get("auto_save", 1)                         else 0) << 0 |
             (1 if sd.get("disc_launcher_fill_pockets", 1)        else 0) << 1 |
             (1 if sd.get("disable_falling_animation", 0)         else 0) << 2 |
             (1 if sd.get("skip_cutscenes", 1)                    else 0) << 3 |
-            (1 if sd.get("collect_enemy_coins_automatically", 1) else 0) << 4
+            (1 if sd.get("collect_enemy_coins_automatically", 1) else 0) << 4 |
+            (1 if sd.get("start_every_level_with_full_health", 1) else 0) << 5 |
+            (1 if sd.get("never_game_over", 1)                   else 0) << 6
         )
 
         writes = [
@@ -1018,6 +1046,19 @@ class ToyStory2Client(BizHawkClient):
             elif item_name == "Extra Battery":
                 a = SHARED_FILLER_HEALTH_UP[0]
                 queue_targets[a] = queue_targets.get(a, 0) + 1
+            elif item_name == "Invincible Buzz":
+                a = SHARED_FILLER_INVINCIBLE_BUZZ[0]
+                queue_targets[a] = queue_targets.get(a, 0) + 1
+
+        # One-time seed on (re)connect: if the player is resyncing into a game
+        # that already has progress (checked_locations is non-empty), treat every
+        # filler/trap already in items_received as ALREADY delivered, so the resync
+        # does not replay them (refill lives, re-grant batteries, re-fire traps).
+        # A brand-new game has no checks yet, so first-time filler still delivers.
+        if self._seed_delivered:
+            self._seed_delivered = False
+            if ctx.checked_locations:
+                self._delivered = dict(queue_targets)
 
         for a, target in queue_targets.items():
             delivered = self._delivered.get(a, 0)
@@ -1273,6 +1314,32 @@ class ToyStory2Client(BizHawkClient):
         13: ("Passenger Tike",  "Airport Infiltration", ["Near Start","Top of Conveyor Belts","Near Boss Arena","Top of Jet","Scaffolding"]),
         14: ("Luggage",         "Tarmac Trouble",       ["Top of Plane","Zone 2 Cart","Zone 8","Zone 6 Conveyor Belt","Zone 4"]),
     }
+
+    async def _publish_autotab(self, ctx: "BizHawkClientContext") -> None:
+        """Publish the current level's tracker tab to AP data storage so the
+        PopTracker pack (watching ts2_current_level_<slot>) switches tabs the
+        instant the level id changes. Runs every tick, independent of whether any
+        locations have been checked. Anything outside 1-15 -> Level Select."""
+        if not ctx.slot:
+            return
+        try:
+            data = await read(ctx.bizhawk_ctx, [LEVEL_ID_ADDR])
+        except Exception:
+            return
+        level_id = data[0][0]
+        _tab = LEVEL_TO_TAB.get(level_id, "Level Select")
+        if _tab != self._last_pub_tab:
+            self._last_pub_tab = _tab
+            try:
+                await ctx.send_msgs([{
+                    "cmd": "Set",
+                    "key": f"ts2_current_level_{ctx.slot}",
+                    "default": "",
+                    "want_reply": True,
+                    "operations": [{"operation": "replace", "value": _tab}],
+                }])
+            except Exception:
+                self._last_pub_tab = None  # retry next tick
 
     async def _publish_despawn_seeds(self, ctx: "BizHawkClientContext") -> None:
         """Each tick, derive the CURRENT level's collected masks from the server's

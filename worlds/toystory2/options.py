@@ -372,6 +372,13 @@ class ExtraBatteryFillerWeight(FillerWeight):
     default = 3  # High
 
 
+class InvincibleBuzzFillerWeight(FillerWeight):
+    """How often Invincible Buzz appears among the filler items.
+    Grants Buzz 30 seconds of invincibility. Can't touch this!"""
+    display_name = "Invincible Buzz Filler Weight"
+    default = 2  # Medium
+
+
 # ============================================================
 # QOL
 # ============================================================
@@ -404,6 +411,18 @@ class DiscLauncherFillPockets(DefaultOnToggle):
     """When you pick up Disc Launchers they will
     now go to the maximum you can hold!"""
     display_name = "Disc Launcher Pick Ups Fill Pockets"
+
+
+class StartEveryLevelWithFullHealth(DefaultOnToggle):
+    """I feel like this should have been in the vanilla game!"""
+    display_name = "Start Every Level With Full Health"
+
+
+class NeverGameOver(DefaultOnToggle):
+    """No longer forces the game to reset on game over. Instead if you're one
+    hit away with no lives, you're booted back to the map with 5 lives. Highly
+    recommended for Coinsanity!"""
+    display_name = "Never Game Over"
 
 
 class OnScreenItemFeed(Choice):
@@ -527,6 +546,7 @@ class ToyStory2Options(PerGameCommonOptions):
     invincible_enemies_trap_weight:     InvincibleEnemiesTrapWeight
     one_life_filler_weight:             OneLifeFillerWeight
     extra_battery_filler_weight:        ExtraBatteryFillerWeight
+    invincible_buzz_filler_weight:      InvincibleBuzzFillerWeight
     # QOL
     collect_enemy_coins_automatically:  CollectEnemyCoinsAutomatically
     skip_cutscenes:                     SkipCutscenes
@@ -534,6 +554,8 @@ class ToyStory2Options(PerGameCommonOptions):
     on_screen_item_feed:                OnScreenItemFeed
     disable_falling_animation:          DisableFallingAnimation
     auto_save:                          AutoSave
+    start_every_level_with_full_health: StartEveryLevelWithFullHealth
+    never_game_over:                    NeverGameOver
     # Music Randomizer
     music_randomizer_mode:              MusicRandomizerMode
     oops_all_bangers_song:              OopsAllBangersSong
@@ -589,6 +611,7 @@ ts2_option_groups = [
         InvincibleEnemiesTrapWeight,
         OneLifeFillerWeight,
         ExtraBatteryFillerWeight,
+        InvincibleBuzzFillerWeight,
     ]),
     OptionGroup("QOL", [
         CollectEnemyCoinsAutomatically,
@@ -596,6 +619,8 @@ ts2_option_groups = [
         DisableFallingAnimation,
         AutoSave,
         DiscLauncherFillPockets,
+        StartEveryLevelWithFullHealth,
+        NeverGameOver,
         OnScreenItemFeed,
     ]),
     OptionGroup("Music Randomizer", [

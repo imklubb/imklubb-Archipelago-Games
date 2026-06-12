@@ -3,7 +3,7 @@ import random
 import logging
 from typing import ClassVar, Dict, List, Optional, Tuple
 
-from BaseClasses import Item, ItemClassification, MultiWorld, Region, Location, Tutorial, CollectionState
+from BaseClasses import Item, ItemClassification, MultiWorld, Region, Location, Tutorial
 from worlds.AutoWorld import WebWorld, World
 from .options import ToyStory2Options, ts2_option_groups
 from .items import (
@@ -52,15 +52,178 @@ try:
             return TS2Manager
         return make_gui
 
-    def _ts2_launch(*args):
-        """Defer to the stock BizHawk client's public launch entry (identical
-        connect/watcher behaviour), only swapping the window title via make_gui."""
+    def _install_self_send_filter():
+        """Wrap BizHawkClientContext.on_print_json so that items you send to
+        YOURSELF (sender == receiver == you) STILL appear in the client log (the
+        player needs to see what they received), but skip only the redundant
+        in-game (emulator) passthrough line for them. Idempotent: safe to call
+        more than once (won't stack wrappers)."""
+        from worlds._bizhawk.context import BizHawkClientContext
+        from CommonClient import CommonContext
+        if getattr(BizHawkClientContext, "_ts2_selfsend_filter", False):
+            return
+        _orig_on_print_json = BizHawkClientContext.on_print_json
+
+        def on_print_json(self, args):
+            try:
+                if args.get("type", "") == "ItemSend":
+                    receiving = args.get("receiving")
+                    item = args.get("item")
+                    sender = getattr(item, "player", None)
+                    if (receiving is not None and sender is not None
+                            and self.slot_concerns_self(receiving)
+                            and self.slot_concerns_self(sender)):
+                        # Log it to the client (so the player sees the receipt),
+                        # but skip BizHawk's in-game passthrough for self-sends.
+                        CommonContext.on_print_json(self, args)
+                        return
+            except Exception:
+                pass
+            return _orig_on_print_json(self, args)
+
+        BizHawkClientContext.on_print_json = on_print_json
+        BizHawkClientContext._ts2_selfsend_filter = True
+
+    def _install_title_wrap():
+        """Patch BizHawkClientContext.make_gui to set our window title. Idempotent.
+        Needed for the no-Universal-Tracker fallback path (the combined client sets
+        its own title directly)."""
         from worlds._bizhawk.context import BizHawkClientContext
         if (hasattr(BizHawkClientContext, "make_gui")
                 and not getattr(BizHawkClientContext, "_ts2_gui_wrapped", False)):
             BizHawkClientContext.make_gui = _ts2_make_gui_factory(
                 BizHawkClientContext.make_gui)
             BizHawkClientContext._ts2_gui_wrapped = True
+
+    def _ts2_ut_available():
+        """True if Universal Tracker (the `tracker` apworld) is importable."""
+        try:
+            import worlds.tracker.TrackerClient  # noqa: F401
+            return True
+        except Exception:
+            return False
+
+    def _run_ts2_with_tracker(*args):
+        """Run a combined BizHawk + Universal Tracker client so the tracker shows
+        as an embedded "Tracker Page" tab in this window.
+
+        Mirrors worlds._bizhawk.context.launch's inner main(), but builds a
+        context that is BOTH a BizHawkClientContext (real game integration) and a
+        TrackerGameContext (UT logic + tab). A single server connection serves
+        both. The stock game-watcher and patch helpers are reused as-is, so the
+        version-sensitive game-integration internals are not reimplemented here.
+        """
+        import asyncio
+        import Utils
+        from CommonClient import get_base_parser, server_loop, gui_enabled, logger
+        from worlds._bizhawk.context import (
+            BizHawkClientContext, _game_watcher, _patch_and_run_game,
+        )
+        from worlds.tracker.TrackerClient import (
+            TrackerGameContext, TrackerCommandProcessor,
+        )
+
+        # Keep BOTH BizHawk's (/bh, /toggle_text) and UT's (/load_map, ...)
+        # slash-commands by combining their command processors.
+        _CmdProc = type(
+            "ToyStory2TrackerCommandProcessor",
+            (TrackerCommandProcessor, BizHawkClientContext.command_processor),
+            {},
+        )
+
+        class ToyStory2TrackerContext(TrackerGameContext, BizHawkClientContext):
+            """One connection, two jobs: drives the BizHawk game integration and
+            renders UT's in-logic tracker tab at the same time."""
+            command_processor = _CmdProc
+            # Connect as the real game slot, NOT as a read-only tracker: drop the
+            # "Tracker" tag that TrackerGameContext would otherwise add.
+            tags = TrackerGameContext.tags - {"Tracker"}
+
+            def __init__(self, server_address, password):
+                # TrackerGameContext.__init__ chains into BizHawkClientContext's
+                # via super(), so both halves initialise from this one call.
+                super().__init__(server_address, password)
+
+            def on_package(self, cmd, args):
+                # UT's on_package does NOT call super(), so invoke both explicitly:
+                # the game handler first, then the tracker.
+                BizHawkClientContext.on_package(self, cmd, args)
+                TrackerGameContext.on_package(self, cmd, args)
+
+            async def server_auth(self, password_requested: bool = False):
+                # Authenticate using BizHawk's flow (waits for the emulator, takes
+                # auth from the ROM handler, normal game connect).
+                await BizHawkClientContext.server_auth(self, password_requested)
+
+            def make_gui(self):
+                # UT's make_gui wraps the (title-patched) BizHawk manager and adds
+                # the "Tracker Page" tab via build(); re-assert our title on top.
+                manager_cls = TrackerGameContext.make_gui(self)
+
+                class ToyStory2TrackerManager(manager_cls):
+                    base_title = "Archipelago Toy Story 2 Client"
+
+                return ToyStory2TrackerManager
+
+        async def main():
+            parser = get_base_parser()
+            parser.add_argument("patch_file", default="", type=str, nargs="?",
+                                help="Path to an Archipelago patch file")
+            pargs = parser.parse_args(args)
+
+            if pargs.patch_file:
+                metadata = _patch_and_run_game(pargs.patch_file)
+                if "server" in metadata:
+                    pargs.connect = metadata["server"]
+
+            ctx = ToyStory2TrackerContext(pargs.connect, pargs.password)
+            ctx.server_task = asyncio.create_task(server_loop(ctx), name="ServerLoop")
+
+            # Build the tracker's simulated world from the player's yaml. A failure
+            # here (e.g. no matching yaml in Players/) must NOT take down the game
+            # client, so the tab just stays empty.
+            try:
+                ctx.run_generator()
+            except Exception as exc:
+                logger.exception(exc)
+                logger.error("[TS2] Universal Tracker generation failed; the game "
+                             "client still works but the Tracker tab may be empty.")
+
+            if gui_enabled:
+                ctx.run_gui()
+            ctx.run_cli()
+
+            watcher_task = asyncio.create_task(_game_watcher(ctx), name="GameWatcher")
+            try:
+                await watcher_task
+            except Exception as exc:
+                logger.exception(exc)
+
+            await ctx.exit_event.wait()
+            await ctx.shutdown()
+
+        Utils.init_logging("ToyStory2Client", exception_logger="Client")
+        import colorama
+        colorama.just_fix_windows_console()
+        asyncio.run(main())
+        colorama.deinit()
+
+    def _ts2_launch(*args):
+        """Launch the Toy Story 2 client. If Universal Tracker is installed, run a
+        combined client with an embedded "Tracker Page" tab; otherwise defer to the
+        stock BizHawk client. Either way, apply our window title and the self->self
+        "Sent" filter."""
+        import logging
+        _install_self_send_filter()
+        _install_title_wrap()
+        if _ts2_ut_available():
+            try:
+                _run_ts2_with_tracker(*args)
+                return
+            except Exception:
+                logging.getLogger("Client").exception(
+                    "[TS2] Universal Tracker integration failed to start; falling "
+                    "back to the standard BizHawk client.")
         from worlds._bizhawk.context import launch as bizhawk_launch
         bizhawk_launch(*args)
 
@@ -288,6 +451,7 @@ class ToyStory2World(World):
         weights = {
             "1 Life":        self.options.one_life_filler_weight.value,
             "Extra Battery": self.options.extra_battery_filler_weight.value,
+            "Invincible Buzz": self.options.invincible_buzz_filler_weight.value,
         }
         for name, weight in weights.items():
             filler.extend([name] * TRAP_WEIGHT_VALUES[weight])
@@ -307,6 +471,26 @@ class ToyStory2World(World):
 
     def generate_early(self) -> None:
         options = self.options
+
+        # Universal Tracker: during its logic re-generation, re_gen_passthrough
+        # carries the real seed's slot_data. Restore the options that drive logic
+        # so the tracker matches the actual game even if the player's yaml has
+        # since changed (skips re-tiers every Easy/Hard check, game_mode and the
+        # gates change level access).
+        _passthrough = getattr(self.multiworld, "re_gen_passthrough", None)
+        _ut_sd = _passthrough.get("Toy Story 2") if isinstance(_passthrough, dict) else None
+        if isinstance(_ut_sd, dict):
+            for _opt in ("game_mode", "skips", "goal_conditions",
+                         "final_showdown_token_gate", "defeated_bosses_required",
+                         "linear_final_showdown_token_gate",
+                         "bombs_away_token_gate", "slime_time_token_gate",
+                         "toy_barn_encounter_token_gate", "evil_emperor_zurg_token_gate",
+                         "coinsanity_checks_bundle_size"):
+                if _opt in _ut_sd:
+                    try:
+                        getattr(options, _opt).value = _ut_sd[_opt]
+                    except Exception:
+                        pass
 
         # In open mode, validate starting levels vs pool size
         if self._is_open_mode():
@@ -414,100 +598,17 @@ class ToyStory2World(World):
 
     # ── CREATE ITEMS ──────────────────────────────────────────
 
-    def pre_fill(self) -> None:
-        # MOVESANITY BOOTSTRAP CHECK (see create_items "MOVES"): with Movesanity on,
-        # the player starts with no moves, and almost every check needs Double Jump
-        # plus another move. The first moves can only be SEEDED into locations that
-        # are reachable with no moves -- and those are NOT limited to the starting
-        # level: placing a LEVEL UNLOCK in an early no-move spot opens another whole
-        # level (and ITS no-move checks), which is how the real fill cascades moves
-        # out even when the single starting level is sparse. We replay that best-case
-        # cascade here (unlocks first, then moves). If even this optimistic ordering
-        # can't get the basic moves placed, NO fill can, so we stop with a clear
-        # message; otherwise we let the real fill run. This only rules out genuinely
-        # impossible configs -- it never blocks one that could have generated.
-        mode = self.options.movesanity.value
-        if mode not in (1, 3):
-            return  # other modes pre-collect the basic moves; no bootstrap risk
-        pool_moves = MOVE_ITEMS if mode == 1 else TRAVERSAL_MOVE_ITEMS
-        basic = {m for m in ("Double Jump", "Ledge Grab", "Pole Climb") if m in pool_moves}
-        if not basic:
-            return
-        player = self.player
-        locations = self.multiworld.get_locations(player)
-        # Placement order: level unlocks first (each opens a level full of no-move
-        # checks), then the basic moves, then the rest of the progression.
-        pool = [it for it in self.multiworld.itempool if it.player == player]
-        unlocks     = [it for it in pool if it.name in LEVEL_UNLOCK_ITEMS]
-        basic_items = [it for it in pool if it.name in basic]
-        other_prog  = [it for it in pool
-                       if it.advancement and it.name not in basic
-                       and it.name not in LEVEL_UNLOCK_ITEMS]
-        order = unlocks + basic_items + other_prog
-        # Greedy forward cascade: each pass, place as many of the next items as there
-        # are NEW reachable empty locations, collecting them so they open the next
-        # sphere. Stop as soon as all the basic moves have been seeded.
-        state = CollectionState(self.multiworld)
-        placed = 0
-        idx = 0
-        seeded = set()
-        while idx < len(order) and seeded != basic:
-            reachable_empty = sum(
-                1 for loc in locations
-                if loc.item is None and loc.can_reach(state)
-            )
-            free = reachable_empty - placed
-            if free <= 0:
-                break
-            for _ in range(free):
-                if idx >= len(order) or seeded == basic:
-                    break
-                it = order[idx]
-                idx += 1
-                state.collect(self._make_item(it.name, ItemClassification.progression),
-                              prevent_sweep=True)
-                placed += 1
-                if it.name in basic:
-                    seeded.add(it.name)
-        missing = basic - seeded
-        if missing:
-            from Options import OptionError
-            raise OptionError(
-                f"[Toy Story 2] Player {player} "
-                f"('{self.multiworld.get_player_name(player)}'): Movesanity is on, so "
-                f"the basic traversal moves (Double Jump / Ledge Grab / Pole Climb) are "
-                f"shuffled into the pool and you start with NO moves -- but your current "
-                f"settings leave too few no-move-reachable locations (even after opening "
-                f"levels) to place {', '.join(sorted(missing))}, so the seed can't be "
-                f"filled. Fix it by enabling more sanities (lifesanity, batterysanity, "
-                f"green_laser_sanity, rexsanity, hint_block_sanity, coinsanity), raising "
-                f"starting_levels, or choosing a 'lite' movesanity option so the basic "
-                f"moves aren't randomized."
-            )
-
     def create_items(self) -> None:
         options = self.options
         items_to_add: List[ToyStory2Item] = []
 
         # ── MOVES ─────────────────────────────────────────────
         movesanity = options.movesanity.value
-        # MOVESANITY = every move is a check. When Movesanity is enabled (full = 1
-        # or lite_traversal = 3) the player starts with NO moves -- including the
-        # fundamental traversal moves (Double Jump / Ledge Grab / Pole Climb) -- and
-        # finds them all as items, which is the whole point of the option. We do NOT
-        # pre-collect anything here. Because almost every check needs those moves,
-        # this can make generation impossible on sparse settings (few sanities + a
-        # single starting level): there aren't enough no-move-accessible locations to
-        # seed the first moves, so the fill deadlocks. Rather than silently hand the
-        # player free moves (which would defeat Movesanity), pre_fill() detects that
-        # case and fails generation with a message telling them how to fix their YAML.
-        # lite_weapons (2) and no-movesanity (0) still pre-collect traversal moves
-        # below, so they are never at risk.
         if movesanity == 0:
-            # No movesanity -- all moves pre-collected (handled below)
+            # No movesanity — all moves pre-collected (handled via start_inventory)
             pass
         elif movesanity == 1:
-            # Full movesanity -- ALL moves go in the pool, nothing pre-collected.
+            # Full movesanity — all moves in pool
             for move in MOVE_ITEMS:
                 if move == "Progressive Laser":
                     for _ in range(3):
@@ -523,7 +624,7 @@ class ToyStory2World(World):
                 else:
                     items_to_add.append(self._make_item(move))
         elif movesanity == 3:
-            # LITE Traversal -- ALL traversal moves go in the pool, nothing pre-collected.
+            # LITE Traversal
             for move in TRAVERSAL_MOVE_ITEMS:
                 items_to_add.append(self._make_item(move))
 
@@ -667,56 +768,22 @@ class ToyStory2World(World):
             )
         token_count_requested = max(token_count_requested, required_tokens)
 
-        # CAP-AND-DEGRADE: if the gates demand more tokens than there are check
-        # locations to hold them (e.g. default options with no sanities, where only
-        # ~34 locations exist but the default gate is 50), do NOT fail generation —
-        # cap the gate(s) down to what actually fits so the seed still generates and
-        # stays winnable. We adjust the option value(s) in place so set_rules (which
-        # reads them when building the goal/area access rules) and slot_data both use
-        # the capped gate. Players who enable more sanities have enough locations that
-        # no capping happens and their chosen gates are left untouched.
-        # The cap must leave the FILL real headroom, not just one spare slot.
-        # Pizza Planet Tokens needed for the gate are PROGRESSION, and so is most
-        # of the rest of the pool (level unlocks, moves, gadgets, missing parts,
-        # toys, coin bundles). fill_restrictive has to place EVERY progression
-        # item in a REACHABLE location; if progression fills almost every slot it
-        # paints itself into a corner and dies with a FillError (e.g. an extreme
-        # open-mode gate of 90+ leaving a single spare slot, which strands the
-        # level-unlock items). So we cap the progression-token count to leave a
-        # slab of non-progression slack -- filler plus 'useful' surplus tokens --
-        # for the fill to maneuver in. The slack is a fraction of the total
-        # locations; the surplus tokens above the (capped) gate become 'useful'
-        # in the placement step below, so the player still gets their big pool.
-        # This only bites when a gate is extreme relative to the available
-        # locations; ordinary configs (enough sanities for their gate) never cap.
-        prog_other = sum(1 for it in items_to_add if it.advancement)
-        desired_slack = max(8, int(loc_count * 0.20))
-        max_placeable = max(0, loc_count - desired_slack - prog_other)
-        if required_tokens > max_placeable:
-            if self._is_open_mode():
-                if options.final_showdown_token_gate.value > max_placeable:
-                    options.final_showdown_token_gate.value = max_placeable
-            else:
-                for _gate in (options.bombs_away_token_gate,
-                              options.slime_time_token_gate,
-                              options.toy_barn_encounter_token_gate,
-                              options.evil_emperor_zurg_token_gate,
-                              options.linear_final_showdown_token_gate):
-                    if _gate.value > max_placeable:
-                        _gate.value = max_placeable
-            logging.warning(
+        # If the gates REQUIRE more tokens than can possibly fit (leaving room for
+        # at least one filler item), the seed would be unwinnable — the player
+        # could never reach the token gate. Fail generation with a clear, helpful
+        # message instead of silently producing a stuck seed. This is the
+        # "linear + few/no sanities + default gates" trap: too few check locations
+        # to hold the tokens the gates demand.
+        if required_tokens > free_slots - 1:
+            raise Exception(
                 f"[Toy Story 2] Player {self.player} "
-                f"('{self.multiworld.get_player_name(self.player)}'): token gates "
-                f"required {required_tokens} Pizza Planet Tokens but only "
-                f"{max_placeable} fit while leaving the fill enough room to place "
-                f"the other progression; capped the gate(s) to {max_placeable} so "
-                f"the seed stays winnable. Enable more sanities "
-                f"(coinsanity/lifesanity/batterysanity/etc.) to support higher gates."
+                f"('{self.multiworld.get_player_name(self.player)}'): the "
+                f"selected token gates require {required_tokens} Pizza Planet "
+                f"Tokens, but only {max(0, free_slots - 1)} check location(s) are "
+                f"available to hold them (need 1 spare for filler). Enable more "
+                f"sanities (coinsanity/lifesanity/batterysanity/etc.) to add check "
+                f"locations, lower your token gates, or both."
             )
-            required_tokens = max_placeable
-            # NOTE: do NOT shrink token_count_requested here -- the surplus above
-            # the capped gate is placed as 'useful' tokens (relieving the fill),
-            # so the player keeps the large pool they asked for.
 
         # Place as many Pizza Planet Tokens as requested, but never more than the
         # free slots remaining (so high token requests with few-location settings
@@ -728,22 +795,8 @@ class ToyStory2World(World):
                 f"{token_count_requested} Pizza Planet Tokens but only "
                 f"{token_count} fit the available locations; capped to fit."
             )
-        # Only the tokens actually NEEDED to satisfy the active gate(s) must be
-        # progression (fill has to place those reachably so the goal/areas stay
-        # winnable). Any EXTRA tokens the player requested beyond that count are
-        # logically inert, so mark them 'useful' instead of 'progression'. This
-        # keeps the surplus OUT of the progression fill, which otherwise has to
-        # place EVERY token reachably -- a large token pool in a saturated world
-        # (e.g. open mode with ~14 level-unlock items plus moves/gadgets) can
-        # exhaust the reachable spots and crash with a FillError. required_tokens
-        # is the gate count (0 if the goal doesn't use tokens), so prog_tokens is
-        # exactly what logic needs and the rest become useful.
-        prog_tokens = min(token_count, required_tokens)
-        for _ in range(prog_tokens):
+        for _ in range(token_count):
             items_to_add.append(self._make_item("Pizza Planet Token"))
-        for _ in range(token_count - prog_tokens):
-            items_to_add.append(self._make_item("Pizza Planet Token",
-                                                ItemClassification.useful))
 
         # Fill any remaining slots with filler/traps.
         item_count = len(items_to_add)
@@ -810,6 +863,8 @@ class ToyStory2World(World):
             "on_screen_item_feed":              options.on_screen_item_feed.value,
             "disable_falling_animation":        options.disable_falling_animation.value,
             "auto_save":                        options.auto_save.value,
+            "start_every_level_with_full_health": options.start_every_level_with_full_health.value,
+            "never_game_over":                  options.never_game_over.value,
             # Music
             "music_randomizer_mode":            options.music_randomizer_mode.value,
             "oops_all_bangers_song":            options.oops_all_bangers_song.value,

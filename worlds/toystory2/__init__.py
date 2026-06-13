@@ -5,6 +5,7 @@ from typing import ClassVar, Dict, List, Optional, Tuple
 
 from BaseClasses import Item, ItemClassification, MultiWorld, Region, Location, Tutorial
 from worlds.AutoWorld import WebWorld, World
+from Options import OptionError
 from .options import ToyStory2Options, ts2_option_groups
 from .items import (
     ITEM_TABLE, ToyStory2Item, BASE_ID,
@@ -757,7 +758,7 @@ class ToyStory2World(World):
                         f"locations) and/or the received bundle size larger (fewer "
                         f"items), or enable more sanities to add locations."
                     )
-            raise Exception(
+            raise OptionError(
                 f"[Toy Story 2] Player {self.player} "
                 f"('{self.multiworld.get_player_name(self.player)}'): the selected "
                 f"settings require {item_count} item(s) but only {loc_count} check "
@@ -793,7 +794,7 @@ class ToyStory2World(World):
         # "linear + few/no sanities + default gates" trap: too few check locations
         # to hold the tokens the gates demand.
         if required_tokens > free_slots - 1:
-            raise Exception(
+            raise OptionError(
                 f"[Toy Story 2] Player {self.player} "
                 f"('{self.multiworld.get_player_name(self.player)}'): the "
                 f"selected token gates require {required_tokens} Pizza Planet "
@@ -813,8 +814,18 @@ class ToyStory2World(World):
                 f"{token_count_requested} Pizza Planet Tokens but only "
                 f"{token_count} fit the available locations; capped to fit."
             )
-        for _ in range(token_count):
-            items_to_add.append(self._make_item("Pizza Planet Token"))
+        # Only the tokens the goal/gates actually REQUIRE need to be
+        # progression (reachable-placed). Marking the surplus as `useful`
+        # keeps them out of the restrictive progression fill, so movement
+        # unlocks (Double Jump, Ledge Grab, lasers, etc.) aren't crowded out
+        # of the few early locations and stranded — which otherwise causes a
+        # FillError under aggressive token pools + movesanity. This mirrors
+        # the coin-bundle progression-vs-useful split above.
+        prog_tokens = min(required_tokens, token_count)
+        for i in range(token_count):
+            cls = (ItemClassification.progression if i < prog_tokens
+                   else ItemClassification.useful)
+            items_to_add.append(self._make_item("Pizza Planet Token", cls))
 
         # Fill any remaining slots with filler/traps.
         item_count = len(items_to_add)

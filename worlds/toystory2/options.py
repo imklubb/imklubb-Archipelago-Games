@@ -107,7 +107,7 @@ class FinalShowdownTokenGate(Range):
     display_name = "Final Showdown Token Gate"
     range_start = 10
     range_end = 99
-    default = 50
+    default = 20
 
 
 class DefeatedBossesRequired(Range):
@@ -138,7 +138,7 @@ class BombsAwayTokenGate(Range):
     display_name = "Bombs Away! Token Gate"
     range_start = 1
     range_end = 20
-    default = 10
+    default = 1
 
 
 class SlimeTimeTokenGate(Range):
@@ -155,7 +155,7 @@ class SlimeTimeTokenGate(Range):
     display_name = "Slime Time Token Gate"
     range_start = 5
     range_end = 40
-    default = 20
+    default = 5
 
 
 class ToyBarnEncounterTokenGate(Range):
@@ -173,7 +173,7 @@ class ToyBarnEncounterTokenGate(Range):
     display_name = "Toy Barn Encounter Token Gate"
     range_start = 10
     range_end = 60
-    default = 30
+    default = 10
 
 
 class EvilEmperorZurgTokenGate(Range):
@@ -191,7 +191,7 @@ class EvilEmperorZurgTokenGate(Range):
     display_name = "The Evil Emperor Zurg Token Gate"
     range_start = 15
     range_end = 80
-    default = 40
+    default = 15
 
 
 class LinearFinalShowdownTokenGate(Range):
@@ -208,7 +208,7 @@ class LinearFinalShowdownTokenGate(Range):
     display_name = "Final Showdown Token Gate"
     range_start = 20
     range_end = 99
-    default = 50
+    default = 20
 
 
 # ============================================================

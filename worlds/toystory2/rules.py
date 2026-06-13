@@ -699,9 +699,24 @@ def _andys_house_coins_58_67(state: CollectionState, player: int, skips: int) ->
 def _andys_house_coin_68(state: CollectionState, player: int, skips: int) -> bool:
     return _andys_garage_rule(state, player, skips, ["Double Jump", "Ledge Grab", "Pole Climb", "Pole Vault"])
 
+def _andys_house_coins_36_37(state: CollectionState, player: int, skips: int) -> bool:
+    # Base: DJ + LG + Push + Pole Climb + Rope Sliding + Visor
+    # Easy: Double Jump OR (Ledge Grab + Pole Climb + Push)   (shared into Hard)
+    if has_all_moves(state, player,
+                     ["Double Jump", "Ledge Grab", "Push", "Pole Climb", "Rope Sliding", "Visor"]):
+        return True
+    if skips in (SKIPS_EASY, SKIPS_HARD) and (
+        has_double_jump(state, player) or
+        has_all_moves(state, player, ["Ledge Grab", "Pole Climb", "Push"])
+    ):
+        return True
+    return False
+
 def _get_coin_override(level: str, idx: int):
     overrides = {
         ("Andy's House", 49): _andys_house_coin_50,
+        ("Andy's House", 35): _andys_house_coins_36_37,
+        ("Andy's House", 36): _andys_house_coins_36_37,
         ("Andy's House", 57): _andys_house_coins_58_67,
         ("Andy's House", 58): _andys_house_coins_58_67,
         ("Andy's House", 59): _andys_house_coins_58_67,
@@ -1135,7 +1150,10 @@ def set_rules(world: "ToyStory2World") -> None:
     rule("Andy's House - Life (Crib)",
          lambda state: (
              has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Push", "Pole Climb", "Rope Sliding", "Visor"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player))
+             (skips in (SKIPS_EASY, SKIPS_HARD) and (
+                 has_double_jump(state, player) or
+                 has_all_moves(state, player, ["Ledge Grab", "Pole Climb", "Push"])
+             ))
          ))
 
     rule("Andy's House - Life (Living Room)",
@@ -1533,10 +1551,7 @@ def set_rules(world: "ToyStory2World") -> None:
     # Missing Toys Token - no requirements beyond toys
 
     rule("Al's Toy Barn - Race Token",
-         lambda state: (
-             has_all_moves(state, player, ["Pole Vault", "Rope Sliding"]) and
-             has_any_move(state, player, ["Double Jump", "Ledge Grab"])
-         ))
+         lambda state: has_all_moves(state, player, ["Pole Vault", "Rope Sliding", "Double Jump"]))
 
     rule("Al's Toy Barn - Hidden Token",
          lambda state: (
@@ -1546,24 +1561,22 @@ def set_rules(world: "ToyStory2World") -> None:
 
     rule("Al's Toy Barn - Boss Token",
          lambda state: (
-             (has_all_moves(state, player, ['Double Jump', 'Pole Climb']) and
-              (has_any_move(state, player, ['Laser', 'Spin', 'Stomp']) or has_disc_launcher_toybarn(state, player)) and
-              (has_ledge_grab(state, player) or has_hover_boots_toybarn(state, player))) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_all_moves(state, player, ['Double Jump', 'Ledge Grab']) and
+             ((has_double_jump(state, player) or has_hover_boots_toybarn(state, player)) and
+              has_all_moves(state, player, ['Pole Climb', 'Ledge Grab']) and
+              (has_any_move(state, player, ['Laser', 'Spin', 'Stomp']) or has_disc_launcher_toybarn(state, player))) or
+             (skips in (SKIPS_EASY, SKIPS_HARD) and
+              (has_all_moves(state, player, ['Double Jump', 'Ledge Grab']) or has_hover_boots_toybarn(state, player)) and
               (has_any_move(state, player, ['Laser', 'Spin', 'Stomp']) or has_disc_launcher_toybarn(state, player)))
          ))
 
     rule("Al's Toy Barn - Chick (Complete Race)",
-         lambda state: (
-             has_all_moves(state, player, ["Pole Vault", "Rope Sliding"]) and
-             has_any_move(state, player, ["Double Jump", "Ledge Grab"])
-         ))
+         lambda state: has_all_moves(state, player, ["Pole Vault", "Rope Sliding", "Double Jump"]))
 
     rule("Al's Toy Barn - Chick (Gumball Machines)",
          lambda state: (
              (has_all_moves(state, player, ['Double Jump', 'Stomp', 'Pole Vault']) and has_all_gadgets(state, player, ['Rocket Boots'], "Al's Toy Barn")) or
              (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player) and
-              (has_all_gadgets(state, player, ['Rocket Boots'], "Al's Toy Barn") or has_all_moves(state, player, ['Ledge Grab'])))
+              (has_all_gadgets(state, player, ['Rocket Boots'], "Al's Toy Barn") or has_all_moves(state, player, ['Ledge Grab', 'Stomp'])))
          ))
 
     rule("Al's Toy Barn - Chick (Shipping Boxes)",
@@ -1587,8 +1600,11 @@ def set_rules(world: "ToyStory2World") -> None:
          lambda state: (
              has_all_moves(state, player,
                             ["Double Jump", "Ledge Grab", "Rope Sliding", "Pole Vault"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab"])) or
+             (skips in (SKIPS_EASY, SKIPS_HARD) and (
+                 has_all_moves(state, player, ["Double Jump", "Ledge Grab"]) or
+                 (has_double_jump(state, player) and has_all_gadgets(state, player, ["Rocket Boots"], "Al's Toy Barn")) or
+                 has_all_moves(state, player, ["Double Jump", "Pole Vault", "Rope Sliding"])
+             )) or
              (skips == SKIPS_HARD and has_double_jump(state, player))
          ))
 
@@ -1623,17 +1639,22 @@ def set_rules(world: "ToyStory2World") -> None:
 
     rule("Al's Toy Barn - Battery (Cardboard Boxes)",
          lambda state: (
-             has_all_moves(state, player, ['Double Jump']) and has_any_move(state, player, ['Ledge Grab']) and has_any_gadget(state, player, ['Hover Boots'], "Al's Toy Barn")
+             has_all_moves(state, player, ['Double Jump', 'Ledge Grab']) or
+             has_any_gadget(state, player, ['Hover Boots'], "Al's Toy Barn")
          ))
 
     rule("Al's Toy Barn - Battery (Boss Arena)",
          lambda state: (
-             has_all_moves(state, player, ['Double Jump', 'Pole Climb']) and has_any_move(state, player, ['Ledge Grab']) and has_any_gadget(state, player, ['Hover Boots'], "Al's Toy Barn")
+             ((has_double_jump(state, player) or has_hover_boots_toybarn(state, player)) and
+              has_all_moves(state, player, ['Pole Climb', 'Ledge Grab'])) or
+             (skips in (SKIPS_EASY, SKIPS_HARD) and
+              (has_all_moves(state, player, ['Double Jump', 'Ledge Grab']) or has_hover_boots_toybarn(state, player)))
          ))
 
     rule("Al's Toy Barn - Talk to Rex",
          lambda state: (
-             has_all_moves(state, player, ['Double Jump']) and has_any_move(state, player, ['Ledge Grab']) and has_any_gadget(state, player, ['Hover Boots'], "Al's Toy Barn")
+             has_all_moves(state, player, ['Double Jump', 'Ledge Grab']) or
+             has_any_gadget(state, player, ['Hover Boots'], "Al's Toy Barn")
          ))
 
     # ── AL'S SPACE LAND ───────────────────────────────────────
@@ -1902,8 +1923,11 @@ def set_rules(world: "ToyStory2World") -> None:
     # Battery (Kitchen) - no requirements
 
     rule("Al's Penthouse - Battery (Train Bed)",
-         lambda state: has_all_moves(state, player,
-                                      ["Push", "Double Jump", "Ledge Grab", "Stomp"]))
+         lambda state: (
+             has_all_moves(state, player, ["Push", "Double Jump", "Ledge Grab", "Stomp"]) or
+             (skips in (SKIPS_EASY, SKIPS_HARD) and
+              has_all_moves(state, player, ["Push", "Double Jump", "Ledge Grab"]))
+         ))
 
     rule("Al's Penthouse - Battery (Television)",
          lambda state: has_all_moves(state, player, ["Push", "Double Jump", "Ledge Grab"]))
@@ -2165,7 +2189,8 @@ def set_rules(world: "ToyStory2World") -> None:
     rule("Andy's House - Hint Block (Andy's Room Bookshelf)",
          lambda state: (
              has_all_moves(state, player, ["Double Jump", "Ledge Grab"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player))
+             (skips in (SKIPS_EASY, SKIPS_HARD) and
+              has_any_move(state, player, ["Double Jump", "Ledge Grab"]))
          ))
     rule("Andy's House - Hint Block (Andy's Room Bed)",
          lambda state: (
@@ -2181,7 +2206,10 @@ def set_rules(world: "ToyStory2World") -> None:
     rule("Andy's House - Hint Block (Andy's Room Crib)",
          lambda state: (
              has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Push", "Pole Climb", "Rope Sliding"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player))
+             (skips in (SKIPS_EASY, SKIPS_HARD) and (
+                 has_double_jump(state, player) or
+                 has_all_moves(state, player, ["Ledge Grab", "Pole Climb", "Push"])
+             ))
          ))
     # Top of Stairs - No requirements
     rule("Andy's House - Hint Block (Attic)",
@@ -2192,7 +2220,7 @@ def set_rules(world: "ToyStory2World") -> None:
                                           ["Double Jump", "Ledge Grab", "Pole Climb"]))
     rule("Andy's House - Hint Block (Living Room Recliner)",
          lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]) or
+             has_any_move(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]) or
              (skips in (SKIPS_EASY, SKIPS_HARD))  # Easy branch: No requirements
          ))
 

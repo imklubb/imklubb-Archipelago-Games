@@ -678,12 +678,24 @@ class ToyStory2World(World):
                     items_to_add.append(self._make_item(level_unlock))
 
         # ── COIN BUNDLES (items: count uses the received bundle size) ──
+        # Only the bundles needed for Hamm's 50-coin token are progression; the
+        # rest (coins past 50) are useful. This mirrors hamms_50_coins_rule
+        # (needs ceil(50/recv) bundles, and no Hamm if the level has < 50 coins)
+        # and eases generation by shrinking the progression pool.
         if self._is_coinsanity():
+            recv_size = options.coinsanity_received_bundle_size.value or 5
             for level_name in COIN_LEVELS:
                 num_bundles = self._num_received_bundles(level_name)
+                total_coins = len(COIN_DATA.get(level_name, []))
                 bundle_item_name = f"Coin Bundle - {level_name}"
-                for _ in range(num_bundles):
-                    items_to_add.append(self._make_item(bundle_item_name))
+                if total_coins >= 50:
+                    prog_count = min(math.ceil(50 / recv_size), num_bundles)
+                else:
+                    prog_count = 0
+                for i in range(num_bundles):
+                    cls = (ItemClassification.progression if i < prog_count
+                           else ItemClassification.useful)
+                    items_to_add.append(self._make_item(bundle_item_name, cls))
 
         # ── PRE-COLLECT MOVES IF NO MOVESANITY ───────────────
         if movesanity == 0:

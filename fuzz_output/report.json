@@ -1,1 +1,0 @@
-{"stats": {"total": 100, "success": 61, "failure": 0, "timeout": 3, "ignored": 36}, "errors": {"toystory2": {"<class 'TimeoutError'>": [3, 66, 77]}}}

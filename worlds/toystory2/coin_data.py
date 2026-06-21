@@ -1,1702 +1,897 @@
-# coin_data.py
-# Per-coin logic data for all 10 coin levels.
-# Each entry is a tuple:
-#   (moves_and, moves_or, gadgets_and, gadgets_or,
-#    glitch_tier, g_moves_and, g_moves_or, g_gadgets_and, g_gadgets_or)
-# glitch_tier: None | "Easy" | "Hard" | "Easy, Hard"
+"""coin_data.py - canonical per-coin data for all 10 coin levels.
+AUTO-GENERATED from the Logic CSVs. Do not hand-edit; regenerate instead.
+Captures ALL FOUR note columns; the compiler decides how to interpret them.
+Fields: idx, name, group, addr, kind, area,
+  moves_and, moves_or, gadgets_and, gadgets_or, move_note, gadget_note,
+  glitch_tier, g_moves_and, g_moves_or, g_gadgets_and, g_gadgets_or, g_move_note, g_gadget_note
+move_note  = col "Notes for Moves";  gadget_note = col "Notes for Gadgets"
+g_move_note= glitch "Notes for Moves"; g_gadget_note = glitch "Notes for Gadgets"
+(glitch notes may be tier-specific, e.g. "Easy=...\\nHard=...")
+"""
+from typing import Dict, List, NamedTuple, Tuple
 
-from typing import List, Optional, Tuple
+class Coin(NamedTuple):
+    idx: int
+    name: str
+    group: str
+    addr: int
+    kind: str
+    area: str
+    moves_and: Tuple[str, ...]
+    moves_or: Tuple[str, ...]
+    gadgets_and: Tuple[str, ...]
+    gadgets_or: Tuple[str, ...]
+    move_note: str
+    gadget_note: str
+    glitch_tier: Tuple[str, ...]
+    g_moves_and: Tuple[str, ...]
+    g_moves_or: Tuple[str, ...]
+    g_gadgets_and: Tuple[str, ...]
+    g_gadgets_or: Tuple[str, ...]
+    g_move_note: str
+    g_gadget_note: str
 
-CoinEntry = Tuple[
-    List[str], List[str], List[str], List[str],
-    Optional[str],
-    List[str], List[str], List[str], List[str]
+ANDYS_HOUSE_COINS: List[Coin] = [
+    Coin(1, "Andy's House - Coin - Andy's Room - On Chair", "Andy's Room", 0x0C7528, 'regular', "Andy's Room", (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(2, "Andy's House - Coin - Hallway - Plant #1", "Andy's Room", 0x0C7778, 'regular', 'Hallway', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(3, "Andy's House - Coin - Garage - Box near Faucet", 'Garage', 0x0C7478, 'regular', 'Garage', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(4, "Andy's House - Coin - Kitchen - Floor near Stove #1", 'Kitchen', 0x0C7718, 'regular', 'Kitchen', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(5, "Andy's House - Coin - Kitchen - Floor near Stove #2", 'Kitchen', 0x0C7728, 'regular', 'Kitchen', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(6, "Andy's House - Coin - Kitchen - Floor Puddle #2", 'Kitchen', 0x0C76F8, 'regular', 'Kitchen', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(7, "Andy's House - Coin - Kitchen - Floor Puddle #1", 'Kitchen', 0x0C7708, 'regular', 'Kitchen', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(8, "Andy's House - Coin - Basement - Stairs #1", 'Basement', 0x0C76E8, 'regular', 'Basement', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(9, "Andy's House - Coin - Basement - Stairs #2", 'Basement', 0x0C76D8, 'regular', 'Basement', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(10, "Andy's House - Coin - Basement - Stairs #3", 'Basement', 0x0C76C8, 'regular', 'Basement', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(11, "Andy's House - Coin - Basement - Floor Goop #1", 'Basement', 0x0C7888, 'regular', 'Basement', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(12, "Andy's House - Coin - Basement - Floor Goop #2", 'Basement', 0x0C7898, 'regular', 'Basement', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(13, "Andy's House - Coin - Basement - Floor Goop #3", 'Basement', 0x0C78A8, 'regular', 'Basement', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(14, "Andy's House - Coin - Basement - Floor Goop #4", 'Basement', 0x0C78B8, 'regular', 'Basement', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(15, "Andy's House - Coin - Basement - Floor Goop #5", 'Basement', 0x0C78C8, 'regular', 'Basement', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(16, "Andy's House - Coin - Living Room - Reclining Chair", 'Living Room', 0x0C7608, 'regular', 'Living Room', (), ('Double Jump', 'Ledge Grab'), (), (), 'Any 1 of OR', '', ('Easy',), (), (), (), (), 'No requirements', ''),
+    Coin(17, "Andy's House - Coin - Living Room - Green Couch #1", 'Living Room', 0x0C75F8, 'regular', 'Living Room', (), ('Double Jump', 'Ledge Grab'), (), (), 'Any 1 of OR', '', ('Easy',), (), (), (), (), 'No requirements', ''),
+    Coin(18, "Andy's House - Coin - Living Room - Green Couch #2", 'Living Room', 0x0C75E8, 'regular', 'Living Room', (), ('Double Jump', 'Ledge Grab'), (), (), 'Any 1 of OR', '', ('Easy',), (), (), (), (), 'No requirements', ''),
+    Coin(19, "Andy's House - Coin - Living Room - Green Couch #3", 'Living Room', 0x0C75D8, 'regular', 'Living Room', (), ('Double Jump', 'Ledge Grab'), (), (), 'Any 1 of OR', '', ('Easy',), (), (), (), (), 'No requirements', ''),
+    Coin(20, "Andy's House - Coin - Garage - Between Saws", 'Garage', 0x0C7488, 'regular', 'Garage', ('Ledge Grab', 'Double Jump'), (), (), (), '', '', ('Easy',), (), (), (), (), 'No requirements', ''),
+    Coin(21, "Andy's House - Coin - Andy's Room - Propeller Zurg Robot", "Andy's Room", 0x0C3FBA, 'enemy', "Andy's Room", (), ('Spin', 'Laser'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(22, "Andy's House - Coin - Living Room - Propeller Zurg Robot #1", 'Living Room', 0x0C3DF2, 'enemy', 'Living Room', (), ('Spin', 'Laser'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(23, "Andy's House - Coin - Living Room - Propeller Zurg Robot #2", 'Living Room', 0x0C3D5A, 'enemy', 'Living Room', (), ('Spin', 'Laser'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(24, "Andy's House - Coin - Garage - Propeller Zurg Robot #1", 'Garage', 0x0C421A, 'enemy', 'Garage', (), ('Spin', 'Laser'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(25, "Andy's House - Coin - Basement - Propeller Zurg Robot", 'Basement', 0x0C3A62, 'enemy', 'Basement', (), ('Spin', 'Laser'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(26, "Andy's House - Coin - Andy's Room - Bouncing Zurg Robot", "Andy's Room", 0x0C3F22, 'enemy', "Andy's Room", (), ('Stomp', 'Spin', 'Laser'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(27, "Andy's House - Coin - Top of Stairs - Bouncing Zurg Robot #1", "Andy's Room", 0x0C3E8A, 'enemy', 'Top of Stairs', (), ('Stomp', 'Spin', 'Laser'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(28, "Andy's House - Coin - Kitchen - Bouncing Zurg Robot #1", 'Kitchen', 0x0C363A, 'enemy', 'Kitchen', (), ('Stomp', 'Spin', 'Laser'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(29, "Andy's House - Coin - Basement - Bouncing Zurg Robot #1", 'Basement', 0x0C39CA, 'enemy', 'Basement', (), ('Stomp', 'Spin', 'Laser'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(30, "Andy's House - Coin - Garage - Bouncing Zurg Robot #1", 'Garage', 0x0C42B2, 'enemy', 'Garage', (), ('Stomp', 'Spin', 'Laser'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(31, "Andy's House - Coin - Garage - Bouncing Zurg Robot #2", 'Garage', 0x0C434A, 'enemy', 'Garage', (), ('Stomp', 'Spin', 'Laser'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(32, "Andy's House - Coin - Garage - Bouncing Zurg Robot #3", 'Garage', 0x0C376A, 'enemy', 'Garage', (), ('Stomp', 'Spin', 'Laser'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(33, "Andy's House - Coin - Andy's Room - Desk", "Andy's Room", 0x0C7538, 'regular', "Andy's Room", ('Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(34, "Andy's House - Coin - Andy's Room - Bed", "Andy's Room", 0x0C7548, 'regular', "Andy's Room", ('Double Jump', 'Ledge Grab', 'Push'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(35, "Andy's House - Coin - Andy's Room - Dresser", "Andy's Room", 0x0C74F8, 'regular', "Andy's Room", ('Double Jump', 'Ledge Grab', 'Push'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(36, "Andy's House - Coin - Andy's Room - Crib #1", "Andy's Room", 0x0C7508, 'regular', "Andy's Room", ('Double Jump', 'Ledge Grab', 'Push', 'Pole Climb', 'Rope Sliding', 'Visor'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab', 'Push', 'Pole Climb'), (), (), (), 'Double Jump OR (Ledge Grab + Climb + Push)', ''),
+    Coin(37, "Andy's House - Coin - Andy's Room - Crib #2", "Andy's Room", 0x0C7518, 'regular', "Andy's Room", ('Double Jump', 'Ledge Grab', 'Push', 'Pole Climb', 'Rope Sliding', 'Visor'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab', 'Push', 'Pole Climb'), (), (), (), 'Double Jump OR (Ledge Grab + Climb + Push)', ''),
+    Coin(38, "Andy's House - Coin - Hallway - Plant #2", "Andy's Room", 0x0C7788, 'regular', 'Hallway', (), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(39, "Andy's House - Coin - Hallway - Table by Rex", "Andy's Room", 0x0C7668, 'regular', 'Hallway', (), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(40, "Andy's House - Coin - Hallway - Attic Cord #1", "Andy's Room", 0x0C7798, 'regular', 'Hallway', ('Pole Climb',), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(41, "Andy's House - Coin - Hallway - Attic Cord #2", "Andy's Room", 0x0C77A8, 'regular', 'Hallway', ('Pole Climb',), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(42, "Andy's House - Coin - Attic - Boss Arena", 'Attic', 0x0C75C8, 'regular', 'Attic', ('Pole Climb',), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(43, "Andy's House - Coin - Attic - W Boxes #2", 'Attic', 0x0C75B8, 'regular', 'Attic', ('Double Jump', 'Pole Climb', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(44, "Andy's House - Coin - Attic - W Boxes #1", 'Attic', 0x0C75A8, 'regular', 'Attic', ('Double Jump', 'Pole Climb', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(45, "Andy's House - Coin - Attic - N Boxes #1", 'Attic', 0x0C7588, 'regular', 'Attic', ('Double Jump', 'Pole Climb', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(46, "Andy's House - Coin - Attic - N Boxes #2", 'Attic', 0x0C7598, 'regular', 'Attic', ('Double Jump', 'Pole Climb', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(47, "Andy's House - Coin - Attic - Beams near Battery", 'Attic', 0x0C7578, 'regular', 'Attic', ('Push', 'Pole Climb', 'Ledge Grab'), ('Double Jump', 'Pole Vault'), (), (), 'Any 1 of OR', '', ('Easy',), ('Pole Climb',), ('Double Jump', 'Ledge Grab', 'Pole Vault'), (), (), '(Pole Climb + Double Jump + Pole Vault) OR (Pole Climb + Double Jump + Ledge Grab)', ''),
+    Coin(48, "Andy's House - Coin - Attic - Beams Left Side", 'Attic', 0x0C7558, 'regular', 'Attic', ('Push', 'Pole Climb', 'Ledge Grab'), ('Double Jump', 'Pole Vault'), (), (), 'Any 1 of OR', '', ('Easy',), ('Pole Climb',), ('Double Jump', 'Ledge Grab', 'Pole Vault'), (), (), '(Pole Climb + Double Jump + Pole Vault) OR (Pole Climb + Double Jump + Ledge Grab)', ''),
+    Coin(49, "Andy's House - Coin - Attic - Beams Right side", 'Attic', 0x0C7568, 'regular', 'Attic', ('Push', 'Pole Climb', 'Ledge Grab'), ('Double Jump', 'Pole Vault'), (), (), 'Any 1 of OR', '', ('Easy',), ('Pole Climb',), ('Double Jump', 'Ledge Grab', 'Pole Vault'), (), (), '(Pole Climb + Double Jump + Pole Vault) OR (Pole Climb + Double Jump + Ledge Grab)', ''),
+    Coin(50, "Andy's House - Coin - Attic - Bouncing Zurg Robot", 'Attic', 0x0C3472, 'enemy', 'Attic', ('Push', 'Pole Climb', 'Ledge Grab'), ('Double Jump', 'Pole Vault', 'Laser', 'Spin', 'Stomp'), (), (), '(Laser, Spin OR Stomp) + Double Jump OR Pole Vault', '', ('Easy',), ('Pole Climb',), ('Double Jump', 'Ledge Grab', 'Pole Vault', 'Laser', 'Spin', 'Stomp'), (), (), '((Laser, Spin OR Stomp) + Pole Climb + Double Jump + Pole Vault)) OR ((Laser, Spin OR Stomp) + Pole Climb + Double Jump + Ledge Grab))', ''),
+    Coin(51, "Andy's House - Coin - Living Room - Shelf near Kitchen", 'Living Room', 0x0C7618, 'regular', 'Living Room', (), ('Double Jump', 'Pole Climb'), (), (), 'Any 1 of OR', '', ('Easy',), ('Ledge Grab',), (), (), (), '', ''),
+    Coin(52, "Andy's House - Coin - Living Room - Side Table near Window", 'Living Room', 0x0C7658, 'regular', 'Living Room', (), ('Double Jump', 'Ledge Grab', 'Pole Climb', 'Stomp'), (), (), '(Double Jump + Ledge Grab) OR Stomp + (Ledge Grab, Pole Climb, OR Double Jump)', '', ('Hard',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(53, "Andy's House - Coin - Living Room - Bouncing Zurg Robot #1", 'Living Room', 0x0C3C2A, 'enemy', 'Living Room', (), ('Double Jump', 'Ledge Grab', 'Pole Climb', 'Laser', 'Spin', 'Stomp'), (), (), '(Laser, Spin OR Stomp) + Double Jump + Ledge Grab OR Stomp + (Ledge Grab, Pole Climb, OR Double Jump)', '', ('Hard',), ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', ''),
+    Coin(54, "Andy's House - Coin - Living Room - Bouncing Zurg Robot #2", 'Living Room', 0x0C3CC2, 'enemy', 'Living Room', ('Stomp',), ('Ledge Grab', 'Pole Climb', 'Double Jump'), (), (), 'Any 1 of OR', '', ('Hard',), ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', ''),
+    Coin(55, "Andy's House - Coin - Living Room - Corner Bookshelf #1", 'Living Room', 0x0C7628, 'regular', 'Living Room', ('Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(56, "Andy's House - Coin - Living Room - Corner Bookshelf #2", 'Living Room', 0x0C7638, 'regular', 'Living Room', ('Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(57, "Andy's House - Coin - Living Room - Top of Window", 'Living Room', 0x0C7648, 'regular', 'Living Room', ('Stomp',), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), 'Any 1 of OR', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab', 'Stomp'), (), (), (), 'Easy=Stomp\nHard=Double Jump + Ledge Grab', ''),
+    Coin(58, "Andy's House - Coin - Garage - Lower Middle Shelf", 'Garage', 0x0C7828, 'regular', 'Garage', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab'), (), (), (), 'Easy=Double Jump + Ledge Grab\nHard= Double Jump', ''),
+    Coin(59, "Andy's House - Coin - Garage - Between Drills #1", 'Garage', 0x0C74B8, 'regular', 'Garage', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab'), (), (), (), 'Easy=Double Jump + Ledge Grab\nHard= Double Jump', ''),
+    Coin(60, "Andy's House - Coin - Garage - Between Drills #2", 'Garage', 0x0C74C8, 'regular', 'Garage', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(61, "Andy's House - Coin - Garage - Between Car & Trash Can #1", 'Garage', 0x0C7808, 'regular', 'Garage', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab'), (), (), (), 'Easy=Double Jump + Ledge Grab\nHard= Double Jump', ''),
+    Coin(62, "Andy's House - Coin - Garage - Between Car & Trash Can #2", 'Garage', 0x0C7818, 'regular', 'Garage', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab'), (), (), (), 'Easy=Double Jump + Ledge Grab\nHard= Double Jump', ''),
+    Coin(63, "Andy's House - Coin - Garage - Top of Car #1", 'Garage', 0x0C74D8, 'regular', 'Garage', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab'), (), (), (), 'Easy=Double Jump + Ledge Grab\nHard= Double Jump', ''),
+    Coin(64, "Andy's House - Coin - Garage - Top of Car #2", 'Garage', 0x0C74E8, 'regular', 'Garage', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab'), (), (), (), 'Easy=Double Jump + Ledge Grab\nHard= Double Jump', ''),
+    Coin(65, "Andy's House - Coin - Garage - Ceiling Light", 'Garage', 0x0C7838, 'regular', 'Garage', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab'), (), (), (), 'Easy=Double Jump + Ledge Grab\nHard= Double Jump', ''),
+    Coin(66, "Andy's House - Coin - Garage - High Upper Shelf #1", 'Garage', 0x0C7848, 'regular', 'Garage', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab'), (), (), (), 'Easy=Double Jump + Ledge Grab\nHard= Double Jump', ''),
+    Coin(67, "Andy's House - Coin - Garage - High Upper Shelf #2", 'Garage', 0x0C7498, 'regular', 'Garage', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab'), (), (), (), 'Easy=Double Jump + Ledge Grab\nHard= Double Jump', ''),
+    Coin(68, "Andy's House - Coin - Garage - High Upper Shelf #3", 'Garage', 0x0C74A8, 'regular', 'Garage', ('Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab'), (), (), (), 'Easy=Double Jump + Ledge Grab\nHard= Double Jump', ''),
+    Coin(69, "Andy's House - Coin - Garage - Bouncing Zurg Robot #4", 'Garage', 0x0C3802, 'enemy', 'Garage', ('Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', ''),
+    Coin(70, "Andy's House - Coin - Garage - Bouncing Zurg Robot #5", 'Garage', 0x0C389A, 'enemy', 'Garage', ('Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', ''),
+    Coin(71, "Andy's House - Coin - Garage - Propeller Zurg Robot #2", 'Garage', 0x0C36D2, 'enemy', 'Garage', ('Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', ''),
+    Coin(72, "Andy's House - Coin - Garage - Propeller Zurg Robot #3", 'Garage', 0x0C3932, 'enemy', 'Garage', ('Double Jump', 'Ledge Grab', 'Pole Climb'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', ''),
+    Coin(73, "Andy's House - Coin - Kitchen - High Chair #1", 'Kitchen', 0x0C77B8, 'regular', 'Kitchen', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), ('Pole Climb', 'Ledge Grab'), (), (), 'Any 1 of OR', ''),
+    Coin(74, "Andy's House - Coin - Kitchen - High Chair #2", 'Kitchen', 0x0C77F8, 'regular', 'Kitchen', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), ('Pole Climb', 'Ledge Grab'), (), (), 'Any 1 of OR', ''),
+    Coin(75, "Andy's House - Coin - Kitchen - Counter near Microwave #1", 'Kitchen', 0x0C7738, 'regular', 'Kitchen', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), ('Pole Climb', 'Ledge Grab'), (), (), 'Any 1 of OR', ''),
+    Coin(76, "Andy's House - Coin - Kitchen - Counter near Microwave #2", 'Kitchen', 0x0C7748, 'regular', 'Kitchen', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), ('Pole Climb', 'Ledge Grab'), (), (), 'Any 1 of OR', ''),
+    Coin(77, "Andy's House - Coin - Kitchen - Counter near Jars #1", 'Kitchen', 0x0C7758, 'regular', 'Kitchen', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), ('Pole Climb', 'Ledge Grab'), (), (), 'Any 1 of OR', ''),
+    Coin(78, "Andy's House - Coin - Kitchen - Counter near Jars #2", 'Kitchen', 0x0C7768, 'regular', 'Kitchen', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), ('Pole Climb', 'Ledge Grab'), (), (), 'Any 1 of OR', ''),
+    Coin(79, "Andy's House - Coin - Kitchen - Top of Fridge", 'Kitchen', 0x0C77E8, 'regular', 'Kitchen', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), ('Pole Climb', 'Ledge Grab'), (), (), 'Any 1 of OR', ''),
+    Coin(80, "Andy's House - Coin - Kitchen - Top Cabinets #1", 'Kitchen', 0x0C77C8, 'regular', 'Kitchen', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), ('Pole Climb', 'Ledge Grab'), (), (), 'Any 1 of OR', ''),
+    Coin(81, "Andy's House - Coin - Kitchen - Top Cabinets #2", 'Kitchen', 0x0C77D8, 'regular', 'Kitchen', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), ('Pole Climb', 'Ledge Grab'), (), (), 'Any 1 of OR', ''),
+    Coin(82, "Andy's House - Coin - Kitchen - Bouncing Zurg Robot #2", 'Kitchen', 0x0C350A, 'enemy', 'Kitchen', ('Push', 'Double Jump', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump',), ('Pole Climb', 'Ledge Grab', 'Laser', 'Spin'), (), (), '(Laser OR Spin) + (Pole Climb OR Ledge Grab)', ''),
+    Coin(83, "Andy's House - Coin - Kitchen - Propeller Zurg Robot", 'Kitchen', 0x0C35A2, 'enemy', 'Kitchen', ('Push', 'Double Jump', 'Ledge Grab'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump',), ('Pole Climb', 'Ledge Grab', 'Laser', 'Spin', 'Stomp'), (), (), '(Laser, Stomp, OR Spin) + (Pole Climb OR Ledge Grab)', ''),
+    Coin(84, "Andy's House - Coin - Basement - Mid-air between Boxes", 'Basement', 0x0C76B8, 'regular', 'Basement', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(85, "Andy's House - Coin - Basement - Zipline", 'Basement', 0x0C7678, 'regular', 'Basement', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(86, "Andy's House - Coin - Basement - Bouncing Zurg Robot #2", 'Basement', 0x0C3B92, 'enemy', 'Basement', ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(87, "Andy's House - Coin - Basement - Bouncing Zurg Robot #3", 'Basement', 0x0C3AFA, 'enemy', 'Basement', ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(88, "Andy's House - Coin - Basement - 1st Lightbulb Cord", 'Basement', 0x0C7858, 'regular', 'Basement', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(89, "Andy's House - Coin - Basement - 2nd Lightbulb Cord", 'Basement', 0x0C7868, 'regular', 'Basement', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(90, "Andy's House - Coin - Basement - Top of Boxes near Battery", 'Basement', 0x0C76A8, 'regular', 'Basement', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab'), (), (), (), 'Easy= Double Jump + Ledge Grab\nHard= Double Jump', ''),
+    Coin(91, "Andy's House - Coin - Basement - 3rd Lightbulb Cord", 'Basement', 0x0C7878, 'regular', 'Basement', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(92, "Andy's House - Coin - Basement - Shelf near Token #1", 'Basement', 0x0C7698, 'regular', 'Basement', ('Double Jump', 'Ledge Grab', 'Pole Climb', 'Push'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab', 'Push'), (), (), (), 'Easy glitch: Double Jump + Ledge Grab + Push\nHard glitch: Double Jump + Ledge Grab only', ''),
+    Coin(93, "Andy's House - Coin - Basement - Shelf near Token #2", 'Basement', 0x0C7688, 'regular', 'Basement', ('Double Jump', 'Ledge Grab', 'Pole Climb', 'Push'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab', 'Push'), (), (), (), 'Easy glitch: Double Jump + Ledge Grab + Push\nHard glitch: Double Jump + Ledge Grab only', ''),
 ]
 
-ANDYS_HOUSE_COINS: List[CoinEntry] = [
-    # Coin 1
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 2
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 3
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 4
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 5
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 6
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 7
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 8
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 9
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 10
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 11
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 12
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 13
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 14
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 15
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 16
-    ([], ['Double Jump', 'Ledge Grab'], [], [], 'Easy', [], [], [], []),
-    # Coin 17
-    ([], ['Double Jump', 'Ledge Grab'], [], [], 'Easy', [], [], [], []),
-    # Coin 18
-    ([], ['Double Jump', 'Ledge Grab'], [], [], 'Easy', [], [], [], []),
-    # Coin 19
-    ([], ['Double Jump', 'Ledge Grab'], [], [], 'Easy', [], [], [], []),
-    # Coin 20
-    (['Ledge Grab', 'Double Jump'], [], [], [], 'Easy', [], [], [], []),
-    # Coin 21
-    ([], ['Spin', 'Laser'], [], [], None, [], [], [], []),
-    # Coin 22
-    ([], ['Spin', 'Laser'], [], [], None, [], [], [], []),
-    # Coin 23
-    ([], ['Spin', 'Laser'], [], [], None, [], [], [], []),
-    # Coin 24
-    ([], ['Spin', 'Laser'], [], [], None, [], [], [], []),
-    # Coin 25
-    ([], ['Spin', 'Laser'], [], [], None, [], [], [], []),
-    # Coin 26
-    ([], ['Stomp', 'Spin', 'Laser'], [], [], None, [], [], [], []),
-    # Coin 27
-    ([], ['Stomp', 'Spin', 'Laser'], [], [], None, [], [], [], []),
-    # Coin 28
-    ([], ['Stomp', 'Spin', 'Laser'], [], [], None, [], [], [], []),
-    # Coin 29
-    ([], ['Stomp', 'Spin', 'Laser'], [], [], None, [], [], [], []),
-    # Coin 30
-    ([], ['Stomp', 'Spin', 'Laser'], [], [], None, [], [], [], []),
-    # Coin 31
-    ([], ['Stomp', 'Spin', 'Laser'], [], [], None, [], [], [], []),
-    # Coin 32
-    ([], ['Stomp', 'Spin', 'Laser'], [], [], None, [], [], [], []),
-    # Coin 33
-    (['Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 34
-    (['Double Jump', 'Ledge Grab', 'Push'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 35
-    (['Double Jump', 'Ledge Grab', 'Push'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 36
-    (['Double Jump', 'Ledge Grab', 'Push', 'Pole Climb', 'Rope Sliding', 'Visor'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 37
-    (['Double Jump', 'Ledge Grab', 'Push', 'Pole Climb', 'Rope Sliding', 'Visor'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 38
-    ([], ['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], None, [], [], [], []),
-    # Coin 39
-    ([], ['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], None, [], [], [], []),
-    # Coin 40
-    (['Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 41
-    (['Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 42
-    (['Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 43
-    (['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 44
-    (['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 45
-    (['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 46
-    (['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 47
-    (['Push', 'Pole Climb', 'Ledge Grab'], ['Double Jump', 'Pole Vault'], [], [], 'Easy', ['Pole Climb', 'Double Jump'], ['Pole Vault', 'Ledge Grab'], [], []),
-    # Coin 48
-    (['Push', 'Pole Climb', 'Ledge Grab'], ['Double Jump', 'Pole Vault'], [], [], 'Easy', ['Pole Climb', 'Double Jump'], ['Pole Vault', 'Ledge Grab'], [], []),
-    # Coin 49
-    (['Push', 'Pole Climb', 'Ledge Grab'], ['Double Jump', 'Pole Vault'], [], [], 'Easy', ['Pole Climb', 'Double Jump'], ['Pole Vault', 'Ledge Grab'], [], []),
-    # Coin 50
-    (['Push', 'Pole Climb', 'Pole Vault', 'Ledge Grab', 'Double Jump'], ['Laser', 'Spin', 'Stomp'], [], [], 'Easy', ['Pole Climb', 'Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 51
-    ([], ['Double Jump', 'Pole Climb'], [], [], 'Easy', ['Ledge Grab'], [], [], []),
-    # Coin 52
-    ([], ['Double Jump', 'Ledge Grab', 'Pole Climb', 'Stomp'], [], [], 'Hard', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 53
-    ([], ['Double Jump', 'Ledge Grab', 'Pole Climb', 'Laser', 'Spin', 'Stomp'], [], [], 'Hard', ['Double Jump', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], []),
-    # Coin 54
-    (['Stomp'], ['Ledge Grab', 'Pole Climb', 'Double Jump'], [], [], 'Hard', ['Double Jump', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], []),
-    # Coin 55
-    (['Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Hard', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 56
-    (['Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Hard', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 57
-    (['Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Hard', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 58
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 59
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 60
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 61
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 62
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 63
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 64
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 65
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 66
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 67
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 68
-    (['Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 69
-    (['Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'], ['Laser', 'Spin', 'Stomp'], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], []),
-    # Coin 70
-    (['Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'], ['Laser', 'Spin', 'Stomp'], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], []),
-    # Coin 71
-    (['Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'], ['Laser', 'Spin'], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], ['Laser', 'Spin'], [], []),
-    # Coin 72
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], ['Laser', 'Spin'], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], ['Laser', 'Spin'], [], []),
-    # Coin 73
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], ['Pole Climb', 'Ledge Grab'], [], []),
-    # Coin 74
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], ['Pole Climb', 'Ledge Grab'], [], []),
-    # Coin 75
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], ['Pole Climb', 'Ledge Grab'], [], []),
-    # Coin 76
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], ['Pole Climb', 'Ledge Grab'], [], []),
-    # Coin 77
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], ['Pole Climb', 'Ledge Grab'], [], []),
-    # Coin 78
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], ['Pole Climb', 'Ledge Grab'], [], []),
-    # Coin 79
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], ['Pole Climb', 'Ledge Grab'], [], []),
-    # Coin 80
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], ['Pole Climb', 'Ledge Grab'], [], []),
-    # Coin 81
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], ['Pole Climb', 'Ledge Grab'], [], []),
-    # Coin 82
-    (['Push', 'Double Jump', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], [], 'Easy', ['Double Jump'], ['Pole Climb', 'Ledge Grab', 'Laser', 'Spin'], [], []),
-    # Coin 83
-    (['Push', 'Double Jump', 'Ledge Grab'], ['Laser', 'Spin'], [], [], 'Easy', ['Double Jump'], ['Pole Climb', 'Ledge Grab', 'Laser', 'Spin', 'Stomp'], [], []),
-    # Coin 84
-    (['Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 85
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 86
-    (['Double Jump', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 87
-    (['Double Jump', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 88
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 89
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 90
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 91
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 92
-    (['Double Jump', 'Ledge Grab', 'Pole Climb', 'Push'], [], [], [], 'Easy, Hard', ['Double Jump', 'Ledge Grab', 'Push'], [], [], []),
-    # Coin 93
-    (['Double Jump', 'Ledge Grab', 'Pole Climb', 'Push'], [], [], [], 'Easy, Hard', ['Double Jump', 'Ledge Grab', 'Push'], [], [], []),
+ANDYS_NEIGHBORHOOD_COINS: List[Coin] = [
+    Coin(1, "Andy's Neighborhood - Coin - Lawnmower Yard - In Yard #1", 'Lawnmower Yard', 0x0C7628, 'regular', 'Lawnmower Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(2, "Andy's Neighborhood - Coin - Lawnmower Yard - In Yard #2", 'Lawnmower Yard', 0x0C7638, 'regular', 'Lawnmower Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(3, "Andy's Neighborhood - Coin - Lawnmower Yard - In Yard #3", 'Lawnmower Yard', 0x0C7658, 'regular', 'Lawnmower Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(4, "Andy's Neighborhood - Coin - Lawnmower Yard - In Yard #4", 'Lawnmower Yard', 0x0C7648, 'regular', 'Lawnmower Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(5, "Andy's Neighborhood - Coin - Lawnmower Yard - In Yard #5", 'Lawnmower Yard', 0x0C7618, 'regular', 'Lawnmower Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(6, "Andy's Neighborhood - Coin - Lawnmower Yard - Exit #1", 'Lawnmower Yard', 0x0C7608, 'regular', 'Lawnmower Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(7, "Andy's Neighborhood - Coin - Lawnmower Yard - Exit #2", 'Lawnmower Yard', 0x0C75F8, 'regular', 'Lawnmower Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(8, "Andy's Neighborhood - Coin - Lawnmower Yard - Exit #3", 'Lawnmower Yard', 0x0C75E8, 'regular', 'Lawnmower Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(9, "Andy's Neighborhood - Coin - Central Hub - Racetrack #1", 'Central Hub', 0x0C7688, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(10, "Andy's Neighborhood - Coin - Central Hub - Racetrack #2", 'Central Hub', 0x0C7678, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(11, "Andy's Neighborhood - Coin - Central Hub - Racetrack #3", 'Central Hub', 0x0C7668, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(12, "Andy's Neighborhood - Coin - Central Hub - Racetrack #4", 'Central Hub', 0x0C7718, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(13, "Andy's Neighborhood - Coin - Central Hub - Racetrack #5", 'Central Hub', 0x0C7708, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(14, "Andy's Neighborhood - Coin - Central Hub - Racetrack #6", 'Central Hub', 0x0C76F8, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(15, "Andy's Neighborhood - Coin - Central Hub - Racetrack #7", 'Central Hub', 0x0C76E8, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(16, "Andy's Neighborhood - Coin - Central Hub - Racetrack #8", 'Central Hub', 0x0C76D8, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(17, "Andy's Neighborhood - Coin - Central Hub - Racetrack #9", 'Central Hub', 0x0C76C8, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(18, "Andy's Neighborhood - Coin - Central Hub - Racetrack #10", 'Central Hub', 0x0C76B8, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(19, "Andy's Neighborhood - Coin - Central Hub - Racetrack #11", 'Central Hub', 0x0C76A8, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(20, "Andy's Neighborhood - Coin - Central Hub - Racetrack #12", 'Central Hub', 0x0C7698, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(21, "Andy's Neighborhood - Coin - Central Hub - Below High Swing", 'Central Hub', 0x0C7848, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(22, "Andy's Neighborhood - Coin - Central Hub - Below Low Swing", 'Central Hub', 0x0C7838, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(23, "Andy's Neighborhood - Coin - Car Yard - Entry #1", 'Car Yard', 0x0C7728, 'regular', 'Car Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(24, "Andy's Neighborhood - Coin - Car Yard - Entry #2", 'Car Yard', 0x0C7738, 'regular', 'Car Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(25, "Andy's Neighborhood - Coin - Car Yard - Entry #3", 'Car Yard', 0x0C7748, 'regular', 'Car Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(26, "Andy's Neighborhood - Coin - Car Yard - Right Car Lift", 'Car Yard', 0x0C7758, 'regular', 'Car Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(27, "Andy's Neighborhood - Coin - Car Yard - Left Car Lift", 'Car Yard', 0x0C7768, 'regular', 'Car Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(28, "Andy's Neighborhood - Coin - Car Yard - By Door", 'Car Yard', 0x0C7808, 'regular', 'Car Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(29, "Andy's Neighborhood - Coin - Pool Yard - Entry #1", 'Pool Yard', 0x0C75D8, 'regular', 'Pool Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(30, "Andy's Neighborhood - Coin - Pool Yard - Entry #2", 'Pool Yard', 0x0C75C8, 'regular', 'Pool Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(31, "Andy's Neighborhood - Coin - Pool Yard - Entry #3", 'Pool Yard', 0x0C75B8, 'regular', 'Pool Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(32, "Andy's Neighborhood - Coin - Pool Yard - Pool Surface #2", 'Pool Yard', 0x0C74C8, 'regular', 'Pool Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(33, "Andy's Neighborhood - Coin - Pool Yard - Pool Surface #3", 'Pool Yard', 0x0C74D8, 'regular', 'Pool Yard', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(34, "Andy's Neighborhood - Coin - Central Hub - Propeller Zurg Robot #1", 'Central Hub', 0x0C3A62, 'enemy', 'Central Hub', (), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(35, "Andy's Neighborhood - Coin - Central Hub - Propeller Zurg Robot #2", 'Central Hub', 0x0C389A, 'enemy', 'Central Hub', (), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(36, "Andy's Neighborhood - Coin - Pool Yard - Propeller Zurg Robot #1", 'Pool Yard', 0x0C35A2, 'enemy', 'Pool Yard', (), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(37, "Andy's Neighborhood - Coin - Pool Yard - Propeller Zurg Robot #2", 'Pool Yard', 0x0C33DA, 'enemy', 'Pool Yard', (), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(38, "Andy's Neighborhood - Coin - Central Hub - Bouncing Zurg Robot #1", 'Central Hub', 0x0C3932, 'enemy', 'Central Hub', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(39, "Andy's Neighborhood - Coin - Central Hub - Zurg Car #1", 'Central Hub', 0x0C39CA, 'enemy', 'Central Hub', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(40, "Andy's Neighborhood - Coin - Central Hub - Zurg Car #2", 'Central Hub', 0x0C376A, 'enemy', 'Central Hub', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(41, "Andy's Neighborhood - Coin - Central Hub - Zurg Car #3", 'Central Hub', 0x0C363A, 'enemy', 'Central Hub', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(42, "Andy's Neighborhood - Coin - Central Hub - Zurg Car #4", 'Central Hub', 0x0C3342, 'enemy', 'Central Hub', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(43, "Andy's Neighborhood - Coin - Central Hub - Zurg Car #5", 'Central Hub', 0x0C36D2, 'enemy', 'Central Hub', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(44, "Andy's Neighborhood - Coin - Central Hub - Bouncing Zurg Robot #2", 'Central Hub', 0x0C3C2A, 'enemy', 'Central Hub', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(45, "Andy's Neighborhood - Coin - Car Yard - Zurg Car #1", 'Car Yard', 0x0C3B92, 'enemy', 'Car Yard', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(46, "Andy's Neighborhood - Coin - Car Yard - Zurg Car #2", 'Car Yard', 0x0C3AFA, 'enemy', 'Car Yard', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(47, "Andy's Neighborhood - Coin - Car Yard - Car Hood #1", 'Car Yard', 0x0C77C8, 'regular', 'Car Yard', ('Stomp', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(48, "Andy's Neighborhood - Coin - Car Yard - Car Hood #2", 'Car Yard', 0x0C77B8, 'regular', 'Car Yard', ('Stomp', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(49, "Andy's Neighborhood - Coin - Car Yard - Top of Car #1", 'Car Yard', 0x0C77A8, 'regular', 'Car Yard', ('Stomp', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(50, "Andy's Neighborhood - Coin - Car Yard - Top of Car #2", 'Car Yard', 0x0C7798, 'regular', 'Car Yard', ('Stomp', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(51, "Andy's Neighborhood - Coin - Car Yard - Top of Car #3", 'Car Yard', 0x0C7788, 'regular', 'Car Yard', ('Stomp', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(52, "Andy's Neighborhood - Coin - Car Yard - Car Trunk", 'Car Yard', 0x0C7778, 'regular', 'Car Yard', ('Stomp', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(53, "Andy's Neighborhood - Coin - Car Yard - In Washing Machine", 'Car Yard', 0x0C77D8, 'regular', 'Car Yard', ('Stomp', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(54, "Andy's Neighborhood - Coin - Car Yard - Above Washing Machine", 'Car Yard', 0x0C77E8, 'regular', 'Car Yard', ('Stomp', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(55, "Andy's Neighborhood - Coin - Car Yard - Cinderblocks", 'Car Yard', 0x0C7818, 'regular', 'Car Yard', ('Stomp', 'Ledge Grab', 'Push'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab'), (), (), (), 'Easy=Double Jump + Ledge Grab\nHard=No Requirements', ''),
+    Coin(56, "Andy's Neighborhood - Coin - Car Yard - Trash Can", 'Car Yard', 0x0C77F8, 'regular', 'Car Yard', ('Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Ledge Grab',), (), (), (), '', ''),
+    Coin(57, "Andy's Neighborhood - Coin - Pool Yard - Armchair Seat", 'Pool Yard', 0x0C7478, 'regular', 'Pool Yard', ('Double Jump',), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(58, "Andy's Neighborhood - Coin - Pool Yard - Armchair Arm", 'Pool Yard', 0x0C7488, 'regular', 'Pool Yard', ('Double Jump',), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(59, "Andy's Neighborhood - Coin - Pool Yard - NW Plant Stem", 'Pool Yard', 0x0C7498, 'regular', 'Pool Yard', ('Double Jump',), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(60, "Andy's Neighborhood - Coin - Pool Yard - Top of NW Plant", 'Pool Yard', 0x0C74A8, 'regular', 'Pool Yard', ('Double Jump', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(61, "Andy's Neighborhood - Coin - Pool Yard - Bouncing Zurg Robot #1", 'Pool Yard', 0x0C350A, 'enemy', 'Pool Yard', ('Double Jump', 'Pole Climb'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(62, "Andy's Neighborhood - Coin - Pool Yard - NE Plant Stem", 'Pool Yard', 0x0C74F8, 'regular', 'Pool Yard', ('Double Jump', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(63, "Andy's Neighborhood - Coin - Pool Yard - Top of NE Plant", 'Pool Yard', 0x0C7508, 'regular', 'Pool Yard', ('Double Jump', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(64, "Andy's Neighborhood - Coin - Pool Yard - Bouncing Zurg Robot #2", 'Pool Yard', 0x0C3472, 'enemy', 'Pool Yard', ('Double Jump', 'Pole Climb'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(65, "Andy's Neighborhood - Coin - Pool Yard - Stone Column", 'Pool Yard', 0x0C7518, 'regular', 'Pool Yard', ('Double Jump', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(66, "Andy's Neighborhood - Coin - Pool Yard - SE Plant Stem", 'Pool Yard', 0x0C7528, 'regular', 'Pool Yard', ('Double Jump', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(67, "Andy's Neighborhood - Coin - Pool Yard - Top of SE Plant", 'Pool Yard', 0x0C7538, 'regular', 'Pool Yard', ('Double Jump', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(68, "Andy's Neighborhood - Coin - Pool Yard - Jump to Flagpoles", 'Pool Yard', 0x0C7548, 'regular', 'Pool Yard', ('Double Jump', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(69, "Andy's Neighborhood - Coin - Pool Yard - 1st Flagpole", 'Pool Yard', 0x0C7558, 'regular', 'Pool Yard', ('Double Jump', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(70, "Andy's Neighborhood - Coin - Pool Yard - 2nd Flagpole", 'Pool Yard', 0x0C7568, 'regular', 'Pool Yard', ('Double Jump', 'Pole Climb', 'Pole Vault'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(71, "Andy's Neighborhood - Coin - Pool Yard - 3rd Flagpole", 'Pool Yard', 0x0C7578, 'regular', 'Pool Yard', ('Double Jump', 'Pole Climb', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Pole Climb', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(72, "Andy's Neighborhood - Coin - Pool Yard - Jump from Flagpoles", 'Pool Yard', 0x0C7588, 'regular', 'Pool Yard', ('Double Jump', 'Pole Climb', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Pole Climb', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(73, "Andy's Neighborhood - Coin - Pool Yard - Giant Vase", 'Pool Yard', 0x0C7598, 'regular', 'Pool Yard', ('Double Jump', 'Pole Climb', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Pole Climb', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(74, "Andy's Neighborhood - Coin - Pool Yard - Top of SW Plant", 'Pool Yard', 0x0C75A8, 'regular', 'Pool Yard', ('Double Jump', 'Pole Climb', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Pole Climb', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(75, "Andy's Neighborhood - Coin - Pool Yard - Pool Surface #1", 'Pool Yard', 0x0C74B8, 'regular', 'Pool Yard', (), ('Double Jump',), (), ('Rocket Boots',), '', 'Either Double Jump OR Rocket Boots', (), (), (), (), (), '', ''),
+    Coin(76, "Andy's Neighborhood - Coin - Pool Yard - Pool Surface #4", 'Pool Yard', 0x0C74E8, 'regular', 'Pool Yard', (), ('Double Jump',), (), ('Rocket Boots',), '', 'Either Double Jump OR Rocket Boots', (), (), (), (), (), '', ''),
+    Coin(77, "Andy's Neighborhood - Coin - Central Hub - On Low Swing", 'Central Hub', 0x0C7828, 'regular', 'Central Hub', ('Ledge Grab', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(78, "Andy's Neighborhood - Coin - Central Hub - On High Swing", 'Central Hub', 0x0C7858, 'regular', 'Central Hub', ('Ledge Grab', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(79, "Andy's Neighborhood - Coin - Tree - Tire Swing Rope #1", 'Tree', 0x0C7868, 'regular', 'Tree', ('Ledge Grab', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(80, "Andy's Neighborhood - Coin - Tree - Tire Swing Rope #2", 'Tree', 0x0C7878, 'regular', 'Tree', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(81, "Andy's Neighborhood - Coin - Tree - Tire Swing Rope #3", 'Tree', 0x0C7888, 'regular', 'Tree', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(82, "Andy's Neighborhood - Coin - Tree - Above Hamm", 'Tree', 0x0C7898, 'regular', 'Tree', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(83, "Andy's Neighborhood - Coin - Tree - Branches before Low Seesaw #1", 'Tree', 0x0C78A8, 'regular', 'Tree', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(84, "Andy's Neighborhood - Coin - Tree - Branches before Low Seesaw #2", 'Tree', 0x0C78B8, 'regular', 'Tree', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(85, "Andy's Neighborhood - Coin - Tree - Branches before Low Seesaw #3", 'Tree', 0x0C78C8, 'regular', 'Tree', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(86, "Andy's Neighborhood - Coin - Tree - Jump from Low Seesaw", 'Tree', 0x0C78D8, 'regular', 'Tree', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(87, "Andy's Neighborhood - Coin - Tree - Branches after Low Seesaw #1", 'Tree', 0x0C78E8, 'regular', 'Tree', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(88, "Andy's Neighborhood - Coin - Tree - Branches after Low Seesaw #2", 'Tree', 0x0C7908, 'regular', 'Tree', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(89, "Andy's Neighborhood - Coin - Tree - Shortcut Rope", 'Tree', 0x0C78F8, 'regular', 'Tree', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(90, "Andy's Neighborhood - Coin - Tree - Bouncing Zurg Robot #1", 'Tree', 0x0C3CC2, 'enemy', 'Tree', ('Double Jump', 'Ledge Grab', 'Pole Climb'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(91, "Andy's Neighborhood - Coin - Tree - Propeller Zurg Robot #1", 'Tree', 0x0C3D5A, 'enemy', 'Tree', ('Double Jump', 'Ledge Grab', 'Pole Climb'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(92, "Andy's Neighborhood - Coin - Tree - Branches after Low Pole Vault #1", 'Tree', 0x0C7938, 'regular', 'Tree', ('Double Jump', 'Pole Climb', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(93, "Andy's Neighborhood - Coin - Tree - Branches after Low Pole Vault #2", 'Tree', 0x0C7948, 'regular', 'Tree', ('Double Jump', 'Pole Climb', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(94, "Andy's Neighborhood - Coin - Tree - Jump from High Seesaw", 'Tree', 0x0C7928, 'regular', 'Tree', ('Double Jump', 'Pole Climb', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(95, "Andy's Neighborhood - Coin - Tree - Branches after High Pole Vault #1", 'Tree', 0x0C7918, 'regular', 'Tree', ('Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
+    Coin(96, "Andy's Neighborhood - Coin - Tree - Propeller Zurg Robot #2", 'Tree', 0x0C3E54, 'enemy', 'Tree', ('Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', ('Hard',), ('Double Jump', 'Ledge Grab', 'Pole Climb'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', ''),
+    Coin(97, "Andy's Neighborhood - Coin - Tree - Branches after High Pole Vault #2", 'Tree', 0x0C7958, 'regular', 'Tree', ('Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
+    Coin(98, "Andy's Neighborhood - Coin - Tree - Branches after High Pole Vault #3", 'Tree', 0x0C7968, 'regular', 'Tree', ('Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
+    Coin(99, "Andy's Neighborhood - Coin - Tree - Boss Arena", 'Tree', 0x0C7978, 'regular', 'Tree', ('Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
 ]
 
-ANDYS_NEIGHBORHOOD_COINS: List[CoinEntry] = [
-    # Coin 1
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 2
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 3
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 4
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 5
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 6
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 7
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 8
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 9
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 10
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 11
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 12
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 13
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 14
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 15
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 16
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 17
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 18
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 19
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 20
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 21
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 22
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 23
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 24
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 25
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 26
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 27
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 28
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 29
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 30
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 31
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 32
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 33
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 34
-    ([], ['Laser', 'Spin'], [], [], None, [], [], [], []),
-    # Coin 35
-    ([], ['Laser', 'Spin'], [], [], None, [], [], [], []),
-    # Coin 36
-    ([], ['Laser', 'Spin'], [], [], None, [], [], [], []),
-    # Coin 37
-    ([], ['Laser', 'Spin'], [], [], None, [], [], [], []),
-    # Coin 38
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 39
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 40
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 41
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 42
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 43
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 44
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 45
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 46
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 47
-    (['Stomp', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 48
-    (['Stomp', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 49
-    (['Stomp', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 50
-    (['Stomp', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 51
-    (['Stomp', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 52
-    (['Stomp', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 53
-    (['Stomp', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 54
-    (['Stomp', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 55
-    (['Stomp', 'Ledge Grab', 'Push'], [], [], [], 'Easy, Hard', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 56
-    (['Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Ledge Grab'], [], [], []),
-    # Coin 57
-    (['Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 58
-    (['Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 59
-    (['Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 60
-    (['Double Jump', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 61
-    (['Double Jump', 'Pole Climb'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 62
-    (['Double Jump', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 63
-    (['Double Jump', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 64
-    (['Double Jump', 'Pole Climb'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 65
-    (['Double Jump', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 66
-    (['Double Jump', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 67
-    (['Double Jump', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 68
-    (['Double Jump', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 69
-    (['Double Jump', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 70
-    (['Double Jump', 'Pole Climb', 'Pole Vault'], [], [], [], None, [], [], [], []),
-    # Coin 71
-    (['Double Jump', 'Pole Climb', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], []),
-    # Coin 72
-    (['Double Jump', 'Pole Climb', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], []),
-    # Coin 73
-    (['Double Jump', 'Pole Climb', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], []),
-    # Coin 74
-    (['Double Jump', 'Pole Climb', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], []),
-    # Coin 75
-    ([], ['Double Jump'], [], ['Rocket Boots'], None, [], [], [], []),
-    # Coin 76
-    ([], ['Double Jump'], [], ['Rocket Boots'], None, [], [], [], []),
-    # Coin 77
-    (['Ledge Grab', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 78
-    (['Ledge Grab', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 79
-    (['Ledge Grab', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 80
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 81
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 82
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 83
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 84
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 85
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 86
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 87
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 88
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 89
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 90
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 91
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 92
-    (['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 93
-    (['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 94
-    (['Double Jump', 'Pole Climb', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 95
-    (['Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'], [], [], [], None, [], [], [], []),
-    # Coin 96
-    (['Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 97
-    (['Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'], [], [], [], None, [], [], [], []),
-    # Coin 98
-    (['Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'], [], [], [], None, [], [], [], []),
-    # Coin 99
-    (['Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'], [], [], [], None, [], [], [], []),
+CONSTRUCTION_YARD_COINS: List[Coin] = [
+    Coin(1, 'Construction Yard - Coin - SW Area - Floor Near Hamm #1', 'Ground Floor', 0x0C75E8, 'regular', 'SW Area', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(2, 'Construction Yard - Coin - SW Area - Floor Near Hamm #2', 'Ground Floor', 0x0C74D8, 'regular', 'SW Area', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(3, 'Construction Yard - Coin - SW Area - Fence Corner', 'Ground Floor', 0x0C7788, 'regular', 'SW Area', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(4, 'Construction Yard - Coin - Construction Base - SW Corner', 'Ground Floor', 0x0C74E8, 'regular', 'Construction Base', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(5, 'Construction Yard - Coin - Construction Base - NW Corner', 'Ground Floor', 0x0C7768, 'regular', 'Construction Base', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(6, 'Construction Yard - Coin - Construction Base - North Side', 'Ground Floor', 0x0C7578, 'regular', 'Construction Base', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(7, 'Construction Yard - Coin - Construction Base - Far from NE', 'Ground Floor', 0x0C7588, 'regular', 'Construction Base', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(8, 'Construction Yard - Coin - Bulldozer - Front Left Tire', 'Ground Floor', 0x0C7718, 'regular', 'Bulldozer', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(9, 'Construction Yard - Coin - Bulldozer - Floor to the Right', 'Ground Floor', 0x0C76E8, 'regular', 'Bulldozer', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(10, 'Construction Yard - Coin - Bulldozer - Underneath #1', 'Ground Floor', 0x0C76F8, 'regular', 'Bulldozer', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(11, 'Construction Yard - Coin - Bulldozer - Underneath #2', 'Ground Floor', 0x0C7708, 'regular', 'Bulldozer', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(12, 'Construction Yard - Coin - Outside Office - Bottom of Ramp', 'Ground Floor', 0x0C74C8, 'regular', 'Outside Office', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(13, 'Construction Yard - Coin - Outside Office - Under Ramp', 'Ground Floor', 0x0C76D8, 'regular', 'Outside Office', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(14, 'Construction Yard - Coin - Outside Office - SW Corner', 'Ground Floor', 0x0C77A8, 'regular', 'Outside Office', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(15, 'Construction Yard - Coin - Outside Office - SE Corner', 'Ground Floor', 0x0C77B8, 'regular', 'Outside Office', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(16, 'Construction Yard - Coin - Outside Office - NE Corner', 'Ground Floor', 0x0C7498, 'regular', 'Outside Office', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(17, 'Construction Yard - Coin - Outside Office - North Side', 'Ground Floor', 0x0C7488, 'regular', 'Outside Office', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(18, 'Construction Yard - Coin - Outside Office - Toolbox', 'Ground Floor', 0x0C7648, 'regular', 'Outside Office', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(19, 'Construction Yard - Coin - Outside Office - Middle of Ramp', 'Ground Floor', 0x0C74B8, 'regular', 'Outside Office', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(20, 'Construction Yard - Coin - Outside Office - Top of Ramp', 'Ground Floor', 0x0C7778, 'regular', 'Outside Office', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(21, 'Construction Yard - Coin - NE Area - Between Puddle & Bulldozer', 'Ground Floor', 0x0C7478, 'regular', 'NE Area', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(22, 'Construction Yard - Coin - NE Area - Between Sand & Fence', 'Ground Floor', 0x0C75F8, 'regular', 'NE Area', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(23, 'Construction Yard - Coin - NE Area - North of Puddle', 'Ground Floor', 0x0C75A8, 'regular', 'NE Area', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(24, 'Construction Yard - Coin - Inside Office - Floor #1', 'Office', 0x0C76C8, 'regular', 'Inside Office', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(25, 'Construction Yard - Coin - Inside Office - Floor #2', 'Office', 0x0C7678, 'regular', 'Inside Office', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(26, 'Construction Yard - Coin - Inside Office - Floor #3', 'Office', 0x0C7668, 'regular', 'Inside Office', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(27, 'Construction Yard - Coin - Inside Office - Floor #4', 'Office', 0x0C76B8, 'regular', 'Inside Office', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(28, 'Construction Yard - Coin - Inside Office - Bucket of Poison', 'Office', 0x0C7688, 'regular', 'Inside Office', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(29, 'Construction Yard - Coin - Ground Floor - Floating Zurg Robot #1', 'Ground Floor', 0x0C32AA, 'enemy', 'Ground Floor', (), ('Laser', 'Spin'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(30, 'Construction Yard - Coin - SW Area - Air Near Construction', 'Ground Floor', 0x0C7798, 'regular', 'SW Area', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(31, 'Construction Yard - Coin - Ground Floor - Floating Zurg Robot #2', 'Ground Floor', 0x0C3342, 'enemy', 'Ground Floor', (), ('Laser', 'Spin'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(32, 'Construction Yard - Coin - SW Area - Pallet', 'Ground Floor', 0x0C7658, 'regular', 'SW Area', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(33, 'Construction Yard - Coin - Ground Floor - Zurg Car #1', 'Ground Floor', 0x0C3F22, 'enemy', 'Ground Floor', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(34, 'Construction Yard - Coin - Ground Floor - Zurg Car #2', 'Ground Floor', 0x0C2F1A, 'enemy', 'Ground Floor', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(35, 'Construction Yard - Coin - Ground Floor - Bouncing Zurg Robot #1', 'Ground Floor', 0x0C35A2, 'enemy', 'Ground Floor', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(36, 'Construction Yard - Coin - Ground Floor - Bouncing Zurg Robot #2', 'Ground Floor', 0x0C3CC2, 'enemy', 'Ground Floor', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(37, 'Construction Yard - Coin - Ground Floor - Bouncing Zurg Robot #3', 'Ground Floor', 0x0C350A, 'enemy', 'Ground Floor', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(38, 'Construction Yard - Coin - Ground Floor - Bouncing Zurg Robot #4', 'Ground Floor', 0x0C3472, 'enemy', 'Ground Floor', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(39, 'Construction Yard - Coin - Ground Floor - Bouncing Zurg Robot #5', 'Ground Floor', 0x0C376A, 'enemy', 'Ground Floor', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(40, 'Construction Yard - Coin - Ground Floor - Bouncing Zurg Robot #6', 'Ground Floor', 0x0C33DA, 'enemy', 'Ground Floor', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(41, 'Construction Yard - Coin - Inside Office - Bouncing Zurg Robot #1', 'Office', 0x0C363A, 'enemy', 'Inside Office', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(42, 'Construction Yard - Coin - Inside Office - Desk', 'Office', 0x0C7698, 'regular', 'Inside Office', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(43, 'Construction Yard - Coin - Inside Office - Bouncing Zurg Robot #2', 'Office', 0x0C36D2, 'enemy', 'Inside Office', ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(44, 'Construction Yard - Coin - Inside Office - Paint Table', 'Office', 0x0C76A8, 'regular', 'Inside Office', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(45, 'Construction Yard - Coin - SW Area - Above Cinderblock', 'Ground Floor', 0x0C7608, 'regular', 'SW Area', ('Double Jump',), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(46, 'Construction Yard - Coin - Bulldozer - 1st Step', 'Bulldozer', 0x0C7618, 'regular', 'Bulldozer', ('Double Jump',), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(47, 'Construction Yard - Coin - Bulldozer - 2nd Step', 'Bulldozer', 0x0C7628, 'regular', 'Bulldozer', ('Double Jump',), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(48, 'Construction Yard - Coin - Bulldozer - 3rd Step', 'Bulldozer', 0x0C7638, 'regular', 'Bulldozer', ('Double Jump',), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(49, 'Construction Yard - Coin - Cement Pool - Floating Zurg Robot #1', 'Cement Pool', 0x0C4052, 'enemy', 'Cement Pool', ('Double Jump', 'Ledge Grab'), ('Laser',), (), ('Disc Launcher',), '', 'Double Jump + (Laser OR Disc Launcher)', ('Easy',), (), ('Laser',), (), ('Disc Launcher',), '', 'Laser OR Disc Launcher'),
+    Coin(50, 'Construction Yard - Coin - Cement Pool - Floating Zurg Robot #2', 'Cement Pool', 0x0C3FBA, 'enemy', 'Cement Pool', ('Double Jump', 'Ledge Grab'), ('Laser',), (), ('Disc Launcher',), '', 'Double Jump + (Laser OR Disc Launcher)', ('Easy',), (), ('Laser',), (), ('Disc Launcher',), '', 'Laser OR Disc Launcher'),
+    Coin(51, 'Construction Yard - Coin - Bulldozer - Lift Right Side', 'Bulldozer', 0x0C7598, 'regular', 'Bulldozer', ('Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(52, 'Construction Yard - Coin - Floor 1 - NE', 'Floor 1', 0x0C7568, 'regular', 'Floor 1', ('Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(53, 'Construction Yard - Coin - Floor 1 - SE', 'Floor 1', 0x0C7558, 'regular', 'Floor 1', ('Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(54, 'Construction Yard - Coin - Floor 1 - Between Crushers', 'Floor 1', 0x0C7728, 'regular', 'Floor 1', ('Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(55, 'Construction Yard - Coin - Floor 1 - SW', 'Floor 1', 0x0C7738, 'regular', 'Floor 1', ('Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(56, 'Construction Yard - Coin - Floor 1 - NW', 'Floor 1', 0x0C7758, 'regular', 'Floor 1', ('Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(57, 'Construction Yard - Coin - Floor 1 - Leap of Faith', 'Floor 1', 0x0C7748, 'regular', 'Floor 1', ('Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(58, 'Construction Yard - Coin - Floor 2 - Floating Zurg Robot', 'Floor 2', 0x0C2FB2, 'enemy', 'Floor 2', ('Stomp', 'Double Jump', 'Ledge Grab'), ('Laser', 'Spin'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Disc Launcher', ('Easy',), ('Double Jump',), ('Laser', 'Spin'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Disc Launcher'),
+    Coin(59, 'Construction Yard - Coin - Floor 2 - SW', 'Floor 2', 0x0C74F8, 'regular', 'Floor 2', ('Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(60, 'Construction Yard - Coin - Floor 2 - West Side', 'Floor 2', 0x0C7508, 'regular', 'Floor 2', ('Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(61, 'Construction Yard - Coin - Floor 3 - South Side #1', 'Floor 3', 0x0C75D8, 'regular', 'Floor 3', ('Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(62, 'Construction Yard - Coin - Floor 3 - South Side #2', 'Floor 3', 0x0C75C8, 'regular', 'Floor 3', ('Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(63, 'Construction Yard - Coin - Floor 3 - North Chains', 'Floor 3', 0x0C75B8, 'regular', 'Floor 3', ('Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(64, 'Construction Yard - Coin - Floor 3 - By Ear', 'Floor 3', 0x0C7518, 'regular', 'Floor 3', ('Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(65, 'Construction Yard - Coin - Floor 3 - Floating Zurg Robot #1', 'Floor 3', 0x0C304A, 'enemy', 'Floor 3', ('Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'), ('Laser', 'Spin'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Disc Launcher', ('Easy',), ('Double Jump',), ('Laser', 'Spin'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Disc Launcher'),
+    Coin(66, 'Construction Yard - Coin - Floor 3 - Floating Zurg Robot #2', 'Floor 3', 0x0C30E2, 'enemy', 'Floor 3', ('Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'), ('Laser', 'Visor'), (), ('Disc Launcher',), '', 'Laser + Visor OR Disc Launcher', ('Easy',), ('Double Jump',), ('Laser', 'Visor'), (), ('Disc Launcher',), '', 'Laser + Visor OR Disc Launcher'),
+    Coin(67, 'Construction Yard - Coin - Floor 3 - Floating Zurg Robot #3', 'Floor 3', 0x0C317A, 'enemy', 'Floor 3', ('Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'), ('Laser', 'Visor'), (), ('Disc Launcher',), '', 'Laser + Visor OR Disc Launcher', ('Easy',), ('Double Jump',), ('Laser', 'Visor'), (), ('Disc Launcher',), '', 'Laser + Visor OR Disc Launcher'),
+    Coin(68, 'Construction Yard - Coin - Floor 3 - NE High Up', 'Floor 3', 0x0C7528, 'regular', 'Floor 3', ('Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(69, 'Construction Yard - Coin - Floor 3 - Center High Up', 'Floor 3', 0x0C7538, 'regular', 'Floor 3', ('Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(70, 'Construction Yard - Coin - Boss Arena - East Side', 'Floor 4', 0x0C7548, 'regular', 'Boss Arena', ('Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(71, 'Construction Yard - Coin - Outside Office - On Roof', 'Office', 0x0C74A8, 'regular', 'Outside Office', ('Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(72, 'Construction Yard - Coin - Floor 4 - Jackhammer', 'Floor 4', 0x0C3D5A, 'miniboss', 'Floor 4', ('Double Jump', 'Ledge Grab', 'Stomp', 'Pole Climb'), (), ('Disc Launcher',), (), '', '', ('Easy',), ('Double Jump',), (), ('Disc Launcher',), (), '', ''),
 ]
 
-CONSTRUCTION_YARD_COINS: List[CoinEntry] = [
-    # Coin 1
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 2
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 3
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 4
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 5
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 6
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 7
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 8
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 9
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 10
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 11
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 12
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 13
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 14
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 15
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 16
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 17
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 18
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 19
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 20
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 21
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 22
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 23
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 24
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 25
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 26
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 27
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 28
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 29
-    ([], ['Laser', 'Spin'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 30
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 31
-    ([], ['Laser', 'Spin'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 32
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 33
-    ([], ['Laser', 'Spin'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 34
-    ([], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 35
-    ([], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 36
-    ([], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 37
-    ([], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 38
-    ([], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 39
-    ([], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 40
-    ([], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 41
-    ([], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 42
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 43
-    (['Double Jump', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 44
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 45
-    (['Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 46
-    (['Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 47
-    (['Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 48
-    (['Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 49
-    (['Double Jump', 'Ledge Grab', 'Laser'], [], [], [], 'Easy', ['Double Jump', 'Laser'], [], [], []),
-    # Coin 50
-    (['Double Jump', 'Ledge Grab', 'Laser'], [], [], [], 'Easy', ['Double Jump', 'Laser'], [], [], []),
-    # Coin 51
-    (['Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 52
-    (['Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 53
-    (['Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 54
-    (['Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 55
-    (['Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 56
-    (['Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 57
-    (['Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 58
-    (['Stomp', 'Double Jump', 'Ledge Grab'], ['Laser', 'Spin'], [], ['Disc Launcher'], 'Easy', ['Double Jump'], ['Laser', 'Spin'], [], ['Disc Launcher']),
-    # Coin 59
-    (['Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 60
-    (['Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 61
-    (['Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 62
-    (['Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 63
-    (['Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 64
-    (['Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 65
-    (['Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'], ['Laser', 'Spin'], [], ['Disc Launcher'], 'Easy', ['Double Jump'], ['Laser', 'Spin'], [], ['Disc Launcher']),
-    # Coin 66
-    (['Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'], ['Laser', 'Visor'], [], ['Disc Launcher'], 'Easy', ['Double Jump'], ['Laser', 'Visor'], [], ['Disc Launcher']),
-    # Coin 67
-    (['Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'], ['Laser', 'Visor'], [], ['Disc Launcher'], 'Easy', ['Double Jump'], ['Laser', 'Visor'], [], ['Disc Launcher']),
-    # Coin 68
-    (['Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 69
-    (['Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 70
-    (['Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 71
-    (['Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump'], [], [], []),
-    # Coin 72
-    (['Stomp', 'Double Jump', 'Ledge Grab', 'Pole Climb'], [], ['Disc Launcher'], [], 'Easy', ['Double Jump', 'Laser'], [], ['Disc Launcher'], []),
+ALLEYS_AND_GULLIES_COINS: List[Coin] = [
+    Coin(1, 'Alleys and Gullies - Coin - Central Hub - Stream #1 - Pipe Near Rex', 'Central Hub', 0x0C78C8, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(2, 'Alleys and Gullies - Coin - Central Hub - Stream #2', 'Central Hub', 0x0C78B8, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(3, 'Alleys and Gullies - Coin - Central Hub - Stream #3', 'Central Hub', 0x0C78A8, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(4, 'Alleys and Gullies - Coin - Central Hub - Stream #4', 'Central Hub', 0x0C7898, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(5, 'Alleys and Gullies - Coin - Central Hub - Stream #5', 'Central Hub', 0x0C7888, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(6, 'Alleys and Gullies - Coin - Central Hub - Stream #6', 'Central Hub', 0x0C7878, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(7, 'Alleys and Gullies - Coin - Central Hub - Stream #7', 'Central Hub', 0x0C7868, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(8, 'Alleys and Gullies - Coin - Central Hub - Stream #8', 'Central Hub', 0x0C7858, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(9, 'Alleys and Gullies - Coin - Central Hub - Stream #9', 'Central Hub', 0x0C7848, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(10, 'Alleys and Gullies - Coin - Central Hub - Stream #10', 'Central Hub', 0x0C7838, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(11, 'Alleys and Gullies - Coin - Central Hub - Stream #11', 'Central Hub', 0x0C7828, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(12, 'Alleys and Gullies - Coin - Central Hub - Stream #12', 'Central Hub', 0x0C7808, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(13, 'Alleys and Gullies - Coin - Central Hub - Stream #13', 'Central Hub', 0x0C77F8, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(14, 'Alleys and Gullies - Coin - Central Hub - Stream #14', 'Central Hub', 0x0C77E8, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(15, 'Alleys and Gullies - Coin - Central Hub - Stream #15 - Pipe Near Market', 'Central Hub', 0x0C77D8, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(16, 'Alleys and Gullies - Coin - Central Hub - Stream #16 - Side Pipe', 'Central Hub', 0x0C7818, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(17, 'Alleys and Gullies - Coin - Central Hub - Small Box', 'Central Hub', 0x0C78F8, 'regular', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(18, 'Alleys and Gullies - Coin - Central Hub - Plane #1', 'Central Hub', 0x0C3472, 'plane', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(19, 'Alleys and Gullies - Coin - Central Hub - Plane #2', 'Central Hub', 0x0C350A, 'plane', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(20, 'Alleys and Gullies - Coin - Central Hub - Plane #3', 'Central Hub', 0x0C2FB2, 'plane', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(21, 'Alleys and Gullies - Coin - Central Hub - Plane #4', 'Central Hub', 0x0C304A, 'plane', 'Central Hub', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(22, 'Alleys and Gullies - Coin - Central Hub - Bouncing Zurg Robot #1', 'Central Hub', 0x0C36D2, 'enemy', 'Central Hub', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(23, 'Alleys and Gullies - Coin - Central Hub - Bouncing Zurg Robot #2', 'Central Hub', 0x0C376A, 'enemy', 'Central Hub', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(24, 'Alleys and Gullies - Coin - Central Hub - Bouncing Zurg Robot #3', 'Central Hub', 0x0C35A2, 'enemy', 'Central Hub', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(25, 'Alleys and Gullies - Coin - Central Hub - Bouncing Zurg Robot #4', 'Central Hub', 0x0C363A, 'enemy', 'Central Hub', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(26, 'Alleys and Gullies - Coin - Central Hub - Zurg Boat #1', 'Central Hub', 0x0C2FAF, 'enemy', 'Central Hub', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(27, 'Alleys and Gullies - Coin - Central Hub - Plane Box #1', 'Central Hub', 0x0C2EB4, 'plane_box', 'Central Hub', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(28, 'Alleys and Gullies - Coin - Central Hub - Plane Box #2', 'Central Hub', 0x0C3374, 'plane_box', 'Central Hub', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(29, 'Alleys and Gullies - Coin - Central Hub - Zurg Boat #2', 'Central Hub', 0x0C3834, 'enemy', 'Central Hub', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(30, 'Alleys and Gullies - Coin - Rain River - Zurg Boat #1', 'Rain River', 0x0C38CC, 'enemy', 'Rain River', ('Push', 'Ledge Grab', 'Double Jump'), ('Laser', 'Spin'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Disc Launcher', ('Hard',), ('Push', 'Ledge Grab', 'Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(31, 'Alleys and Gullies - Coin - Rain River - Zurg Boat #2', 'Rain River', 0x0C31AC, 'enemy', 'Rain River', ('Push', 'Ledge Grab', 'Double Jump'), ('Laser', 'Spin'), (), ('Disc Launcher',), '', 'Laser OR Spin OR Disc Launcher', ('Hard',), ('Push', 'Ledge Grab', 'Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(32, 'Alleys and Gullies - Coin - Rain River - By Slinky #1', 'Rain River', 0x0C7658, 'regular', 'Rain River', ('Push', 'Ledge Grab', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(33, 'Alleys and Gullies - Coin - Rain River - By Slinky #2', 'Rain River', 0x0C7668, 'regular', 'Rain River', ('Push', 'Ledge Grab', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(34, 'Alleys and Gullies - Coin - Central Hub - Bigger Box', 'Central Hub', 0x0C7908, 'regular', 'Central Hub', (), ('Ledge Grab', 'Double Jump'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(35, 'Alleys and Gullies - Coin - Central Hub - Zipline Near Market #1', 'Central Hub', 0x0C7688, 'regular', 'Central Hub', (), ('Ledge Grab', 'Double Jump'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(36, 'Alleys and Gullies - Coin - Central Hub - Zipline Near Market #2', 'Central Hub', 0x0C7698, 'regular', 'Central Hub', ('Rope Sliding',), ('Ledge Grab', 'Double Jump'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(37, 'Alleys and Gullies - Coin - Central Hub - Dumpster Near Market', 'Central Hub', 0x0C76A8, 'regular', 'Central Hub', ('Rope Sliding',), ('Ledge Grab', 'Double Jump'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(38, 'Alleys and Gullies - Coin - Market - Plane #1', 'Market', 0x0C4182, 'plane', 'Market', ('Rope Sliding',), ('Ledge Grab', 'Double Jump'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(39, 'Alleys and Gullies - Coin - Market - Plane #2', 'Market', 0x0C421A, 'plane', 'Market', ('Rope Sliding',), ('Ledge Grab', 'Double Jump'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(40, 'Alleys and Gullies - Coin - Market - Plane Box', 'Market', 0x0C4084, 'plane_box', 'Market', ('Rope Sliding',), ('Ledge Grab', 'Double Jump', 'Laser', 'Spin', 'Stomp'), (), (), 'Ledge Grab OR Double Jump AND Laser OR Spin OR Stomp', '', (), (), (), (), (), '', ''),
+    Coin(41, 'Alleys and Gullies - Coin - Market - Bouncing Zurg Robot', 'Market', 0x0C4052, 'enemy', 'Market', ('Rope Sliding',), ('Ledge Grab', 'Double Jump', 'Laser', 'Spin', 'Stomp'), (), (), 'Ledge Grab OR Double Jump AND Laser OR Spin OR Stomp', '', (), (), (), (), (), '', ''),
+    Coin(42, 'Alleys and Gullies - Coin - Market - Propeller Zurg Robot #1', 'Market', 0x0C3C2A, 'enemy', 'Market', ('Rope Sliding',), ('Ledge Grab', 'Double Jump', 'Laser', 'Spin'), (), (), 'Ledge Grab OR Double Jump AND Laser OR Spin', '', (), (), (), (), (), '', ''),
+    Coin(43, 'Alleys and Gullies - Coin - Market - Zurg Soldier', 'Market', 0x0C42B2, 'enemy', 'Market', ('Ledge Grab', 'Double Jump', 'Rope Sliding', 'Pole Vault'), ('Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Spin OR Stomp OR Disc Launcher', ('Easy',), ('Ledge Grab', 'Double Jump', 'Rope Sliding'), ('Spin', 'Stomp'), (), ('Disc Launcher',), '', 'Spin OR Stomp OR Disc Launcher'),
+    Coin(44, 'Alleys and Gullies - Coin - Market - Propeller Zurg Robot #2', 'Market', 0x0C3FBA, 'enemy', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Laser'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(45, 'Alleys and Gullies - Coin - Market - Propeller Zurg Robot #3', 'Market', 0x0C3F22, 'enemy', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab'), ('Laser', 'Visor'), (), ('Disc Launcher',), '', 'Laser + Visor OR Disc Launcher', (), (), (), (), (), '', ''),
+    Coin(46, "Alleys and Gullies - Coin - Market - Hamm's Umbrella #1", 'Market', 0x0C76D8, 'regular', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'), (), ('Rocket Boots',), (), '', '', ('Easy',), ('Double Jump', 'Rope Sliding', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(47, "Alleys and Gullies - Coin - Market - Hamm's Umbrella #2", 'Market', 0x0C7748, 'regular', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'), (), ('Rocket Boots',), (), '', '', ('Easy',), ('Double Jump', 'Rope Sliding', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(48, "Alleys and Gullies - Coin - Market - Hamm's Umbrella #3", 'Market', 0x0C7738, 'regular', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'), (), ('Rocket Boots',), (), '', '', ('Easy',), ('Double Jump', 'Rope Sliding', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(49, "Alleys and Gullies - Coin - Market - Hamm's Umbrella #4", 'Market', 0x0C7728, 'regular', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'), (), ('Rocket Boots',), (), '', '', ('Easy',), ('Double Jump', 'Rope Sliding', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(50, "Alleys and Gullies - Coin - Market - Hamm's Umbrella #5", 'Market', 0x0C7718, 'regular', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'), (), ('Rocket Boots',), (), '', '', ('Easy',), ('Double Jump', 'Rope Sliding', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(51, "Alleys and Gullies - Coin - Market - Hamm's Umbrella #6", 'Market', 0x0C7708, 'regular', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'), (), ('Rocket Boots',), (), '', '', ('Easy',), ('Double Jump', 'Rope Sliding', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(52, "Alleys and Gullies - Coin - Market - Hamm's Umbrella #7", 'Market', 0x0C76F8, 'regular', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'), (), ('Rocket Boots',), (), '', '', ('Easy',), ('Double Jump', 'Rope Sliding', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(53, "Alleys and Gullies - Coin - Market - Hamm's Umbrella #8", 'Market', 0x0C76E8, 'regular', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'), (), ('Rocket Boots',), (), '', '', ('Easy',), ('Double Jump', 'Rope Sliding', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(54, 'Alleys and Gullies - Coin - Market - Awning above Melons', 'Market', 0x0C76B8, 'regular', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'), (), ('Rocket Boots',), (), '', '', ('Easy',), ('Double Jump', 'Rope Sliding', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(55, 'Alleys and Gullies - Coin - Market - 2nd Umbrella #1', 'Market', 0x0C7758, 'regular', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'), (), (), (), 'Easy=Stomp + Double Jump + Ledge Grab + Rope Sliding\nHard=Double Jump + Ledge Grab + Rope Sliding', ''),
+    Coin(56, 'Alleys and Gullies - Coin - Market - 2nd Umbrella #2', 'Market', 0x0C77C8, 'regular', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'), (), (), (), 'Easy=Stomp + Double Jump + Ledge Grab + Rope Sliding\nHard=Double Jump + Ledge Grab + Rope Sliding', ''),
+    Coin(57, 'Alleys and Gullies - Coin - Market - 2nd Umbrella #3', 'Market', 0x0C77B8, 'regular', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'), (), (), (), 'Easy=Stomp + Double Jump + Ledge Grab + Rope Sliding\nHard=Double Jump + Ledge Grab + Rope Sliding', ''),
+    Coin(58, 'Alleys and Gullies - Coin - Market - 2nd Umbrella #4', 'Market', 0x0C77A8, 'regular', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'), (), (), (), 'Easy=Stomp + Double Jump + Ledge Grab + Rope Sliding\nHard=Double Jump + Ledge Grab + Rope Sliding', ''),
+    Coin(59, 'Alleys and Gullies - Coin - Market - 2nd Umbrella #5', 'Market', 0x0C7798, 'regular', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'), (), (), (), 'Easy=Stomp + Double Jump + Ledge Grab + Rope Sliding\nHard=Double Jump + Ledge Grab + Rope Sliding', ''),
+    Coin(60, 'Alleys and Gullies - Coin - Market - 2nd Umbrella #6', 'Market', 0x0C7788, 'regular', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'), (), (), (), 'Easy=Stomp + Double Jump + Ledge Grab + Rope Sliding\nHard=Double Jump + Ledge Grab + Rope Sliding', ''),
+    Coin(61, 'Alleys and Gullies - Coin - Market - 2nd Umbrella #7', 'Market', 0x0C7778, 'regular', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'), (), (), (), 'Easy=Stomp + Double Jump + Ledge Grab + Rope Sliding\nHard=Double Jump + Ledge Grab + Rope Sliding', ''),
+    Coin(62, 'Alleys and Gullies - Coin - Market - 2nd Umbrella #8', 'Market', 0x0C7768, 'regular', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'), (), (), (), 'Easy=Stomp + Double Jump + Ledge Grab + Rope Sliding\nHard=Double Jump + Ledge Grab + Rope Sliding', ''),
+    Coin(63, 'Alleys and Gullies - Coin - Market - Awning Near Token', 'Market', 0x0C76C8, 'regular', 'Market', ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'), (), (), (), 'Easy=Stomp + Double Jump + Ledge Grab + Rope Sliding\nHard=Double Jump + Ledge Grab + Rope Sliding', ''),
+    Coin(64, 'Alleys and Gullies - Coin - Central Hub - Dumpster Near Ladders', 'Central Hub', 0x0C7478, 'regular', 'Central Hub', ('Visor',), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(65, 'Alleys and Gullies - Coin - Floor 1 Balconies - SE Ladder #1', 'Floor 1 Balconies', 0x0C7488, 'regular', 'Floor 1 Balconies', ('Visor', 'Pole Climb'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(66, 'Alleys and Gullies - Coin - Floor 1 Balconies - SE Ladder #2', 'Floor 1 Balconies', 0x0C7498, 'regular', 'Floor 1 Balconies', ('Visor', 'Pole Climb'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(67, 'Alleys and Gullies - Coin - Floor 1 Balconies - SE Guardrail', 'Floor 1 Balconies', 0x0C74A8, 'regular', 'Floor 1 Balconies', ('Visor', 'Pole Climb'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(68, 'Alleys and Gullies - Coin - Floor 1 Balconies - 1st Zipline #1', 'Floor 1 Balconies', 0x0C74B8, 'regular', 'Floor 1 Balconies', ('Visor', 'Pole Climb'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(69, 'Alleys and Gullies - Coin - Floor 1 Balconies - 1st Zipline #2', 'Floor 1 Balconies', 0x0C74C8, 'regular', 'Floor 1 Balconies', ('Visor', 'Pole Climb', 'Rope Sliding'), (), ('Grappling Hook',), (), '', '', ('Easy',), ('Visor', 'Pole Climb', 'Double Jump'), (), ('Grappling Hook',), (), '', ''),
+    Coin(70, 'Alleys and Gullies - Coin - Floor 1 Balconies - N Guardrail #1', 'Floor 1 Balconies', 0x0C74D8, 'regular', 'Floor 1 Balconies', ('Visor', 'Pole Climb', 'Rope Sliding'), (), ('Grappling Hook',), (), '', '', ('Easy',), ('Visor', 'Pole Climb', 'Double Jump'), (), ('Grappling Hook',), (), '', ''),
+    Coin(71, 'Alleys and Gullies - Coin - Floor 1 Balconies - Bouncing Zurg Robot', 'Floor 1 Balconies', 0x0C3342, 'enemy', 'Floor 1 Balconies', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Laser', 'Spin', 'Stomp'), ('Grappling Hook',), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher', ('Easy',), ('Visor', 'Pole Climb', 'Double Jump'), ('Laser', 'Spin', 'Stomp'), ('Grappling Hook',), ('Disc Launcher',), '', 'Laser OR Spin OR Stomp OR Disc Launcher'),
+    Coin(72, 'Alleys and Gullies - Coin - Floor 1 Balconies - N Guardrail #2', 'Floor 1 Balconies', 0x0C74E8, 'regular', 'Floor 1 Balconies', ('Visor', 'Pole Climb', 'Rope Sliding'), (), ('Grappling Hook',), (), '', '', ('Easy',), ('Visor', 'Pole Climb', 'Double Jump'), (), ('Grappling Hook',), (), '', ''),
+    Coin(73, 'Alleys and Gullies - Coin - Floor 1 Balconies - N Windowsill', 'Floor 1 Balconies', 0x0C74F8, 'regular', 'Floor 1 Balconies', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(74, 'Alleys and Gullies - Coin - Floor 1 Balconies - 2nd Zipline', 'Floor 1 Balconies', 0x0C7508, 'regular', 'Floor 1 Balconies', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), ('Grappling Hook',), (), '', ''),
+    Coin(75, 'Alleys and Gullies - Coin - Floor 1 Balconies - SW Guardrail', 'Floor 1 Balconies', 0x0C7518, 'regular', 'Floor 1 Balconies', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(76, 'Alleys and Gullies - Coin - Floor 2 Balconies - SW Ladder to 2nd Floor', 'Central Hub', 0x0C7538, 'regular', 'Floor 2 Balconies', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(77, 'Alleys and Gullies - Coin - Central Hub - Tall Trash Can', 'Floor 2 Balconies', 0x0C7528, 'regular', 'Central Hub', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(78, 'Alleys and Gullies - Coin - Floor 2 Balconies - SW Balcony', 'Floor 2 Balconies', 0x0C7548, 'regular', 'Floor 2 Balconies', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(79, 'Alleys and Gullies - Coin - Floor 2 Balconies - Bouncing Zurg Robot #1', 'Floor 2 Balconies', 0x0C317A, 'enemy', 'Floor 2 Balconies', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump', 'Laser', 'Spin'), ('Grappling Hook',), (), 'Laser OR Spin AND Ledge Grab OR Double Jump', '', (), (), (), (), (), '', ''),
+    Coin(80, 'Alleys and Gullies - Coin - Floor 2 Balconies - SW Guardrail', 'Floor 2 Balconies', 0x0C7558, 'regular', 'Floor 2 Balconies', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(81, 'Alleys and Gullies - Coin - Floor 2 Balconies - 1st Zipline #1', 'Floor 2 Balconies', 0x0C7568, 'regular', 'Floor 2 Balconies', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(82, 'Alleys and Gullies - Coin - Floor 2 Balconies - 1st Zipline #2', 'Floor 2 Balconies', 0x0C7578, 'regular', 'Floor 2 Balconies', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(83, 'Alleys and Gullies - Coin - Floor 2 Balconies - Bouncing Zurg Robot #2', 'Floor 2 Balconies', 0x0C32AA, 'enemy', 'Floor 2 Balconies', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump', 'Laser', 'Spin'), ('Grappling Hook',), (), 'Laser OR Spin AND Ledge Grab OR Double Jump', '', (), (), (), (), (), '', ''),
+    Coin(84, 'Alleys and Gullies - Coin - Floor 2 Balconies - AC Unit', 'Floor 2 Balconies', 0x0C7588, 'regular', 'Floor 2 Balconies', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(85, 'Alleys and Gullies - Coin - Floor 2 Balconies - SE Pipe Climb #1', 'Floor 2 Balconies', 0x0C7938, 'regular', 'Floor 2 Balconies', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(86, 'Alleys and Gullies - Coin - Floor 2 Balconies - SE Pipe Climb #2', 'Floor 2 Balconies', 0x0C7928, 'regular', 'Floor 2 Balconies', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(87, 'Alleys and Gullies - Coin - Floor 2 Balconies - SE Pipe Climb #3', 'Floor 2 Balconies', 0x0C7918, 'regular', 'Floor 2 Balconies', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(88, 'Alleys and Gullies - Coin - Floor 3 Windowsills - 2nd Zipline #1', 'Floor 3 Balconies', 0x0C7598, 'regular', 'Floor 3 Windowsills', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(89, 'Alleys and Gullies - Coin - Floor 3 Windowsills - 2nd Zipline #2', 'Floor 3 Balconies', 0x0C75A8, 'regular', 'Floor 3 Windowsills', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(90, 'Alleys and Gullies - Coin - Floor 3 Windowsills - 2nd Zipline #3', 'Floor 3 Balconies', 0x0C75B8, 'regular', 'Floor 3 Windowsills', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(91, 'Alleys and Gullies - Coin - Floor 3 Windowsills - 3rd Zipline #1', 'Floor 3 Balconies', 0x0C75C8, 'regular', 'Floor 3 Windowsills', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(92, 'Alleys and Gullies - Coin - Floor 3 Windowsills - 3rd Zipline #2', 'Floor 3 Balconies', 0x0C75D8, 'regular', 'Floor 3 Windowsills', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(93, 'Alleys and Gullies - Coin - Floor 3 Windowsills - 3rd Zipline #3', 'Floor 3 Balconies', 0x0C75E8, 'regular', 'Floor 3 Windowsills', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(94, 'Alleys and Gullies - Coin - Floor 3 Windowsills - SW Pole Climb #1', 'Floor 3 Balconies', 0x0C75F8, 'regular', 'Floor 3 Windowsills', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(95, 'Alleys and Gullies - Coin - Floor 3 Windowsills - SW Pole Climb #2', 'Floor 3 Balconies', 0x0C7608, 'regular', 'Floor 3 Windowsills', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(96, 'Alleys and Gullies - Coin - Floor 3 Windowsills - SW Pole Climb #3', 'Floor 3 Balconies', 0x0C7618, 'regular', 'Floor 3 Windowsills', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(97, 'Alleys and Gullies - Coin - Floor 3 Windowsills - Pole to Rain Gutter', 'Floor 3 Balconies', 0x0C7628, 'regular', 'Floor 3 Windowsills', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(98, 'Alleys and Gullies - Coin - Floor 3 Windowsills - Rain Gutter Jump #1', 'Floor 3 Balconies', 0x0C7638, 'regular', 'Floor 3 Windowsills', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(99, 'Alleys and Gullies - Coin - Floor 3 Windowsills - Rain Gutter Jump #2', 'Floor 3 Balconies', 0x0C7648, 'regular', 'Floor 3 Windowsills', ('Visor', 'Pole Climb', 'Rope Sliding'), ('Ledge Grab', 'Double Jump'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(100, 'Alleys and Gullies - Coin - Boss Arena - Clowntop', 'Boss Arena', 0x0C307C, 'miniboss', 'Boss Arena', ('Visor', 'Pole Climb', 'Rope Sliding', 'Double Jump'), ('Laser', 'Spin', 'Stomp'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(101, 'Alleys and Gullies - Coin - Boss Arena - Corner', 'Boss Arena', 0x0C7678, 'regular', 'Boss Arena', ('Visor', 'Pole Climb', 'Rope Sliding', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(102, 'Alleys and Gullies - Coin - Rain River - Near Duck #1', 'Rain River', 0x0C78E8, 'regular', 'Rain River', ('Push', 'Ledge Grab', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(103, 'Alleys and Gullies - Coin - Rain River - Near Duck #2', 'Rain River', 0x0C78D8, 'regular', 'Rain River', ('Push', 'Ledge Grab', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
 ]
 
-ALLEYS_AND_GULLIES_COINS: List[CoinEntry] = [
-    # Coin 1
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 2
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 3
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 4
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 5
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 6
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 7
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 8
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 9
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 10
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 11
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 12
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 13
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 14
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 15
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 16
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 17
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 18
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 19
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 20
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 21
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 22
-    ([], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 23
-    ([], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 24
-    ([], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 25
-    ([], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 26
-    ([], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 27
-    ([], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 28
-    ([], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 29
-    ([], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 30
-    (['Push', 'Ledge Grab', 'Double Jump'], ['Laser', 'Spin'], [], ['Disc Launcher'], 'Hard', ['Push', 'Ledge Grab', 'Double Jump', 'Stomp'], [], [], []),
-    # Coin 31
-    (['Push', 'Ledge Grab', 'Double Jump'], ['Laser', 'Spin'], [], ['Disc Launcher'], 'Hard', ['Push', 'Ledge Grab', 'Double Jump', 'Stomp'], [], [], []),
-    # Coin 32
-    (['Push', 'Ledge Grab', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 33
-    (['Push', 'Ledge Grab', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 34
-    ([], ['Ledge Grab', 'Double Jump'], [], [], None, [], [], [], []),
-    # Coin 35
-    ([], ['Ledge Grab', 'Double Jump'], [], [], None, [], [], [], []),
-    # Coin 36
-    (['Rope Sliding'], ['Ledge Grab', 'Double Jump'], [], [], None, [], [], [], []),
-    # Coin 37
-    (['Rope Sliding'], ['Ledge Grab', 'Double Jump'], [], [], None, [], [], [], []),
-    # Coin 38
-    (['Rope Sliding'], ['Ledge Grab', 'Double Jump'], [], [], None, [], [], [], []),
-    # Coin 39
-    (['Rope Sliding'], ['Ledge Grab', 'Double Jump'], [], [], None, [], [], [], []),
-    # Coin 40
-    (['Rope Sliding'], ['Ledge Grab', 'Double Jump', 'Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 41
-    (['Rope Sliding'], ['Ledge Grab', 'Double Jump', 'Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 42
-    (['Rope Sliding'], ['Ledge Grab', 'Double Jump', 'Laser', 'Spin'], [], [], None, [], [], [], []),
-    # Coin 43
-    (['Ledge Grab', 'Double Jump', 'Rope Sliding', 'Pole Vault'], ['Spin', 'Stomp'], [], ['Disc Launcher'], 'Easy', ['Ledge Grab', 'Double Jump', 'Rope Sliding'], ['Spin', 'Stomp'], [], ['Disc Launcher']),
-    # Coin 44
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Laser'], [], [], [], None, [], [], [], []),
-    # Coin 45
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab'], ['Laser', 'Visor'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 46
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Rope Sliding', 'Ledge Grab'], [], [], []),
-    # Coin 47
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Rope Sliding', 'Ledge Grab'], [], [], []),
-    # Coin 48
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Rope Sliding', 'Ledge Grab'], [], [], []),
-    # Coin 49
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Rope Sliding', 'Ledge Grab'], [], [], []),
-    # Coin 50
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Rope Sliding', 'Ledge Grab'], [], [], []),
-    # Coin 51
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Rope Sliding', 'Ledge Grab'], [], [], []),
-    # Coin 52
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Rope Sliding', 'Ledge Grab'], [], [], []),
-    # Coin 53
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Rope Sliding', 'Ledge Grab'], [], [], []),
-    # Coin 54
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'], [], [], [], 'Easy, Hard', ['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'], [], [], []),
-    # Coin 55
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'], [], [], [], 'Easy, Hard', ['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'], [], [], []),
-    # Coin 56
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'], [], [], [], 'Easy, Hard', ['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'], [], [], []),
-    # Coin 57
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'], [], [], [], 'Easy, Hard', ['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'], [], [], []),
-    # Coin 58
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'], [], [], [], 'Easy, Hard', ['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'], [], [], []),
-    # Coin 59
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'], [], [], [], 'Easy, Hard', ['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'], [], [], []),
-    # Coin 60
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'], [], [], [], 'Easy, Hard', ['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'], [], [], []),
-    # Coin 61
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'], [], [], [], 'Easy, Hard', ['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'], [], [], []),
-    # Coin 62
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'], [], [], [], 'Easy, Hard', ['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'], [], [], []),
-    # Coin 63
-    (['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Rope Sliding', 'Ledge Grab'], [], [], []),
-    # Coin 64
-    (['Visor'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 65
-    (['Visor', 'Pole Climb'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 66
-    (['Visor', 'Pole Climb'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 67
-    (['Visor', 'Pole Climb'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 68
-    (['Visor', 'Pole Climb'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 69
-    (['Visor', 'Pole Climb', 'Rope Sliding'], [], ['Grappling Hook'], [], 'Easy', ['Visor', 'Pole Climb', 'Double Jump'], [], ['Grappling Hook'], []),
-    # Coin 70
-    (['Visor', 'Pole Climb', 'Rope Sliding'], [], ['Grappling Hook'], [], 'Easy', ['Visor', 'Pole Climb', 'Double Jump'], [], ['Grappling Hook'], []),
-    # Coin 71
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Laser', 'Spin', 'Stomp'], ['Grappling Hook'], ['Disc Launcher'], 'Easy', ['Visor', 'Pole Climb', 'Double Jump'], ['Laser', 'Spin', 'Stomp'], ['Grappling Hook'], ['Disc Launcher']),
-    # Coin 72
-    (['Visor', 'Pole Climb', 'Rope Sliding'], [], ['Grappling Hook'], [], 'Easy', ['Visor', 'Pole Climb', 'Double Jump'], [], ['Grappling Hook'], []),
-    # Coin 73
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 74
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], 'Hard', ['Visor', 'Pole Climb', 'Double Jump'], [], ['Grappling Hook'], []),
-    # Coin 75
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 76
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 77
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 78
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 79
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump', 'Laser', 'Spin'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 80
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 81
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 82
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 83
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump', 'Laser', 'Spin'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 84
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 85
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 86
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 87
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 88
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 89
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 90
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 91
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 92
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 93
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 94
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 95
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 96
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 97
-    (['Visor', 'Pole Climb', 'Rope Sliding'], ['Ledge Grab', 'Double Jump'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 98
-    (['Visor', 'Pole Climb', 'Rope Sliding', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 99
-    (['Visor', 'Pole Climb', 'Rope Sliding', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 100
-    (['Visor', 'Pole Climb', 'Rope Sliding', 'Double Jump'], ['Laser', 'Spin', 'Stomp'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 101
-    (['Visor', 'Pole Climb', 'Rope Sliding', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 102
-    (['Push', 'Ledge Grab', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 103
-    (['Push', 'Ledge Grab', 'Double Jump'], [], [], [], None, [], [], [], []),
+ALS_TOY_BARN_COINS: List[Coin] = [
+    Coin(1, "Al's Toy Barn - Coin - Race Hallway - Trampoline", 'Race Hallway', 0x0C75E8, 'regular', 'Race Hallway', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(2, "Al's Toy Barn - Coin - Toy Aisles - Box near Basketballs", 'Toy Aisles', 0x0C7628, 'regular', 'Toy Aisles', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(3, "Al's Toy Barn - Coin - Toy Aisles - Hula Hoop Aisle", 'Toy Aisles', 0x0C7668, 'regular', 'Toy Aisles', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(4, "Al's Toy Barn - Coin - Toy Aisles - Plane #1", 'Toy Aisles', 0x0C3AFA, 'plane', 'Toy Aisles', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(5, "Al's Toy Barn - Coin - Toy Aisles - Plane #2", 'Toy Aisles', 0x0C3B92, 'plane', 'Toy Aisles', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(6, "Al's Toy Barn - Coin - Checkout - Plane #1", 'Checkout', 0x0C3932, 'plane', 'Checkout', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(7, "Al's Toy Barn - Coin - Checkout - Plane #2", 'Checkout', 0x0C39CA, 'plane', 'Checkout', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(8, "Al's Toy Barn - Coin - Checkout - Plane Box", 'Checkout', 0x0C389A, 'plane_box', 'Checkout', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), 'Any 1 of OR Movement & Gadgets', '', (), (), (), (), (), '', ''),
+    Coin(9, "Al's Toy Barn - Coin - Toy Aisles - Plane Box", 'Toy Aisles', 0x0C3A62, 'plane_box', 'Toy Aisles', (), ('Laser', 'Spin', 'Stomp'), (), ('Disc Launcher',), 'Any 1 of OR Movement & Gadgets', '', (), (), (), (), (), '', ''),
+    Coin(10, "Al's Toy Barn - Coin - Checkout - Floating Zurg Robot #1", 'Checkout', 0x0C3802, 'enemy', 'Checkout', (), ('Laser', 'Spin'), (), ('Disc Launcher',), 'Any 1 of OR Movement & Gadgets', '', (), (), (), (), (), '', ''),
+    Coin(11, "Al's Toy Barn - Coin - Checkout - Floating Zurg Robot #2", 'Checkout', 0x0C3C2A, 'enemy', 'Checkout', (), ('Laser', 'Spin'), (), ('Disc Launcher',), 'Any 1 of OR Movement & Gadgets', '', (), (), (), (), (), '', ''),
+    Coin(12, "Al's Toy Barn - Coin - Race Hallway - Floating Zurg Robot", 'Race Hallway', 0x0C3CC2, 'enemy', 'Race Hallway', (), ('Laser', 'Spin'), (), ('Disc Launcher',), 'Any 1 of OR Movement & Gadgets', '', (), (), (), (), (), '', ''),
+    Coin(13, "Al's Toy Barn - Coin - Checkout - Propeller Zurg Robot #1", 'Checkout', 0x0C40EA, 'enemy', 'Checkout', (), ('Laser', 'Spin'), (), ('Disc Launcher',), 'Any 1 of OR Movement & Gadgets', '', (), (), (), (), (), '', ''),
+    Coin(14, "Al's Toy Barn - Coin - Outside Office - Propeller Zurg Robot", 'Office', 0x0C4052, 'enemy', 'Outside Office', (), ('Laser', 'Spin'), (), ('Disc Launcher',), 'Any 1 of OR Movement & Gadgets', '', (), (), (), (), (), '', ''),
+    Coin(15, "Al's Toy Barn - Coin - Shipping - Floating Zurg Robot #1", 'Shipping', 0x0C3DF2, 'enemy', 'Shipping', (), ('Laser', 'Spin'), (), ('Disc Launcher',), 'Any 1 of OR Movement & Gadgets', '', (), (), (), (), (), '', ''),
+    Coin(16, "Al's Toy Barn - Coin - Shipping - Floating Zurg Robot #2", 'Shipping', 0x0C3E8A, 'enemy', 'Shipping', (), ('Laser', 'Spin'), (), ('Disc Launcher',), 'Any 1 of OR Movement & Gadgets', '', (), (), (), (), (), '', ''),
+    Coin(17, "Al's Toy Barn - Coin - Office - Floating Zurg Robot", 'Office', 0x0C3D5A, 'enemy', 'Office', (), ('Laser', 'Spin'), (), ('Disc Launcher',), 'Any 1 of OR Movement & Gadgets', '', (), (), (), (), (), '', ''),
+    Coin(18, "Al's Toy Barn - Coin - Toy Aisles - Last Aisle in Wall", 'Toy Aisles', 0x0C7688, 'regular', 'Toy Aisles', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(19, "Al's Toy Barn - Coin - Toy Aisles - End of Aisles by Chick", 'Toy Aisles', 0x0C7698, 'regular', 'Toy Aisles', ('Double Jump', 'Ledge Grab', 'Push'), (), (), (), '', '', ('Hard',), ('Double Jump',), (), ('Rocket Boots',), (), '', ''),
+    Coin(20, "Al's Toy Barn - Coin - Ventilation Shaft - Floating Zurg Robot", 'Toy Aisles', 0x0C3F22, 'enemy', 'Ventilation Shaft', ('Double Jump', 'Ledge Grab', 'Push'), ('Laser', 'Spin'), (), ('Disc Launcher',), 'Any 1 of OR Movement & Gadgets', '', ('Hard',), ('Double Jump',), ('Laser', 'Spin'), ('Rocket Boots',), ('Disc Launcher',), 'Any 1 of OR Movement & Gadgets', ''),
+    Coin(21, "Al's Toy Barn - Coin - Toy Aisles - Bike Shelves #1", 'Toy Aisles', 0x0C7638, 'regular', 'Toy Aisles', ('Pole Climb',), ('Ledge Grab', 'Double Jump'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(22, "Al's Toy Barn - Coin - Toy Aisles - Bike Shelves #2", 'Toy Aisles', 0x0C7648, 'regular', 'Toy Aisles', ('Pole Climb',), ('Ledge Grab', 'Double Jump'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(23, "Al's Toy Barn - Coin - Toy Aisles - Bike Shelves #3", 'Toy Aisles', 0x0C7658, 'regular', 'Toy Aisles', ('Pole Climb',), ('Ledge Grab', 'Double Jump'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(24, "Al's Toy Barn - Coin - Office - Chair", 'Office', 0x0C76C8, 'regular', 'Office', (), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), '(Double Jump + Ledge Grab) OR Pole Climb', '', (), (), (), (), (), '', ''),
+    Coin(25, "Al's Toy Barn - Coin - Office - Table #1", 'Office', 0x0C76B8, 'regular', 'Office', (), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), '(Double Jump + Ledge Grab) OR Pole Climb', '', (), (), (), (), (), '', ''),
+    Coin(26, "Al's Toy Barn - Coin - Office - Table #2", 'Office', 0x0C76A8, 'regular', 'Office', (), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), '(Double Jump + Ledge Grab) OR Pole Climb', '', (), (), (), (), (), '', ''),
+    Coin(27, "Al's Toy Barn - Coin - Office - Drawer Lock #1", 'Office', 0x0C3342, 'enemy', 'Office', (), ('Double Jump', 'Ledge Grab', 'Pole Climb'), ('Disc Launcher',), (), '', 'Disc Launcher + ((Double Jump + Ledge Grab) OR Pole Climb)', (), (), (), (), (), '', ''),
+    Coin(28, "Al's Toy Barn - Coin - Office - Drawer Lock #2", 'Office', 0x0C33DA, 'enemy', 'Office', (), ('Double Jump', 'Ledge Grab', 'Pole Climb'), ('Disc Launcher',), (), '', 'Disc Launcher + ((Double Jump + Ledge Grab) OR Pole Climb)', (), (), (), (), (), '', ''),
+    Coin(29, "Al's Toy Barn - Coin - Office - Drawer Lock #3", 'Office', 0x0C3472, 'enemy', 'Office', (), ('Double Jump', 'Ledge Grab', 'Pole Climb'), ('Disc Launcher',), (), '', 'Disc Launcher + ((Double Jump + Ledge Grab) OR Pole Climb)', (), (), (), (), (), '', ''),
+    Coin(30, "Al's Toy Barn - Coin - Shipping - Hover Boot Path #1", 'Shipping', 0x0C76D8, 'regular', 'Shipping', (), (), ('Hover Boots',), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(31, "Al's Toy Barn - Coin - Shipping - Hover Boot Path #2", 'Shipping', 0x0C76E8, 'regular', 'Shipping', (), (), ('Hover Boots',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(32, "Al's Toy Barn - Coin - Shipping - Hover Boot Path #3", 'Shipping', 0x0C76F8, 'regular', 'Shipping', (), (), ('Hover Boots',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(33, "Al's Toy Barn - Coin - Shipping - Hover Boot Path #4", 'Shipping', 0x0C7708, 'regular', 'Shipping', (), (), ('Hover Boots',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(34, "Al's Toy Barn - Coin - Shipping - Little Box on Big Box Tower", 'Shipping', 0x0C7718, 'regular', 'Shipping', ('Double Jump',), (), ('Hover Boots',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(35, "Al's Toy Barn - Coin - Shipping - Tall Stack near Battery", 'Shipping', 0x0C7768, 'regular', 'Shipping', ('Double Jump',), (), ('Hover Boots',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(36, "Al's Toy Barn - Coin - Shipping - Tallest Stack near Chick", 'Shipping', 0x0C7778, 'regular', 'Shipping', ('Double Jump',), (), ('Hover Boots',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(37, "Al's Toy Barn - Coin - Shipping - Middle Box", 'Shipping', 0x0C7758, 'regular', 'Shipping', (), ('Double Jump',), (), ('Hover Boots',), 'Any 1 of OR Movement & Gadgets', '', (), (), (), (), (), '', ''),
+    Coin(38, "Al's Toy Barn - Coin - Shipping - Floor Box near Rex", 'Shipping', 0x0C7748, 'regular', 'Shipping', (), ('Double Jump',), (), ('Hover Boots',), 'Any 1 of OR Movement & Gadgets', '', (), (), (), (), (), '', ''),
+    Coin(39, "Al's Toy Barn - Coin - Shipping - Box in Wall near Rex", 'Shipping', 0x0C7738, 'regular', 'Shipping', (), ('Ledge Grab', 'Double Jump'), (), ('Hover Boots',), '(Double Jump + Ledge Grab) OR Hover Boots', '', (), (), (), (), (), '', ''),
+    Coin(40, "Al's Toy Barn - Coin - Shipping - Boss Arena Entry", 'Shipping', 0x0C7788, 'regular', 'Shipping', (), ('Ledge Grab', 'Double Jump'), (), ('Hover Boots',), '(Double Jump + Ledge Grab) OR Hover Boots', '', (), (), (), (), (), '', ''),
+    Coin(41, "Al's Toy Barn - Coin - Boss Arena - Near Battery", 'Boss Arena', 0x0C7798, 'regular', 'Boss Arena', ('Pole Climb', 'Ledge Grab'), ('Double Jump',), (), ('Hover Boots',), '(Double Jump OR Hover Boots) + Pole Climb + Ledge Grab', '', (), (), (), (), (), '', ''),
+    Coin(42, "Al's Toy Barn - Coin - Boss Arena - Near Door", 'Boss Arena', 0x0C77A8, 'regular', 'Boss Arena', ('Pole Climb', 'Ledge Grab'), ('Double Jump',), (), ('Hover Boots',), '(Double Jump OR Hover Boots) + Pole Climb + Ledge Grab', '', (), (), (), (), (), '', ''),
+    Coin(43, "Al's Toy Barn - Coin - Boss Arena - Corner Opposite Battery", 'Boss Arena', 0x0C77B8, 'regular', 'Boss Arena', ('Pole Climb', 'Ledge Grab'), ('Double Jump',), (), ('Hover Boots',), '(Double Jump OR Hover Boots) + Pole Climb + Ledge Grab', '', (), (), (), (), (), '', ''),
+    Coin(44, "Al's Toy Barn - Coin - Race Hallway - Above Merchandise #1", 'Race Hallway', 0x0C75F8, 'regular', 'Race Hallway', (), ('Double Jump', 'Ledge Grab'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(45, "Al's Toy Barn - Coin - Race Hallway - Above Merchandise #2", 'Race Hallway', 0x0C7608, 'regular', 'Race Hallway', (), ('Double Jump', 'Ledge Grab'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(46, "Al's Toy Barn - Coin - Race Hallway - Above Merchandise #3", 'Race Hallway', 0x0C7618, 'regular', 'Race Hallway', (), ('Double Jump', 'Ledge Grab'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(47, "Al's Toy Barn - Coin - Race Hallway - Shopping Cart", 'Race Hallway', 0x0C75D8, 'regular', 'Race Hallway', (), ('Double Jump', 'Ledge Grab'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(48, "Al's Toy Barn - Coin - Race Hallway - 1st Buzz Shelf", 'Race Hallway', 0x0C75C8, 'regular', 'Race Hallway', (), ('Double Jump', 'Ledge Grab'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(49, "Al's Toy Barn - Coin - Race Hallway - 2nd Buzz Shelf", 'Race Hallway', 0x0C75B8, 'regular', 'Race Hallway', ('Pole Vault', 'Double Jump'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(50, "Al's Toy Barn - Coin - Checkout - Box Step", 'Checkout', 0x0C7478, 'regular', 'Checkout', ('Double Jump',), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(51, "Al's Toy Barn - Coin - Checkout - 1st Counter #1", 'Checkout', 0x0C7488, 'regular', 'Checkout', ('Double Jump',), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(52, "Al's Toy Barn - Coin - Checkout - 1st Counter #2", 'Checkout', 0x0C7498, 'regular', 'Checkout', ('Double Jump',), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(53, "Al's Toy Barn - Coin - Checkout - 1st Counter #3", 'Checkout', 0x0C74A8, 'regular', 'Checkout', ('Double Jump',), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(54, "Al's Toy Barn - Coin - Checkout - 1st Counter #4", 'Checkout', 0x0C74B8, 'regular', 'Checkout', ('Double Jump',), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(55, "Al's Toy Barn - Coin - Checkout - 1st Cash Register", 'Checkout', 0x0C74C8, 'regular', 'Checkout', ('Double Jump',), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(56, "Al's Toy Barn - Coin - Checkout - 2nd Cash Register", 'Checkout', 0x0C74D8, 'regular', 'Checkout', ('Double Jump', 'Ledge Grab', 'Rope Sliding', 'Pole Vault'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab'), (), (), (), 'Easy= Double Jump + Ledge Grab\nHard=Double Jump', ''),
+    Coin(57, "Al's Toy Barn - Coin - Checkout - 3rd Cash Register", 'Checkout', 0x0C74E8, 'regular', 'Checkout', ('Double Jump', 'Ledge Grab', 'Rope Sliding', 'Pole Vault'), (), (), (), '', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab'), (), (), (), 'Easy= Double Jump + Ledge Grab\nHard=Double Jump', ''),
+    Coin(58, "Al's Toy Barn - Coin - Checkout - Propeller Zurg Robot #2", 'Checkout', 0x0C3FBA, 'enemy', 'Checkout', ('Double Jump', 'Ledge Grab', 'Rope Sliding', 'Pole Vault'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab'), (), (), (), 'Easy= Double Jump + Ledge Grab\nHard=Double Jump', ''),
+    Coin(59, "Al's Toy Barn - Coin - Checkout - 4th Cash Register", 'Checkout', 0x0C74F8, 'regular', 'Checkout', ('Double Jump', 'Rope Sliding', 'Pole Vault'), (), (), ('Rocket Boots',), '', '(Double Jump + Rocket Boots) OR (Double Jump + Ledge Grab + Pole Vault + Rope Sliding)', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab'), (), (), (), 'Easy= Double Jump + Ledge Grab\nHard=Double Jump', ''),
+    Coin(60, "Al's Toy Barn - Coin - Checkout - Shopping Cart", 'Checkout', 0x0C7508, 'regular', 'Checkout', ('Double Jump', 'Rope Sliding', 'Pole Vault'), (), (), ('Rocket Boots',), '', '(Double Jump + Rocket Boots) OR (Double Jump + Ledge Grab + Pole Vault + Rope Sliding)', ('Easy', 'Hard'), ('Double Jump', 'Ledge Grab'), (), (), (), 'Easy= Double Jump + Ledge Grab\nHard=Double Jump', ''),
+    Coin(61, "Al's Toy Barn - Coin - Checkout - SE Gumball Machines #1", 'Checkout', 0x0C7518, 'regular', 'Checkout', ('Stomp', 'Double Jump', 'Rope Sliding', 'Pole Vault'), (), (), ('Rocket Boots',), '', '(Stomp + Double Jump + Rocket Boots) OR (Double Jump + Pole Vault + Rope Sliding) OR (Ledge Grab + Pole Vault + Rope Sliding)', ('Easy',), ('Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(62, "Al's Toy Barn - Coin - Checkout - SE Gumball Machines #2", 'Checkout', 0x0C7528, 'regular', 'Checkout', ('Stomp', 'Double Jump', 'Rope Sliding', 'Pole Vault'), (), (), ('Rocket Boots',), '', '(Stomp + Double Jump + Rocket Boots) OR (Double Jump + Pole Vault + Rope Sliding) OR (Ledge Grab + Pole Vault + Rope Sliding)', ('Easy',), ('Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(63, "Al's Toy Barn - Coin - Checkout - SE Gumball Machines #3", 'Checkout', 0x0C7538, 'regular', 'Checkout', ('Stomp', 'Double Jump', 'Rope Sliding', 'Pole Vault'), (), (), ('Rocket Boots',), '', '(Stomp + Double Jump + Rocket Boots) OR (Double Jump + Pole Vault + Rope Sliding) OR (Ledge Grab + Pole Vault + Rope Sliding)', ('Easy',), ('Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(64, "Al's Toy Barn - Coin - Checkout - Hay Bale Ride #1", 'Checkout', 0x0C7548, 'regular', 'Checkout', ('Stomp', 'Double Jump', 'Rope Sliding', 'Pole Vault'), (), (), ('Rocket Boots',), '', '(Stomp + Double Jump + Rocket Boots + Pole Vault) OR (Double Jump + Pole Vault + Rope Sliding) OR (Ledge Grab + Pole Vault + Rope Sliding)', ('Easy',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(65, "Al's Toy Barn - Coin - Checkout - Hay Bale Ride #2", 'Checkout', 0x0C7558, 'regular', 'Checkout', ('Stomp', 'Double Jump', 'Rope Sliding', 'Pole Vault'), (), (), ('Rocket Boots',), '', '(Stomp + Double Jump + Rocket Boots + Pole Vault) OR (Double Jump + Pole Vault + Rope Sliding) OR (Ledge Grab + Pole Vault + Rope Sliding)', ('Easy',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(66, "Al's Toy Barn - Coin - Checkout - Hay Bale Ride #3", 'Checkout', 0x0C7568, 'regular', 'Checkout', ('Stomp', 'Double Jump', 'Rope Sliding', 'Pole Vault'), (), (), ('Rocket Boots',), '', '(Stomp + Double Jump + Rocket Boots + Pole Vault) OR (Double Jump + Pole Vault + Rope Sliding) OR (Ledge Grab + Pole Vault + Rope Sliding)', ('Easy',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(67, "Al's Toy Barn - Coin - Checkout - Hay Bale Ride #4", 'Checkout', 0x0C7578, 'regular', 'Checkout', ('Stomp', 'Double Jump', 'Rope Sliding', 'Pole Vault'), (), (), ('Rocket Boots',), '', '(Stomp + Double Jump + Rocket Boots + Pole Vault) OR (Double Jump + Pole Vault + Rope Sliding) OR (Ledge Grab + Pole Vault + Rope Sliding)', ('Easy',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(68, "Al's Toy Barn - Coin - Checkout - Hay Bale Ride #5", 'Checkout', 0x0C7588, 'regular', 'Checkout', ('Stomp', 'Double Jump', 'Rope Sliding', 'Pole Vault'), (), (), ('Rocket Boots',), '', '(Stomp + Double Jump + Rocket Boots + Pole Vault) OR (Double Jump + Pole Vault + Rope Sliding) OR (Ledge Grab + Pole Vault + Rope Sliding)', ('Easy',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(69, "Al's Toy Barn - Coin - Checkout - SW Gumball Machines #1", 'Checkout', 0x0C7598, 'regular', 'Checkout', ('Double Jump', 'Stomp', 'Pole Vault'), (), ('Rocket Boots',), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab', 'Stomp'), (), ('Rocket Boots',), (), '', 'Double Jump + Rocket Boots OR Double Jump + Ledge Grab + Stomp'),
+    Coin(70, "Al's Toy Barn - Coin - Checkout - SW Gumball Machines #2", 'Checkout', 0x0C75A8, 'regular', 'Checkout', ('Double Jump', 'Stomp', 'Pole Vault'), (), ('Rocket Boots',), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab'), (), ('Rocket Boots',), (), '', 'Double Jump + Rocket Boots OR Double Jump + Ledge Grab'),
+    Coin(71, "Al's Toy Barn - Coin - Shipping - Under Box Lifts", 'Shipping', 0x0C7728, 'regular', 'Shipping', (), ('Ledge Grab', 'Double Jump'), (), ('Hover Boots',), '(Double Jump + Ledge Grab) OR Hover Boots', '', (), (), (), (), (), '', ''),
 ]
 
-ALS_TOY_BARN_COINS: List[CoinEntry] = [
-    # Coin 1
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 2
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 3
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 4
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 5
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 6
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 7
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 8
-    ([], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 9
-    ([], ['Laser', 'Spin', 'Stomp'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 10
-    ([], ['Laser', 'Spin'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 11
-    ([], ['Laser', 'Spin'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 12
-    ([], ['Laser', 'Spin'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 13
-    ([], ['Laser', 'Spin'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 14
-    ([], ['Laser', 'Spin'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 15
-    ([], ['Laser', 'Spin'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 16
-    ([], ['Laser', 'Spin'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 17
-    ([], ['Laser', 'Spin'], [], ['Disc Launcher'], None, [], [], [], []),
-    # Coin 18
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 19
-    (['Double Jump', 'Ledge Grab', 'Push'], [], [], [], 'Hard', ['Double Jump'], [], ['Rocket Boots'], []),
-    # Coin 20
-    (['Double Jump', 'Ledge Grab', 'Push'], ['Laser', 'Spin'], [], ['Disc Launcher'], 'Hard', ['Double Jump'], ['Laser', 'Spin'], ['Rocket Boots'], ['Disc Launcher']),
-    # Coin 21
-    (['Pole Climb'], ['Ledge Grab', 'Double Jump'], [], [], None, [], [], [], []),
-    # Coin 22
-    (['Pole Climb'], ['Ledge Grab', 'Double Jump'], [], [], None, [], [], [], []),
-    # Coin 23
-    (['Pole Climb'], ['Ledge Grab', 'Double Jump'], [], [], None, [], [], [], []),
-    # Coin 24
-    ([], ['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], None, [], [], [], []),
-    # Coin 25
-    ([], ['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], None, [], [], [], []),
-    # Coin 26
-    ([], ['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], None, [], [], [], []),
-    # Coin 27
-    ([], ['Double Jump', 'Ledge Grab', 'Pole Climb'], ['Disc Launcher'], [], None, [], [], [], []),
-    # Coin 28
-    ([], ['Double Jump', 'Ledge Grab', 'Pole Climb'], ['Disc Launcher'], [], None, [], [], [], []),
-    # Coin 29
-    ([], ['Double Jump', 'Ledge Grab', 'Pole Climb'], ['Disc Launcher'], [], None, [], [], [], []),
-    # Coin 30
-    ([], [], ['Hover Boots'], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 31
-    ([], [], ['Hover Boots'], [], None, [], [], [], []),
-    # Coin 32
-    ([], [], ['Hover Boots'], [], None, [], [], [], []),
-    # Coin 33
-    ([], [], ['Hover Boots'], [], None, [], [], [], []),
-    # Coin 34
-    (['Double Jump'], [], ['Hover Boots'], [], None, [], [], [], []),
-    # Coin 35
-    (['Double Jump'], [], ['Hover Boots'], [], None, [], [], [], []),
-    # Coin 36
-    (['Double Jump'], [], ['Hover Boots'], [], None, [], [], [], []),
-    # Coin 37
-    (['Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 38
-    (['Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 39
-    (['Double Jump'], ['Ledge Grab'], [], ['Hover Boots'], None, [], [], [], []),
-    # Coin 40
-    (['Double Jump'], ['Ledge Grab'], [], ['Hover Boots'], None, [], [], [], []),
-    # Coin 41
-    (['Double Jump', 'Pole Climb'], ['Ledge Grab'], [], ['Hover Boots'], 'Easy', ['Double Jump'], ['Ledge Grab'], [], ['Hover Boots']),
-    # Coin 42
-    (['Double Jump', 'Pole Climb'], ['Ledge Grab'], [], ['Hover Boots'], 'Easy', ['Double Jump'], ['Ledge Grab'], [], ['Hover Boots']),
-    # Coin 43
-    (['Double Jump', 'Pole Climb'], ['Ledge Grab'], [], ['Hover Boots'], 'Easy', ['Double Jump'], ['Ledge Grab'], [], ['Hover Boots']),
-    # Coin 44
-    ([], ['Double Jump', 'Ledge Grab'], [], [], None, [], [], [], []),
-    # Coin 45
-    ([], ['Double Jump', 'Ledge Grab'], [], [], None, [], [], [], []),
-    # Coin 46
-    ([], ['Double Jump', 'Ledge Grab'], [], [], None, [], [], [], []),
-    # Coin 47
-    ([], ['Double Jump', 'Ledge Grab'], [], [], None, [], [], [], []),
-    # Coin 48
-    ([], ['Double Jump', 'Ledge Grab'], [], [], None, [], [], [], []),
-    # Coin 49
-    (['Pole Vault', 'Double Jump'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 50
-    (['Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 51
-    (['Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 52
-    (['Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 53
-    (['Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 54
-    (['Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 55
-    (['Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 56
-    (['Double Jump', 'Ledge Grab', 'Rope Sliding', 'Pole Vault'], [], [], [], 'Easy, Hard', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 57
-    (['Double Jump', 'Ledge Grab', 'Rope Sliding', 'Pole Vault'], [], [], [], 'Easy, Hard', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 58
-    (['Double Jump', 'Ledge Grab', 'Rope Sliding', 'Pole Vault'], ['Laser', 'Spin'], [], [], 'Easy, Hard', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 59
-    (['Double Jump', 'Rope Sliding', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy, Hard', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 60
-    (['Double Jump', 'Rope Sliding', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy, Hard', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 61
-    (['Stomp', 'Double Jump', 'Rope Sliding', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], []),
-    # Coin 62
-    (['Stomp', 'Double Jump', 'Rope Sliding', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], []),
-    # Coin 63
-    (['Stomp', 'Double Jump', 'Rope Sliding', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], []),
-    # Coin 64
-    (['Stomp', 'Double Jump', 'Rope Sliding', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 65
-    (['Stomp', 'Double Jump', 'Rope Sliding', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 66
-    (['Stomp', 'Double Jump', 'Rope Sliding', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 67
-    (['Stomp', 'Double Jump', 'Rope Sliding', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 68
-    (['Stomp', 'Double Jump', 'Rope Sliding', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 69
-    (['Double Jump', 'Stomp', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], ['Rocket Boots'], []),
-    # Coin 70
-    (['Double Jump', 'Stomp', 'Pole Vault'], [], ['Rocket Boots'], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], ['Rocket Boots'], []),
-    # Coin 71
-    (['Double Jump'], ['Ledge Grab'], [], ['Hover Boots'], None, [], [], [], []),
+ALS_SPACE_LAND_COINS: List[Coin] = [
+    Coin(1, "Al's Space Land - Coin - Race Aisle - Small Box at Entry", 'Race Aisle', 0x0C7508, 'regular', 'Race Aisle', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(2, "Al's Space Land - Coin - Zurg Aisle - Small Box at Entry", 'Zurg Aisle', 0x0C7618, 'regular', 'Zurg Aisle', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(3, "Al's Space Land - Coin - Central Room - Floating Zurg Robot", 'Central Room', 0x0C3472, 'enemy', 'Central Room', (), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(4, "Al's Space Land - Coin - Central Room - Bouncing Zurg Robot", 'Central Room', 0x0C33DA, 'enemy', 'Central Room', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(5, "Al's Space Land - Coin - Central Room - Propeller Zurg Robot", 'Central Room', 0x0C350A, 'enemy', 'Central Room', (), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(6, "Al's Space Land - Coin - Central Room - Zurg Car", 'Central Room', 0x0C3FBA, 'enemy', 'Central Room', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(7, "Al's Space Land - Coin - Arcade - Zurg Car", 'Arcade', 0x0C363A, 'enemy', 'Arcade', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(8, "Al's Space Land - Coin - Race Aisle - Zurg Car #1", 'Race Aisle', 0x0C4052, 'enemy', 'Race Aisle', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(9, "Al's Space Land - Coin - Race Aisle - Zurg Car #2", 'Race Aisle', 0x0C40EA, 'enemy', 'Race Aisle', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(10, "Al's Space Land - Coin - Race Aisle - Zurg Car #3", 'Race Aisle', 0x0C4182, 'enemy', 'Race Aisle', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(11, "Al's Space Land - Coin - Race Aisle - Zurg Car #4", 'Race Aisle', 0x0C43E2, 'enemy', 'Race Aisle', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(12, "Al's Space Land - Coin - Zurg Aisle - Bouncing Zurg Robot #1", 'Zurg Aisle', 0x0C39CA, 'enemy', 'Zurg Aisle', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(13, "Al's Space Land - Coin - Central Room - Zurg Soldier", 'Central Room', 0x0C35A2, 'enemy', 'Central Room', (), ('Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(14, "Al's Space Land - Coin - Zurg Aisle - Zurg Soldier", 'Zurg Aisle', 0x0C3A62, 'enemy', 'Zurg Aisle', (), ('Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(15, "Al's Space Land - Coin - Race Aisle - Zurg Soldier #1", 'Race Aisle', 0x0C42B2, 'enemy', 'Race Aisle', (), ('Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(16, "Al's Space Land - Coin - Race Aisle - Zurg Soldier #2", 'Race Aisle', 0x0C434A, 'enemy', 'Race Aisle', (), ('Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(17, "Al's Space Land - Coin - Race Aisle - Zurg Soldier #3", 'Race Aisle', 0x0C421A, 'enemy', 'Race Aisle', (), ('Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(18, "Al's Space Land - Coin - Central Room - Boxes to Mobile", 'Central Room', 0x0C7478, 'regular', 'Central Room', ('Push', 'Ledge Grab', 'Double Jump'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(19, "Al's Space Land - Coin - Central Room - Mobile #1", 'Central Room', 0x0C7488, 'regular', 'Central Room', ('Push', 'Ledge Grab', 'Double Jump'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(20, "Al's Space Land - Coin - Central Room - Mobile #2", 'Central Room', 0x0C7498, 'regular', 'Central Room', ('Push', 'Ledge Grab', 'Double Jump', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
+    Coin(21, "Al's Space Land - Coin - Central Room - Mobile #3", 'Central Room', 0x0C74A8, 'regular', 'Central Room', ('Push', 'Ledge Grab', 'Double Jump', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
+    Coin(22, "Al's Space Land - Coin - Central Room - Mobile #4", 'Central Room', 0x0C74B8, 'regular', 'Central Room', ('Push', 'Ledge Grab', 'Double Jump', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
+    Coin(23, "Al's Space Land - Coin - Central Room - Mobile #5", 'Central Room', 0x0C74C8, 'regular', 'Central Room', ('Push', 'Ledge Grab', 'Double Jump', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
+    Coin(24, "Al's Space Land - Coin - Central Room - Mobile #6", 'Central Room', 0x0C74D8, 'regular', 'Central Room', ('Push', 'Ledge Grab', 'Double Jump', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
+    Coin(25, "Al's Space Land - Coin - Central Room - Mobile #7", 'Central Room', 0x0C74E8, 'regular', 'Central Room', ('Push', 'Ledge Grab', 'Double Jump', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
+    Coin(26, "Al's Space Land - Coin - Central Room - Mobile #8", 'Central Room', 0x0C74F8, 'regular', 'Central Room', ('Push', 'Ledge Grab', 'Double Jump', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
+    Coin(27, "Al's Space Land - Coin - Central Room - Boxes to Boss #1", 'Central Room', 0x0C7788, 'regular', 'Central Room', ('Push', 'Ledge Grab', 'Double Jump', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
+    Coin(28, "Al's Space Land - Coin - Central Room - Boxes to Boss #2", 'Central Room', 0x0C7798, 'regular', 'Central Room', ('Push', 'Ledge Grab', 'Double Jump', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
+    Coin(29, "Al's Space Land - Coin - Arcade - Stool by 1st Cabinet", 'Arcade', 0x0C76D8, 'regular', 'Arcade', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(30, "Al's Space Land - Coin - Arcade - Bouncing Zurg Robot #1", 'Arcade', 0x0C36D2, 'enemy', 'Arcade', ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(31, "Al's Space Land - Coin - Arcade - Floating Zurg Robot", 'Arcade', 0x0C3802, 'enemy', 'Arcade', ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(32, "Al's Space Land - Coin - Arcade - 1st Cabinet", 'Arcade', 0x0C76E8, 'regular', 'Arcade', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(33, "Al's Space Land - Coin - Arcade - 2nd Cabinet", 'Arcade', 0x0C76F8, 'regular', 'Arcade', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(34, "Al's Space Land - Coin - Arcade - 3rd Cabinet", 'Arcade', 0x0C7708, 'regular', 'Arcade', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(35, "Al's Space Land - Coin - Arcade - Bouncing Zurg Robot #2", 'Arcade', 0x0C389A, 'enemy', 'Arcade', ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(36, "Al's Space Land - Coin - Arcade - Propeller Zurg Robot #1", 'Arcade', 0x0C376A, 'enemy', 'Arcade', ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(37, "Al's Space Land - Coin - Arcade - 4th Cabinet", 'Arcade', 0x0C7718, 'regular', 'Arcade', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(38, "Al's Space Land - Coin - Arcade - Top of Claw Machine", 'Arcade', 0x0C7738, 'regular', 'Arcade', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(39, "Al's Space Land - Coin - Arcade - Ball Pit Pole", 'Arcade', 0x0C7748, 'regular', 'Arcade', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(40, "Al's Space Land - Coin - Arcade - Propeller Zurg Robot #2", 'Arcade', 0x0C3932, 'enemy', 'Arcade', ('Double Jump', 'Ledge Grab', 'Pole Climb'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', ''),
+    Coin(41, "Al's Space Land - Coin - Arcade - Ball Pit Open Corner #1", 'Arcade', 0x0C77E8, 'regular', 'Arcade', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(42, "Al's Space Land - Coin - Arcade - Ball Pit Open Corner #2", 'Arcade', 0x0C77F8, 'regular', 'Arcade', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(43, "Al's Space Land - Coin - Arcade - Ball Pit Hidden Corner #1", 'Arcade', 0x0C7778, 'regular', 'Arcade', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(44, "Al's Space Land - Coin - Arcade - Ball Pit Hidden Corner #2", 'Arcade', 0x0C7768, 'regular', 'Arcade', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(45, "Al's Space Land - Coin - Arcade - Ball Pit Hidden Corner #3", 'Arcade', 0x0C7758, 'regular', 'Arcade', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(46, "Al's Space Land - Coin - Race Aisle - Stacked Box at Entry", 'Race Aisle', 0x0C7518, 'regular', 'Race Aisle', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(47, "Al's Space Land - Coin - Race Aisle - Bouncing Zurg Robot", 'Race Aisle', 0x0C447A, 'enemy', 'Race Aisle', ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump',), ('Laser', 'Spin', 'Stomp'), (), (), '', ''),
+    Coin(48, "Al's Space Land - Coin - Race Aisle - 1st Blue Shelf", 'Race Aisle', 0x0C7528, 'regular', 'Race Aisle', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(49, "Al's Space Land - Coin - Race Aisle - Propeller Zurg Robot #1", 'Race Aisle', 0x0C4512, 'enemy', 'Race Aisle', ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump',), ('Laser', 'Spin'), (), (), '', ''),
+    Coin(50, "Al's Space Land - Coin - Race Aisle - 2nd Blue Shelf", 'Race Aisle', 0x0C7538, 'regular', 'Race Aisle', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(51, "Al's Space Land - Coin - Race Aisle - Propeller Zurg Robot #2", 'Race Aisle', 0x0C4642, 'enemy', 'Race Aisle', ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump',), ('Laser', 'Spin'), (), (), '', ''),
+    Coin(52, "Al's Space Land - Coin - Race Aisle - Boxed Alien", 'Race Aisle', 0x0C7548, 'regular', 'Race Aisle', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(53, "Al's Space Land - Coin - Race Aisle - Propeller Zurg Robot #3", 'Race Aisle', 0x0C45AA, 'enemy', 'Race Aisle', ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(54, "Al's Space Land - Coin - Race Aisle - 3rd Blue Shelf", 'Race Aisle', 0x0C7558, 'regular', 'Race Aisle', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(55, "Al's Space Land - Coin - Race Aisle - 1st Rope", 'Race Aisle', 0x0C7568, 'regular', 'Race Aisle', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(56, "Al's Space Land - Coin - Race Aisle - 2nd Rope #1", 'Race Aisle', 0x0C7578, 'regular', 'Race Aisle', ('Double Jump', 'Ledge Grab', 'Rope Sliding'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(57, "Al's Space Land - Coin - Race Aisle - 2nd Rope #2", 'Race Aisle', 0x0C7588, 'regular', 'Race Aisle', ('Double Jump', 'Ledge Grab', 'Rope Sliding'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(58, "Al's Space Land - Coin - Race Aisle - 3rd Rope", 'Race Aisle', 0x0C7598, 'regular', 'Race Aisle', ('Double Jump', 'Ledge Grab', 'Rope Sliding'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(59, "Al's Space Land - Coin - Race Aisle - 4th Rope #1", 'Race Aisle', 0x0C75A8, 'regular', 'Race Aisle', ('Double Jump', 'Ledge Grab', 'Rope Sliding'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(60, "Al's Space Land - Coin - Race Aisle - 4th Rope #2", 'Race Aisle', 0x0C75B8, 'regular', 'Race Aisle', ('Double Jump', 'Ledge Grab', 'Rope Sliding'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(61, "Al's Space Land - Coin - Race Aisle - 5th Rope", 'Race Aisle', 0x0C75C8, 'regular', 'Race Aisle', ('Double Jump', 'Ledge Grab', 'Rope Sliding'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(62, "Al's Space Land - Coin - Race Aisle - 6th Rope #1", 'Race Aisle', 0x0C75D8, 'regular', 'Race Aisle', ('Double Jump', 'Ledge Grab', 'Rope Sliding'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(63, "Al's Space Land - Coin - Race Aisle - 6th Rope #2", 'Race Aisle', 0x0C75E8, 'regular', 'Race Aisle', ('Double Jump', 'Ledge Grab', 'Rope Sliding'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(64, "Al's Space Land - Coin - Race Aisle - 7th Rope #1", 'Race Aisle', 0x0C75F8, 'regular', 'Race Aisle', ('Double Jump', 'Ledge Grab', 'Rope Sliding'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(65, "Al's Space Land - Coin - Race Aisle - 7th Rope #2", 'Race Aisle', 0x0C7608, 'regular', 'Race Aisle', ('Double Jump', 'Ledge Grab', 'Rope Sliding'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(66, "Al's Space Land - Coin - Race Aisle - Shelf at End of Race", 'Race Aisle', 0x0C77D8, 'regular', 'Race Aisle', ('Double Jump', 'Ledge Grab', 'Rope Sliding'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(67, "Al's Space Land - Coin - Zurg Aisle - Stacked Box at Entry", 'Zurg Aisle', 0x0C7628, 'regular', 'Zurg Aisle', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(68, "Al's Space Land - Coin - Zurg Aisle - Jump to Pole Vault", 'Zurg Aisle', 0x0C7638, 'regular', 'Zurg Aisle', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(69, "Al's Space Land - Coin - Zurg Aisle - Propeller Zurg Robot", 'Zurg Aisle', 0x0C3AFA, 'enemy', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump', 'Pole Vault'), ('Laser', 'Spin'), (), (), '', ''),
+    Coin(70, "Al's Space Land - Coin - Zurg Aisle - High Blue Shelf around Corner", 'Zurg Aisle', 0x0C7648, 'regular', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Pole Vault'), (), (), (), '', ''),
+    Coin(71, "Al's Space Land - Coin - Zurg Aisle - Red Zurg Shelf", 'Zurg Aisle', 0x0C7658, 'regular', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Pole Vault'), (), (), (), '', ''),
+    Coin(72, "Al's Space Land - Coin - Zurg Aisle - Bouncing Zurg Robot #2", 'Zurg Aisle', 0x0C3B92, 'enemy', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump',), ('Laser', 'Spin', 'Stomp'), (), (), '', ''),
+    Coin(73, "Al's Space Land - Coin - Zurg Aisle - Bouncing Zurg Robot #3", 'Zurg Aisle', 0x0C3C2A, 'enemy', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump',), ('Laser', 'Spin', 'Stomp'), (), (), '', ''),
+    Coin(74, "Al's Space Land - Coin - Zurg Aisle - 1st Standalone Box", 'Zurg Aisle', 0x0C77A8, 'regular', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(75, "Al's Space Land - Coin - Zurg Aisle - 2nd Standalone Box", 'Zurg Aisle', 0x0C77B8, 'regular', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(76, "Al's Space Land - Coin - Zurg Aisle - 3rd Standalone Box", 'Zurg Aisle', 0x0C77C8, 'regular', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(77, "Al's Space Land - Coin - Zurg Aisle - 1st Box Step to Rope", 'Zurg Aisle', 0x0C7668, 'regular', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(78, "Al's Space Land - Coin - Zurg Aisle - 2nd Box Step to Rope", 'Zurg Aisle', 0x0C7678, 'regular', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(79, "Al's Space Land - Coin - Zurg Aisle - 3rd Box Step to Rope", 'Zurg Aisle', 0x0C7688, 'regular', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(80, "Al's Space Land - Coin - Zurg Aisle - Blue Shelf before Rope", 'Zurg Aisle', 0x0C7698, 'regular', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(81, "Al's Space Land - Coin - Zurg Aisle - 1st Rope Slide", 'Zurg Aisle', 0x0C76A8, 'regular', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(82, "Al's Space Land - Coin - Zurg Aisle - 2nd Rope Slide", 'Zurg Aisle', 0x0C76B8, 'regular', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab', 'Rope Sliding'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(83, "Al's Space Land - Coin - Zurg Aisle - Floating Zurg Robot #1", 'Zurg Aisle', 0x0C3D5A, 'enemy', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab', 'Rope Sliding'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump',), ('Laser', 'Spin'), (), (), 'Any 1 of OR', ''),
+    Coin(84, "Al's Space Land - Coin - Zurg Aisle - Floating Zurg Robot #2", 'Zurg Aisle', 0x0C3DF2, 'enemy', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab', 'Rope Sliding'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump',), ('Laser', 'Spin'), (), (), 'Any 1 of OR', ''),
+    Coin(85, "Al's Space Land - Coin - Zurg Aisle - Zurg Car", 'Zurg Aisle', 0x0C3CC2, 'enemy', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab', 'Rope Sliding'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump',), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', ''),
+    Coin(86, "Al's Space Land - Coin - Zurg Aisle - Between Walls of Boxes", 'Zurg Aisle', 0x0C76C8, 'regular', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab', 'Rope Sliding'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(87, "Al's Space Land - Coin - Zurg Aisle - Floating Zurg Robot #3", 'Zurg Aisle', 0x0C3E8A, 'enemy', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab', 'Rope Sliding'), ('Laser', 'Spin'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump',), ('Laser', 'Spin'), (), (), 'Any 1 of OR', ''),
+    Coin(88, "Al's Space Land - Coin - Zurg Aisle - Bouncing Zurg Robot #4", 'Zurg Aisle', 0x0C3F22, 'enemy', 'Zurg Aisle', ('Double Jump', 'Pole Vault', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump',), ('Laser', 'Spin', 'Stomp'), (), (), '', ''),
+    Coin(89, "Al's Space Land - Coin - Arcade - Stool by Claw Machine", 'Arcade', 0x0C7728, 'regular', 'Arcade', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
 ]
 
-ALS_SPACE_LAND_COINS: List[CoinEntry] = [
-    # Coin 1
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 2
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 3
-    ([], ['Laser', 'Spin'], [], [], None, [], [], [], []),
-    # Coin 4
-    ([], ['Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 5
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 6
-    ([], ['Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 7
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 8
-    ([], ['Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 9
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 10
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 11
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 12
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 13
-    ([], ['Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 14
-    ([], ['Spin', 'Laser'], [], [], None, [], [], [], []),
-    # Coin 15
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 16
-    ([], ['Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 17
-    ([], ['Laser', 'Spin'], [], [], None, [], [], [], []),
-    # Coin 18
-    (['Push', 'Ledge Grab', 'Double Jump'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 19
-    (['Push', 'Ledge Grab', 'Double Jump'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 20
-    (['Push', 'Ledge Grab', 'Double Jump', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], []),
-    # Coin 21
-    (['Push', 'Ledge Grab', 'Double Jump', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], []),
-    # Coin 22
-    (['Push', 'Ledge Grab', 'Double Jump', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], []),
-    # Coin 23
-    (['Push', 'Ledge Grab', 'Double Jump', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], []),
-    # Coin 24
-    (['Push', 'Ledge Grab', 'Double Jump', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], []),
-    # Coin 25
-    (['Push', 'Ledge Grab', 'Double Jump', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], []),
-    # Coin 26
-    (['Push', 'Ledge Grab', 'Double Jump', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], []),
-    # Coin 27
-    (['Push', 'Ledge Grab', 'Double Jump', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], []),
-    # Coin 28
-    (['Push', 'Ledge Grab', 'Double Jump', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], []),
-    # Coin 29
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 30
-    (['Double Jump', 'Ledge Grab'], ['Laser', 'Spin'], [], [], None, [], [], [], []),
-    # Coin 31
-    (['Double Jump', 'Ledge Grab'], ['Laser', 'Spin'], [], [], None, [], [], [], []),
-    # Coin 32
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 33
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 34
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 35
-    (['Double Jump', 'Ledge Grab'], ['Laser', 'Spin'], [], [], None, [], [], [], []),
-    # Coin 36
-    (['Double Jump', 'Ledge Grab'], ['Laser', 'Spin'], [], [], None, [], [], [], []),
-    # Coin 37
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 38
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 39
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 40
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], ['Laser', 'Spin'], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], ['Laser', 'Spin'], [], []),
-    # Coin 41
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 42
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 43
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 44
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 45
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 46
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 47
-    (['Double Jump', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 48
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 49
-    (['Double Jump', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 50
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 51
-    (['Double Jump', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 52
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 53
-    (['Double Jump', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 54
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 55
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 56
-    (['Double Jump', 'Ledge Grab', 'Rope Sliding'], [], [], [], None, [], [], [], []),
-    # Coin 57
-    (['Double Jump', 'Ledge Grab', 'Rope Sliding'], [], [], [], None, [], [], [], []),
-    # Coin 58
-    (['Double Jump', 'Ledge Grab', 'Rope Sliding'], [], [], [], None, [], [], [], []),
-    # Coin 59
-    (['Double Jump', 'Ledge Grab', 'Rope Sliding'], [], [], [], None, [], [], [], []),
-    # Coin 60
-    (['Double Jump', 'Ledge Grab', 'Rope Sliding'], [], [], [], None, [], [], [], []),
-    # Coin 61
-    (['Double Jump', 'Ledge Grab', 'Rope Sliding'], [], [], [], None, [], [], [], []),
-    # Coin 62
-    (['Double Jump', 'Ledge Grab', 'Rope Sliding'], [], [], [], None, [], [], [], []),
-    # Coin 63
-    (['Double Jump', 'Ledge Grab', 'Rope Sliding'], [], [], [], None, [], [], [], []),
-    # Coin 64
-    (['Double Jump', 'Ledge Grab', 'Rope Sliding'], [], [], [], None, [], [], [], []),
-    # Coin 65
-    (['Double Jump', 'Ledge Grab', 'Rope Sliding'], [], [], [], None, [], [], [], []),
-    # Coin 66
-    (['Double Jump', 'Ledge Grab', 'Rope Sliding'], [], [], [], None, [], [], [], []),
-    # Coin 67
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 68
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 69
-    (['Double Jump', 'Pole Vault', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 70
-    (['Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 71
-    (['Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 72
-    (['Double Jump', 'Pole Vault', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 73
-    (['Double Jump', 'Pole Vault', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 74
-    (['Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 75
-    (['Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 76
-    (['Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 77
-    (['Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 78
-    (['Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 79
-    (['Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 80
-    (['Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 81
-    (['Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 82
-    (['Double Jump', 'Pole Vault', 'Ledge Grab', 'Rope Sliding'], [], [], [], 'Easy', ['Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], []),
-    # Coin 83
-    (['Double Jump', 'Pole Vault', 'Ledge Grab', 'Rope Sliding'], ['Laser', 'Spin'], [], [], 'Easy', ['Double Jump', 'Pole Vault', 'Ledge Grab'], ['Laser', 'Spin'], [], []),
-    # Coin 84
-    (['Double Jump', 'Pole Vault', 'Ledge Grab', 'Rope Sliding'], ['Laser', 'Spin'], [], [], 'Easy', ['Double Jump', 'Pole Vault', 'Ledge Grab'], ['Laser', 'Spin'], [], []),
-    # Coin 85
-    (['Double Jump', 'Pole Vault', 'Ledge Grab', 'Rope Sliding'], ['Laser', 'Spin', 'Stomp'], [], [], 'Easy', ['Double Jump', 'Pole Vault', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], []),
-    # Coin 86
-    (['Double Jump', 'Pole Vault', 'Ledge Grab', 'Rope Sliding'], [], [], [], 'Easy', ['Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], []),
-    # Coin 87
-    (['Double Jump', 'Pole Vault', 'Ledge Grab', 'Rope Sliding'], ['Laser', 'Spin'], [], [], 'Easy', ['Double Jump', 'Pole Vault', 'Ledge Grab'], ['Laser', 'Spin'], [], []),
-    # Coin 88
-    (['Double Jump', 'Pole Vault', 'Ledge Grab'], ['Laser', 'Spin'], [], [], None, [], [], [], []),
-    # Coin 89
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
+ELEVATOR_HOP_COINS: List[Coin] = [
+    Coin(1, 'Elevator Hop - Coin - Shaft Gr Floor - Floating Zurg Robot', 'Shaft Ground Floor', 0x0C350A, 'enemy', 'Shaft Gr Floor', (), ('Spin', 'Laser'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(2, 'Elevator Hop - Coin - Shaft Gr Floor - Bunker near Potato Head', 'Shaft Ground Floor', 0x0C7478, 'regular', 'Shaft Gr Floor', (), (), (), (), 'No Requirements', '', (), (), (), (), (), '', ''),
+    Coin(3, "Elevator Hop - Coin - Shaft Gr Floor - Bunker near Hamm's Room", 'Shaft Ground Floor', 0x0C7488, 'regular', 'Shaft Gr Floor', (), (), (), (), 'No Requirements', '', (), (), (), (), (), '', ''),
+    Coin(4, 'Elevator Hop - Coin - Shaft Gr Floor - S Shortcut Fan', 'Shaft Ground Floor', 0x0C74E8, 'regular', 'Shaft Gr Floor', (), (), (), (), 'No Requirements', '', (), (), (), (), (), '', ''),
+    Coin(5, 'Elevator Hop - Coin - Shaft Gr Floor - Next to Potato Head', 'Shaft Ground Floor', 0x0C74F8, 'regular', 'Shaft Gr Floor', (), (), (), (), 'No Requirements', '', (), (), (), (), (), '', ''),
+    Coin(6, 'Elevator Hop - Coin - Electrical Room - Entry', 'Electrical Room', 0x0C7498, 'regular', 'Electrical Room', (), (), (), (), 'No Requirements', '', (), (), (), (), (), '', ''),
+    Coin(7, 'Elevator Hop - Coin - Electrical Room - 1st Pole', 'Electrical Room', 0x0C74A8, 'regular', 'Electrical Room', ('Double Jump',), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(8, 'Elevator Hop - Coin - Electrical Room - 2nd Pole', 'Electrical Room', 0x0C74C8, 'regular', 'Electrical Room', ('Pole Vault', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(9, 'Elevator Hop - Coin - Electrical Room - Next to Hamm', 'Electrical Room', 0x0C74B8, 'regular', 'Electrical Room', ('Pole Vault', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Pole Vault'), (), (), (), '', ''),
+    Coin(10, 'Elevator Hop - Coin - Electrical Room - End of Red Wire', 'Electrical Room', 0x0C74D8, 'regular', 'Electrical Room', ('Pole Vault', 'Double Jump', 'Rope Sliding', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(11, 'Elevator Hop - Coin - Vents - After 1st Climb #1', 'Vents', 0x0C7508, 'regular', 'Vents', ('Visor',), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(12, 'Elevator Hop - Coin - Vents - Floating Zurg Robot #1', 'Vents', 0x0C35A2, 'enemy', 'Vents', ('Visor',), ('Spin', 'Laser'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(13, 'Elevator Hop - Coin - Vents - Snake #1', 'Vents', 0x0C363A, 'enemy', 'Vents', ('Visor',), ('Laser', 'Spin', 'Stomp'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(14, 'Elevator Hop - Coin - Vents - Snake #2', 'Vents', 0x0C3472, 'enemy', 'Vents', ('Visor',), ('Laser', 'Spin', 'Stomp'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(15, 'Elevator Hop - Coin - Vents - Snake #3', 'Vents', 0x0C36D2, 'enemy', 'Vents', ('Visor',), ('Laser', 'Spin', 'Stomp'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(16, 'Elevator Hop - Coin - Vents - After 1st Climb #2', 'Vents', 0x0C7518, 'regular', 'Vents', ('Visor',), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(17, 'Elevator Hop - Coin - Vents - During 2nd Climb', 'Vents', 0x0C7528, 'regular', 'Vents', ('Visor',), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(18, 'Elevator Hop - Coin - Vents - Snake #4', 'Vents', 0x0C3802, 'enemy', 'Vents', ('Visor',), ('Laser', 'Spin', 'Stomp'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(19, 'Elevator Hop - Coin - Vents - Snake #5', 'Vents', 0x0C376A, 'enemy', 'Vents', ('Visor',), ('Laser', 'Spin', 'Stomp'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(20, 'Elevator Hop - Coin - Vents - Snake #6', 'Vents', 0x0C389A, 'enemy', 'Vents', ('Visor',), ('Laser', 'Spin', 'Stomp'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(21, 'Elevator Hop - Coin - Vents - Floating Zurg Robot #2', 'Vents', 0x0C3932, 'enemy', 'Vents', ('Visor',), ('Spin', 'Laser'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(22, 'Elevator Hop - Coin - Vents - Next to Rex', 'Vents', 0x0C7538, 'regular', 'Vents', ('Visor',), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(23, 'Elevator Hop - Coin - Vents - Before 3rd Climb', 'Vents', 0x0C7548, 'regular', 'Vents', ('Visor',), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(24, 'Elevator Hop - Coin - Vents - During 3rd Climb', 'Vents', 0x0C7558, 'regular', 'Vents', ('Visor',), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(25, 'Elevator Hop - Coin - Vents - After 3rd Climb #1', 'Vents', 0x0C7568, 'regular', 'Vents', ('Visor',), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(26, 'Elevator Hop - Coin - Vents - Floating Zurg Robot #3', 'Vents', 0x0C39CA, 'enemy', 'Vents', ('Visor',), ('Spin', 'Laser'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(27, 'Elevator Hop - Coin - Vents - After 3rd Climb #2', 'Vents', 0x0C7578, 'regular', 'Vents', ('Visor',), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(28, 'Elevator Hop - Coin - Vents - Zurg Soldier #1', 'Vents', 0x0C3A62, 'enemy', 'Vents', ('Visor',), ('Stomp', 'Spin'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(29, 'Elevator Hop - Coin - Vents - Snake #7', 'Vents', 0x0C3AFA, 'enemy', 'Vents', ('Visor',), ('Laser', 'Spin', 'Stomp'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(30, 'Elevator Hop - Coin - Vents - After 3rd Climb #3', 'Vents', 0x0C7588, 'regular', 'Vents', ('Visor',), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(31, 'Elevator Hop - Coin - Vents - Before 4th Climb', 'Vents', 0x0C7598, 'regular', 'Vents', ('Visor',), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(32, 'Elevator Hop - Coin - Vents - Zurg Soldier #2', 'Vents', 0x0C3B92, 'enemy', 'Vents', ('Visor',), ('Stomp', 'Spin'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(33, 'Elevator Hop - Coin - Vents - During 4th Climb #1', 'Vents', 0x0C75A8, 'regular', 'Vents', ('Visor',), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(34, 'Elevator Hop - Coin - Vents - During 4th Climb #2', 'Vents', 0x0C75B8, 'regular', 'Vents', ('Visor',), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(35, 'Elevator Hop - Coin - Vents - After 4th Climb', 'Vents', 0x0C7608, 'regular', 'Vents', ('Visor',), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(36, 'Elevator Hop - Coin - Control Room - Next to Fan Switch', 'Control Room', 0x0C7658, 'regular', 'Control Room', ('Visor',), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(37, 'Elevator Hop - Coin - Control Room - Stool Foot', 'Control Room', 0x0C7648, 'regular', 'Control Room', ('Visor',), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(38, 'Elevator Hop - Coin - Control Room - Stool Seat', 'Control Room', 0x0C7638, 'regular', 'Control Room', ('Visor', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(39, 'Elevator Hop - Coin - Control Room - Desk', 'Control Room', 0x0C7618, 'regular', 'Control Room', ('Visor', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(40, 'Elevator Hop - Coin - Control Room - On Control System', 'Control Room', 0x0C7628, 'regular', 'Control Room', ('Visor', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(41, 'Elevator Hop - Coin - Shaft Mid Floor - Lowest S Wall', 'Shaft Mid Floor', 0x0C7668, 'regular', 'Shaft Mid Floor', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(42, 'Elevator Hop - Coin - Shaft Mid Floor - S Wall opposite Control Room', 'Shaft Mid Floor', 0x0C7678, 'regular', 'Shaft Mid Floor', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(43, 'Elevator Hop - Coin - Shaft Mid Floor - W Platform Near Control Room', 'Shaft Mid Floor', 0x0C76B8, 'regular', 'Shaft Mid Floor', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(44, 'Elevator Hop - Coin - Shaft Mid Floor - S Wall above Race Exits #1', 'Shaft Mid Floor', 0x0C76A8, 'regular', 'Shaft Mid Floor', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(45, 'Elevator Hop - Coin - Shaft Mid Floor - S Wall above Race Exits #2', 'Shaft Mid Floor', 0x0C7698, 'regular', 'Shaft Mid Floor', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(46, 'Elevator Hop - Coin - Shaft Top Floor - Lower Pole', 'Shaft Top Floor', 0x0C7718, 'regular', 'Shaft Top Floor', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(47, 'Elevator Hop - Coin - Shaft Top Floor - Higher Pole #1', 'Shaft Top Floor', 0x0C76D8, 'regular', 'Shaft Top Floor', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(48, 'Elevator Hop - Coin - Shaft Top Floor - Higher Pole #2', 'Shaft Top Floor', 0x0C76C8, 'regular', 'Shaft Top Floor', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(49, 'Elevator Hop - Coin - Shaft Top Floor - Next to Race Mouse', 'Shaft Top Floor', 0x0C7708, 'regular', 'Shaft Top Floor', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(50, 'Elevator Hop - Coin - Shaft Top Floor - Next to Fan Switch', 'Shaft Top Floor', 0x0C76E8, 'regular', 'Shaft Top Floor', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(51, 'Elevator Hop - Coin - Shaft Top Floor - Boss Entryway', 'Shaft Top Floor', 0x0C76F8, 'regular', 'Shaft Top Floor', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(52, 'Elevator Hop - Coin - Boss Arena - Spider Gunro', 'Boss Arena', 0x0C3374, 'miniboss', 'Boss Arena', ('Visor', 'Double Jump', 'Stomp'), ('Laser', 'Spin'), ('Grappling Hook',), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(53, 'Elevator Hop - Coin - Token Race - Main Path #1', 'Shaft Top Floor', 0x0C7728, 'regular', 'Token Race', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(54, 'Elevator Hop - Coin - Token Race - Main Path #2', 'Shaft Top Floor', 0x0C7738, 'regular', 'Token Race', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(55, 'Elevator Hop - Coin - Token Race - 2nd Exit', 'Shaft Top Floor', 0x0C7688, 'regular', 'Token Race', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(56, 'Elevator Hop - Coin - Token Race - Main Path #3', 'Shaft Top Floor', 0x0C7748, 'regular', 'Token Race', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(57, 'Elevator Hop - Coin - Token Race - Main Path #4', 'Shaft Top Floor', 0x0C7758, 'regular', 'Token Race', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(58, 'Elevator Hop - Coin - Token Race - Main Path #5', 'Shaft Top Floor', 0x0C7768, 'regular', 'Token Race', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(59, 'Elevator Hop - Coin - Token Race - Main Path #6', 'Shaft Top Floor', 0x0C7778, 'regular', 'Token Race', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(60, 'Elevator Hop - Coin - Token Race - 3rd Exit #1', 'Shaft Top Floor', 0x0C75F8, 'regular', 'Token Race', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(61, 'Elevator Hop - Coin - Token Race - 3rd Exit #2', 'Shaft Top Floor', 0x0C75E8, 'regular', 'Token Race', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(62, 'Elevator Hop - Coin - Token Race - Main Path #7', 'Shaft Top Floor', 0x0C75D8, 'regular', 'Token Race', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
+    Coin(63, 'Elevator Hop - Coin - Token Race - Main Path #8', 'Shaft Top Floor', 0x0C75C8, 'regular', 'Token Race', ('Visor', 'Stomp', 'Double Jump'), (), ('Grappling Hook',), (), '', '', (), (), (), (), (), '', ''),
 ]
 
-ELEVATOR_HOP_COINS: List[CoinEntry] = [
-    # Coin 1
-    ([], ['Spin', 'Laser'], [], [], None, [], [], [], []),
-    # Coin 2
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 3
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 4
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 5
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 6
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 7
-    (['Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 8
-    (['Pole Vault', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 9
-    (['Pole Vault', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 10
-    (['Pole Vault', 'Double Jump', 'Rope Sliding', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 11
-    (['Visor'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 12
-    (['Visor'], ['Spin', 'Laser'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 13
-    (['Visor'], ['Laser', 'Spin', 'Stomp'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 14
-    (['Visor'], ['Laser', 'Spin', 'Stomp'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 15
-    (['Visor'], ['Laser', 'Spin', 'Stomp'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 16
-    (['Visor'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 17
-    (['Visor'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 18
-    (['Visor'], ['Laser', 'Spin', 'Stomp'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 19
-    (['Visor'], ['Laser', 'Spin', 'Stomp'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 20
-    (['Visor'], ['Laser', 'Spin', 'Stomp'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 21
-    (['Visor'], ['Spin', 'Laser'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 22
-    (['Visor'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 23
-    (['Visor'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 24
-    (['Visor'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 25
-    (['Visor'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 26
-    (['Visor'], ['Spin', 'Laser'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 27
-    (['Visor'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 28
-    (['Visor'], ['Stomp', 'Spin'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 29
-    (['Visor'], ['Laser', 'Spin', 'Stomp'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 30
-    (['Visor'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 31
-    (['Visor'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 32
-    (['Visor'], ['Stomp', 'Spin'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 33
-    (['Visor'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 34
-    (['Visor'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 35
-    (['Visor'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 36
-    (['Visor'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 37
-    (['Visor'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 38
-    (['Visor', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 39
-    (['Visor', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 40
-    (['Visor', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 41
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 42
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 43
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 44
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 45
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 46
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 47
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 48
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 49
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 50
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 51
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 52
-    (['Visor', 'Double Jump', 'Stomp'], ['Laser', 'Spin'], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 53
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 54
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 55
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 56
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 57
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 58
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 59
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 60
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 61
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 62
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
-    # Coin 63
-    (['Visor', 'Stomp', 'Double Jump'], [], ['Grappling Hook'], [], None, [], [], [], []),
+ALS_PENTHOUSE_COINS: List[Coin] = [
+    Coin(1, "Al's Penthouse - Coin - Bedroom - Behind Door", 'Bedroom', 0x0C7648, 'regular', 'Bedroom', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(2, "Al's Penthouse - Coin - Woody Room - Center Table", 'Woody Room', 0x0C7688, 'regular', 'Woody Room', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(3, "Al's Penthouse - Coin - Hallway - Vulture", 'Hallway', 0x0C4182, 'enemy', 'Hallway', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(4, "Al's Penthouse - Coin - Bedroom - Vulture", 'Bedroom', 0x0C3D5A, 'enemy', 'Bedroom', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(5, "Al's Penthouse - Coin - Bedroom - Gunman #1", 'Bedroom', 0x0C3CC2, 'enemy', 'Bedroom', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(6, "Al's Penthouse - Coin - Bedroom - Gunman #2", 'Bedroom', 0x0C3C2A, 'enemy', 'Bedroom', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(7, "Al's Penthouse - Coin - Kitchen - Gunman #1", 'Kitchen', 0x0C389A, 'enemy', 'Kitchen', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(8, "Al's Penthouse - Coin - Kitchen - Snake #1", 'Kitchen', 0x0C3932, 'enemy', 'Kitchen', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(9, "Al's Penthouse - Coin - Living Room - Vulture #1", 'Living Room', 0x0C33DA, 'enemy', 'Living Room', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(10, "Al's Penthouse - Coin - Woody Room - Gunman #1", 'Woody Room', 0x0C3DF2, 'enemy', 'Woody Room', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(11, "Al's Penthouse - Coin - Woody Room - Gunman #2", 'Woody Room', 0x0C3E8A, 'enemy', 'Woody Room', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(12, "Al's Penthouse - Coin - Living Room - Table with Cannon", 'Living Room', 0x0C74A8, 'regular', 'Living Room', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(13, "Al's Penthouse - Coin - Living Room - Table by Couch", 'Living Room', 0x0C74E8, 'regular', 'Living Room', ('Ledge Grab',), (), (), (), '', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(14, "Al's Penthouse - Coin - Living Room - Snake #1", 'Living Room', 0x0C376A, 'enemy', 'Living Room', ('Ledge Grab',), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', ('Easy',), ('Double Jump',), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', ''),
+    Coin(15, "Al's Penthouse - Coin - Living Room - East Railing", 'Living Room', 0x0C7478, 'regular', 'Living Room', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(16, "Al's Penthouse - Coin - Living Room - Between Railings", 'Living Room', 0x0C7488, 'regular', 'Living Room', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(17, "Al's Penthouse - Coin - Living Room - West Railing", 'Living Room', 0x0C7498, 'regular', 'Living Room', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(18, "Al's Penthouse - Coin - Living Room - Fireplace Mantel #1", 'Living Room', 0x0C74F8, 'regular', 'Living Room', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(19, "Al's Penthouse - Coin - Living Room - Fireplace Mantel #2", 'Living Room', 0x0C7508, 'regular', 'Living Room', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(20, "Al's Penthouse - Coin - Living Room - Snake #2", 'Living Room', 0x0C36D2, 'enemy', 'Living Room', ('Double Jump', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(21, "Al's Penthouse - Coin - Living Room - Long Upper Shelf #1", 'Living Room', 0x0C74B8, 'regular', 'Living Room', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(22, "Al's Penthouse - Coin - Living Room - Vulture #2", 'Living Room', 0x0C3A6E, 'enemy', 'Living Room', ('Double Jump', 'Ledge Grab', 'Pole Climb'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(23, "Al's Penthouse - Coin - Living Room - Long Upper Shelf #2", 'Living Room', 0x0C74C8, 'regular', 'Living Room', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(24, "Al's Penthouse - Coin - Living Room - Long Upper Shelf #3", 'Living Room', 0x0C74D8, 'regular', 'Living Room', ('Double Jump', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(25, "Al's Penthouse - Coin - Living Room - Cannon Kill Switch", 'Living Room', 0x0C7518, 'regular', 'Living Room', ('Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(26, "Al's Penthouse - Coin - Kitchen - Fridge Door", 'Kitchen', 0x0C2CEC, 'enemy', 'Kitchen', ('Laser', 'Visor'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(27, "Al's Penthouse - Coin - Kitchen - Jesse Countertop #1", 'Kitchen', 0x0C7528, 'regular', 'Kitchen', ('Laser', 'Visor', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(28, "Al's Penthouse - Coin - Kitchen - Jesse Countertop #2", 'Kitchen', 0x0C75A8, 'regular', 'Kitchen', ('Laser', 'Visor', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(29, "Al's Penthouse - Coin - Kitchen - By Scale", 'Kitchen', 0x0C7598, 'regular', 'Kitchen', ('Laser', 'Visor', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(30, "Al's Penthouse - Coin - Kitchen - Snake #2", 'Kitchen', 0x0C3AFA, 'enemy', 'Kitchen', ('Laser', 'Stomp', 'Visor', 'Double Jump'), (), (), (), '', '', ('Easy',), ('Laser', 'Visor', 'Double Jump'), (), (), (), '', ''),
+    Coin(31, "Al's Penthouse - Coin - Kitchen - Top of Fridge", 'Kitchen', 0x0C7538, 'regular', 'Kitchen', ('Laser', 'Stomp', 'Visor', 'Pole Climb', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(32, "Al's Penthouse - Coin - Kitchen - East High Shelf", 'Kitchen', 0x0C7548, 'regular', 'Kitchen', ('Laser', 'Stomp', 'Visor', 'Pole Climb', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(33, "Al's Penthouse - Coin - Kitchen - Critter Shelf", 'Kitchen', 0x0C7588, 'regular', 'Kitchen', ('Laser', 'Stomp', 'Visor', 'Pole Climb', 'Double Jump'), (), (), (), '', '', ('Easy',), ('Laser', 'Visor', 'Double Jump'), (), (), (), '', ''),
+    Coin(34, "Al's Penthouse - Coin - Kitchen - Snake #3", 'Kitchen', 0x0C3B92, 'enemy', 'Kitchen', ('Laser', 'Stomp', 'Visor', 'Pole Climb', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(35, "Al's Penthouse - Coin - Kitchen - Gunman #2", 'Kitchen', 0x0C39CA, 'enemy', 'Kitchen', ('Laser', 'Visor', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(36, "Al's Penthouse - Coin - Kitchen - Vulture", 'Kitchen', 0x0C3A62, 'enemy', 'Kitchen', ('Laser', 'Visor', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(37, "Al's Penthouse - Coin - Kitchen - Stove #1", 'Kitchen', 0x0C7578, 'regular', 'Kitchen', ('Laser', 'Visor', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(38, "Al's Penthouse - Coin - Kitchen - Stove #2", 'Kitchen', 0x0C7568, 'regular', 'Kitchen', ('Laser', 'Visor', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(39, "Al's Penthouse - Coin - Kitchen - By Coffee Maker", 'Kitchen', 0x0C7558, 'regular', 'Kitchen', ('Laser', 'Visor', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(40, "Al's Penthouse - Coin - Living Room - Bathroom Lock", 'Living Room', 0x0C3472, 'enemy', 'Living Room', ('Laser',), ('Double Jump', 'Visor'), (), (), 'Any 1 of OR', '', ('Easy',), (), ('Spin', 'Stomp', 'Double Jump', 'Ledge Grab'), (), (), 'Spin OR Double Jump + Ledge Grab + Stomp', ''),
+    Coin(41, "Al's Penthouse - Coin - Bathroom - Gunman", 'Bathroom', 0x0C421A, 'enemy', 'Bathroom', ('Laser',), ('Double Jump', 'Visor'), (), (), 'Any 1 of OR', '', ('Easy',), (), ('Spin', 'Stomp', 'Double Jump', 'Ledge Grab'), (), (), 'Spin OR Double Jump + Ledge Grab + Stomp', ''),
+    Coin(42, "Al's Penthouse - Coin - Bathroom - Floor near Sponges #1", 'Bathroom', 0x0C7768, 'regular', 'Bathroom', ('Laser',), ('Double Jump', 'Visor'), (), (), 'Any 1 of OR', '', ('Easy',), (), ('Spin', 'Stomp', 'Double Jump', 'Ledge Grab'), (), (), 'Spin OR Double Jump + Ledge Grab + Stomp', ''),
+    Coin(43, "Al's Penthouse - Coin - Bathroom - Floor near Sponges #2", 'Bathroom', 0x0C7758, 'regular', 'Bathroom', ('Laser',), ('Double Jump', 'Visor'), (), (), 'Any 1 of OR', '', ('Easy',), (), ('Spin', 'Stomp', 'Double Jump', 'Ledge Grab'), (), (), 'Spin OR Double Jump + Ledge Grab + Stomp', ''),
+    Coin(44, "Al's Penthouse - Coin - Bathroom - Counter #1", 'Bathroom', 0x0C76F8, 'regular', 'Bathroom', ('Laser', 'Stomp'), ('Double Jump', 'Visor', 'Ledge Grab'), (), (), 'Laser + Double Jump + Stomp OR Laser + Visor + Ledge Grab + Stomp', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(45, "Al's Penthouse - Coin - Bathroom - Counter #2", 'Bathroom', 0x0C7708, 'regular', 'Bathroom', ('Laser', 'Stomp'), ('Double Jump', 'Visor', 'Ledge Grab'), (), (), 'Laser + Double Jump + Stomp OR Laser + Visor + Ledge Grab + Stomp', '', ('Easy',), ('Double Jump',), (), (), (), '', ''),
+    Coin(46, "Al's Penthouse - Coin - Bathroom - Cannon Kill Switch", 'Bathroom', 0x0C7778, 'regular', 'Bathroom', ('Laser', 'Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab', 'Stomp'), (), (), (), '', ''),
+    Coin(47, "Al's Penthouse - Coin - Bathroom - Near Showerhead", 'Bathroom', 0x0C7788, 'regular', 'Bathroom', ('Laser', 'Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab', 'Stomp'), (), (), (), '', ''),
+    Coin(48, "Al's Penthouse - Coin - Bathroom - Cabinet #1", 'Bathroom', 0x0C7728, 'regular', 'Bathroom', ('Laser', 'Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab', 'Stomp'), (), (), (), '', ''),
+    Coin(49, "Al's Penthouse - Coin - Bathroom - Cabinet #2", 'Bathroom', 0x0C7738, 'regular', 'Bathroom', ('Laser', 'Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab', 'Stomp'), (), (), (), '', ''),
+    Coin(50, "Al's Penthouse - Coin - Bathroom - Next to Cannon", 'Bathroom', 0x0C7748, 'regular', 'Bathroom', ('Laser', 'Stomp', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), ('Double Jump', 'Ledge Grab', 'Stomp'), (), (), (), '', ''),
+    Coin(51, "Al's Penthouse - Coin - Bedroom - On Bed", 'Bedroom', 0x0C75B8, 'regular', 'Bedroom', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(52, "Al's Penthouse - Coin - Bedroom - Left Pillow", 'Bedroom', 0x0C75F8, 'regular', 'Bedroom', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(53, "Al's Penthouse - Coin - Bedroom - Right Pillow", 'Bedroom', 0x0C7608, 'regular', 'Bedroom', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(54, "Al's Penthouse - Coin - Bedroom - 1st Train Switch", 'Bedroom', 0x0C7618, 'regular', 'Bedroom', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(55, "Al's Penthouse - Coin - Bedroom - 2nd Train Switch", 'Bedroom', 0x0C7628, 'regular', 'Bedroom', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(56, "Al's Penthouse - Coin - Bedroom - 3rd Train Switch", 'Bedroom', 0x0C7638, 'regular', 'Bedroom', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(57, "Al's Penthouse - Coin - Bedroom - Train Bed Roof #1", 'Bedroom', 0x0C75E8, 'regular', 'Bedroom', ('Push', 'Double Jump', 'Ledge Grab', 'Stomp'), (), (), (), '', '', ('Easy',), ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(58, "Al's Penthouse - Coin - Bedroom - Train Bed Roof #2", 'Bedroom', 0x0C75D8, 'regular', 'Bedroom', ('Push', 'Double Jump', 'Ledge Grab', 'Stomp'), (), (), (), '', '', ('Easy',), ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(59, "Al's Penthouse - Coin - Bedroom - Train Bed Roof #3", 'Bedroom', 0x0C75C8, 'regular', 'Bedroom', ('Push', 'Double Jump', 'Ledge Grab', 'Stomp'), (), (), (), '', '', ('Easy',), ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(60, "Al's Penthouse - Coin - Woody Room - Above Lunchbox", 'Woody Room', 0x0C76C8, 'regular', 'Woody Room', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(61, "Al's Penthouse - Coin - Woody Room - Above West Display #1", 'Woody Room', 0x0C76D8, 'regular', 'Woody Room', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(62, "Al's Penthouse - Coin - Woody Room - Above West Display #2", 'Woody Room', 0x0C76E8, 'regular', 'Woody Room', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(63, "Al's Penthouse - Coin - Woody Room - Vulture #1", 'Woody Room', 0x0C3FBA, 'enemy', 'Woody Room', ('Push', 'Double Jump', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(64, "Al's Penthouse - Coin - Woody Room - Vulture #2", 'Woody Room', 0x0C40EA, 'enemy', 'Woody Room', ('Push', 'Double Jump', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(65, "Al's Penthouse - Coin - Woody Room - Snake #1", 'Woody Room', 0x0C3F22, 'enemy', 'Woody Room', ('Push', 'Double Jump', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(66, "Al's Penthouse - Coin - Woody Room - TV", 'Woody Room', 0x0C76B8, 'regular', 'Woody Room', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(67, "Al's Penthouse - Coin - Woody Room - Snake #2", 'Woody Room', 0x0C4052, 'enemy', 'Woody Room', ('Push', 'Double Jump', 'Ledge Grab'), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(68, "Al's Penthouse - Coin - Woody Room - Above North Display", 'Woody Room', 0x0C76A8, 'regular', 'Woody Room', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(69, "Al's Penthouse - Coin - Woody Room - Cannon Kill Switch", 'Woody Room', 0x0C7698, 'regular', 'Woody Room', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(70, "Al's Penthouse - Coin - Woody Room - Boss Arena #1", 'Woody Room', 0x0C7658, 'regular', 'Woody Room', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(71, "Al's Penthouse - Coin - Woody Room - Boss Arena #2", 'Woody Room', 0x0C7668, 'regular', 'Woody Room', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(72, "Al's Penthouse - Coin - Woody Room - Boss Arena #3", 'Woody Room', 0x0C7678, 'regular', 'Woody Room', ('Push', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
 ]
 
-ALS_PENTHOUSE_COINS: List[CoinEntry] = [
-    # Coin 1
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 2
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 3
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 4
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 5
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 6
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 7
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 8
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 9
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 10
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 11
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 12
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 13
-    (['Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 14
-    (['Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 15
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 16
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 17
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 18
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 19
-    (['Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 20
-    (['Double Jump', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 21
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 22
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 23
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 24
-    (['Double Jump', 'Ledge Grab', 'Pole Climb'], [], [], [], None, [], [], [], []),
-    # Coin 25
-    (['Double Jump', 'Ledge Grab', 'Pole Climb', 'Pole Vault'], [], [], [], None, [], [], [], []),
-    # Coin 26
-    (['Laser', 'Visor'], [], [], [], None, [], [], [], []),
-    # Coin 27
-    (['Laser', 'Visor', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 28
-    (['Laser', 'Visor', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 29
-    (['Laser', 'Visor', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 30
-    (['Laser', 'Stomp', 'Visor', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 31
-    (['Laser', 'Stomp', 'Visor', 'Pole Climb', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 32
-    (['Laser', 'Stomp', 'Visor', 'Pole Climb', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 33
-    (['Laser', 'Stomp', 'Visor', 'Pole Climb', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 34
-    (['Laser', 'Stomp', 'Visor', 'Pole Climb', 'Double Jump'], [], [], [], 'Easy', ['Laser', 'Visor', 'Double Jump'], [], [], []),
-    # Coin 35
-    (['Laser', 'Visor', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 36
-    (['Laser', 'Visor', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 37
-    (['Laser', 'Visor', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 38
-    (['Laser', 'Visor', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 39
-    (['Laser', 'Visor', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 40
-    (['Laser'], ['Double Jump', 'Visor'], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], ['Spin', 'Stomp'], [], []),
-    # Coin 41
-    (['Laser'], ['Double Jump', 'Visor'], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], ['Spin', 'Stomp'], [], []),
-    # Coin 42
-    (['Laser'], ['Double Jump', 'Visor'], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], ['Spin', 'Stomp'], [], []),
-    # Coin 43
-    (['Laser'], ['Double Jump', 'Visor'], [], [], 'Easy', ['Double Jump', 'Ledge Grab'], ['Spin', 'Stomp'], [], []),
-    # Coin 44
-    (['Laser', 'Stomp'], ['Double Jump', 'Visor', 'Ledge Grab'], [], [], 'Easy', ['Double Jump', 'Ledge Grab', 'Stomp'], [], [], []),
-    # Coin 45
-    (['Laser', 'Stomp'], ['Double Jump', 'Visor', 'Ledge Grab'], [], [], 'Easy', ['Double Jump', 'Ledge Grab', 'Stomp'], [], [], []),
-    # Coin 46
-    (['Laser', 'Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab', 'Stomp'], [], [], []),
-    # Coin 47
-    (['Laser', 'Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab', 'Stomp'], [], [], []),
-    # Coin 48
-    (['Laser', 'Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab', 'Stomp'], [], [], []),
-    # Coin 49
-    (['Laser', 'Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab', 'Stomp'], [], [], []),
-    # Coin 50
-    (['Laser', 'Stomp', 'Double Jump', 'Ledge Grab'], [], [], [], 'Easy', ['Double Jump', 'Ledge Grab', 'Stomp'], [], [], []),
-    # Coin 51
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 52
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 53
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 54
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 55
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 56
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 57
-    (['Push', 'Double Jump', 'Ledge Grab', 'Stomp'], [], [], [], 'Easy', ['Push', 'Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 58
-    (['Push', 'Double Jump', 'Ledge Grab', 'Stomp'], [], [], [], 'Easy', ['Push', 'Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 59
-    (['Push', 'Double Jump', 'Ledge Grab', 'Stomp'], [], [], [], 'Easy', ['Push', 'Double Jump', 'Ledge Grab'], [], [], []),
-    # Coin 60
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 61
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 62
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 63
-    (['Push', 'Double Jump', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 64
-    (['Push', 'Double Jump', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 65
-    (['Push', 'Double Jump', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 66
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 67
-    (['Push', 'Double Jump', 'Ledge Grab'], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 68
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 69
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 70
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 71
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 72
-    (['Push', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
+AIRPORT_INFILTRATION_COINS: List[Coin] = [
+    Coin(1, 'Airport Infiltration - Coin - Starting Room - Near Start #1', 'Starting Room', 0x0C7498, 'regular', 'Starting Room', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(2, 'Airport Infiltration - Coin - Starting Room - Near Start #2', 'Starting Room', 0x0C74E8, 'regular', 'Starting Room', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(3, 'Airport Infiltration - Coin - Starting Room - Between Snakes', 'Starting Room', 0x0C74F8, 'regular', 'Starting Room', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(4, 'Airport Infiltration - Coin - Starting Room - Suitcase on Floor', 'Starting Room', 0x0C7508, 'regular', 'Starting Room', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(5, 'Airport Infiltration - Coin - Starting Room - Gunman #1', 'Starting Room', 0x0C3472, 'enemy', 'Starting Room', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(6, 'Airport Infiltration - Coin - Starting Room - Gunman #2', 'Starting Room', 0x0C350A, 'enemy', 'Starting Room', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(7, 'Airport Infiltration - Coin - Starting Room - Gunman #3', 'Starting Room', 0x0C35A2, 'enemy', 'Starting Room', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(8, 'Airport Infiltration - Coin - Starting Room - Snake #1', 'Starting Room', 0x0C376A, 'enemy', 'Starting Room', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(9, 'Airport Infiltration - Coin - Starting Room - Snake #2', 'Starting Room', 0x0C36D2, 'enemy', 'Starting Room', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(10, 'Airport Infiltration - Coin - Starting Room - Snake #3', 'Starting Room', 0x0C363A, 'enemy', 'Starting Room', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(11, 'Airport Infiltration - Coin - Starting Room - 1st Conveyor Belt', 'Starting Room', 0x0C7518, 'regular', 'Starting Room', ('Stomp',), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(12, 'Airport Infiltration - Coin - Starting Room - Vulture', 'Starting Room', 0x0C3802, 'enemy', 'Starting Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(13, 'Airport Infiltration - Coin - C.Belt Room - Vulture #1', 'Conveyor Belt Room', 0x0C389A, 'enemy', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(14, 'Airport Infiltration - Coin - C.Belt Room - Snake', 'Conveyor Belt Room', 0x0C39CA, 'enemy', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(15, 'Airport Infiltration - Coin - C.Belt Room - Gunman #1', 'Conveyor Belt Room', 0x0C3932, 'enemy', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(16, 'Airport Infiltration - Coin - C.Belt Room - Gunman #2', 'Conveyor Belt Room', 0x0C3B92, 'enemy', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(17, 'Airport Infiltration - Coin - C.Belt Room - Gunman #3', 'Conveyor Belt Room', 0x0C3C2A, 'enemy', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(18, 'Airport Infiltration - Coin - Airplane Room - Gunman #1', 'Airplane Room', 0x0C3FBA, 'plane', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(19, 'Airport Infiltration - Coin - Airplane Room - Gunman #2', 'Airplane Room', 0x0C3F22, 'plane', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(20, 'Airport Infiltration - Coin - Airplane Room - Gunman #3', 'Airplane Room', 0x0C3E8A, 'plane', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(21, 'Airport Infiltration - Coin - Luggage Room - Vulture #1', 'Luggage Room', 0x0C3A62, 'enemy', 'Luggage Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(22, 'Airport Infiltration - Coin - Luggage Room - Vulture #2', 'Luggage Room', 0x0C3AFA, 'enemy', 'Luggage Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(23, 'Airport Infiltration - Coin - Starting Room - 2nd Conveyor Belt', 'Starting Room', 0x0C74D8, 'regular', 'Starting Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(24, 'Airport Infiltration - Coin - Starting Room - 3rd Conveyor Belt #1', 'Starting Room', 0x0C74A8, 'regular', 'Starting Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(25, 'Airport Infiltration - Coin - Starting Room - 3rd Conveyor Belt #2', 'Starting Room', 0x0C7528, 'regular', 'Starting Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(26, 'Airport Infiltration - Coin - C.Belt Room - Entry Conveyor Belt', 'Conveyor Belt Room', 0x0C7538, 'regular', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(27, 'Airport Infiltration - Coin - Starting Room - Near Hamm', 'Starting Room', 0x0C7478, 'regular', 'Starting Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(28, 'Airport Infiltration - Coin - Starting Room - 1st X-Ray', 'Starting Room', 0x0C7488, 'regular', 'Starting Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(29, 'Airport Infiltration - Coin - Starting Room - 2nd X-Ray', 'Starting Room', 0x0C74B8, 'regular', 'Starting Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(30, 'Airport Infiltration - Coin - Starting Room - 3rd X-Ray', 'Starting Room', 0x0C74C8, 'regular', 'Starting Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(31, 'Airport Infiltration - Coin - C.Belt Room - Under Entry Conveyor Belt', 'Conveyor Belt Room', 0x0C7548, 'regular', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(32, 'Airport Infiltration - Coin - Luggage Room - SE Corner', 'Luggage Room', 0x0C7748, 'regular', 'Luggage Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(33, 'Airport Infiltration - Coin - Luggage Room - By Metal Doors', 'Luggage Room', 0x0C7788, 'regular', 'Luggage Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(34, 'Airport Infiltration - Coin - Luggage Room - Canadian Cargo', 'Luggage Room', 0x0C7778, 'regular', 'Luggage Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(35, 'Airport Infiltration - Coin - Luggage Room - Lower East Suitcase', 'Luggage Room', 0x0C7768, 'regular', 'Luggage Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(36, 'Airport Infiltration - Coin - C.Belt Room - Near Airplane Room', 'Conveyor Belt Room', 0x0C7628, 'regular', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(37, 'Airport Infiltration - Coin - Airplane Room - NW Corner', 'Airplane Room', 0x0C7638, 'regular', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(38, 'Airport Infiltration - Coin - Airplane Room - Oil Spill near NW', 'Airplane Room', 0x0C7648, 'regular', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(39, 'Airport Infiltration - Coin - Airplane Room - Oil Spill near Green Laser', 'Airplane Room', 0x0C7658, 'regular', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(40, 'Airport Infiltration - Coin - Airplane Room - Snake #1', 'Airplane Room', 0x0C4052, 'plane', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(41, 'Airport Infiltration - Coin - Airplane Room - Snake #2', 'Airplane Room', 0x0C40EA, 'plane', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(42, 'Airport Infiltration - Coin - Airplane Room - Pushable Wheel', 'Airplane Room', 0x0C7688, 'regular', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(43, 'Airport Infiltration - Coin - Airplane Room - 1st Wing Seesaw', 'Airplane Room', 0x0C7698, 'regular', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(44, 'Airport Infiltration - Coin - Airplane Room - 2nd Wing Seesaw', 'Airplane Room', 0x0C76B8, 'regular', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(45, 'Airport Infiltration - Coin - Airplane Room - Lower Red Tail Wing', 'Airplane Room', 0x0C76D8, 'regular', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(46, 'Airport Infiltration - Coin - Airplane Room - Upper Red Tail Wing #1', 'Airplane Room', 0x0C76E8, 'regular', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(47, 'Airport Infiltration - Coin - Airplane Room - Upper Red Tail Wing #2', 'Airplane Room', 0x0C7668, 'regular', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(48, 'Airport Infiltration - Coin - Airplane Room - East Scaffolding', 'Airplane Room', 0x0C76F8, 'regular', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(49, 'Airport Infiltration - Coin - Airplane Room - East Scaffolding Steps', 'Airplane Room', 0x0C7708, 'regular', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(50, 'Airport Infiltration - Coin - Airplane Room - Platform by Cockpit', 'Airplane Room', 0x0C7738, 'regular', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Ledge Grab'), (), (), (), '', ''),
+    Coin(51, 'Airport Infiltration - Coin - Airplane Room - Snake #3', 'Airplane Room', 0x0C4182, 'plane', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
+    Coin(52, 'Airport Infiltration - Coin - Airplane Room - West Scaffolding Steps', 'Airplane Room', 0x0C7728, 'regular', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
+    Coin(53, 'Airport Infiltration - Coin - Airplane Room - Scaffolding over Passenger', 'Airplane Room', 0x0C76A8, 'regular', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab', 'Pole Climb'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
+    Coin(54, 'Airport Infiltration - Coin - Airplane Room - NE Corner', 'Airplane Room', 0x0C76C8, 'regular', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(55, 'Airport Infiltration - Coin - Airplane Room - Near SE Corner', 'Airplane Room', 0x0C7678, 'regular', 'Airplane Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(56, 'Airport Infiltration - Coin - C.Belt Room - 2nd Floor Belt #1', 'Conveyor Belt Room', 0x0C7558, 'regular', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(57, 'Airport Infiltration - Coin - C.Belt Room - 2nd Floor Belt #2', 'Conveyor Belt Room', 0x0C7568, 'regular', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(58, 'Airport Infiltration - Coin - C.Belt Room - 2nd Floor Belt #3', 'Conveyor Belt Room', 0x0C7578, 'regular', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(59, 'Airport Infiltration - Coin - C.Belt Room - 3rd Floor Belts #1', 'Conveyor Belt Room', 0x0C75F8, 'regular', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(60, 'Airport Infiltration - Coin - C.Belt Room - 3rd Floor Belts #2', 'Conveyor Belt Room', 0x0C75E8, 'regular', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), (), (), '', ''),
+    Coin(61, 'Airport Infiltration - Coin - C.Belt Room - Gunman #4', 'Conveyor Belt Room', 0x0C3CC2, 'enemy', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Pole Climb'), (), (), (), '', ''),
+    Coin(62, 'Airport Infiltration - Coin - C.Belt Room - Gunman #5', 'Conveyor Belt Room', 0x0C3DF2, 'enemy', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Pole Climb'), (), (), (), '', ''),
+    Coin(63, 'Airport Infiltration - Coin - C.Belt Room - Vulture #2', 'Conveyor Belt Room', 0x0C3D5A, 'enemy', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Pole Climb'), (), (), (), '', ''),
+    Coin(64, 'Airport Infiltration - Coin - C.Belt Room - 4th Floor Belts #1', 'Conveyor Belt Room', 0x0C7588, 'regular', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Pole Climb'), (), (), (), '', ''),
+    Coin(65, 'Airport Infiltration - Coin - C.Belt Room - 4th Floor Belts #2', 'Conveyor Belt Room', 0x0C7598, 'regular', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Pole Climb'), (), (), (), '', ''),
+    Coin(66, 'Airport Infiltration - Coin - C.Belt Room - 4th Floor Belts #3', 'Conveyor Belt Room', 0x0C75A8, 'regular', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Pole Climb'), (), (), (), '', ''),
+    Coin(67, 'Airport Infiltration - Coin - C.Belt Room - 4th Floor Belts #4', 'Conveyor Belt Room', 0x0C75B8, 'regular', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Pole Climb'), (), (), (), '', ''),
+    Coin(68, 'Airport Infiltration - Coin - C.Belt Room - Top SE Corner Light', 'Conveyor Belt Room', 0x0C75C8, 'regular', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'), (), (), (), '', '', ('Hard',), ('Double Jump', 'Stomp', 'Pole Climb'), (), (), (), '', ''),
+    Coin(69, 'Airport Infiltration - Coin - C.Belt Room - 5th Floor Belts #1', 'Conveyor Belt Room', 0x0C75D8, 'regular', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'), ('Rope Sliding', 'Ledge Grab'), (), (), 'Any 1 of OR', '', ('Hard',), ('Double Jump', 'Stomp', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
+    Coin(70, 'Airport Infiltration - Coin - C.Belt Room - 5th Floor Belts #2', 'Conveyor Belt Room', 0x0C7608, 'regular', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'), ('Rope Sliding', 'Ledge Grab'), (), (), 'Any 1 of OR', '', ('Hard',), ('Double Jump', 'Stomp', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
+    Coin(71, 'Airport Infiltration - Coin - C.Belt Room - 5th Floor Belts #3', 'Conveyor Belt Room', 0x0C7618, 'regular', 'C.Belt Room', ('Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'), ('Rope Sliding', 'Ledge Grab'), (), (), 'Any 1 of OR', '', ('Hard',), ('Double Jump', 'Stomp', 'Ledge Grab', 'Pole Climb'), (), (), (), '', ''),
+    Coin(72, 'Airport Infiltration - Coin - Luggage Room - Near Top of Luggage', 'Luggage Room', 0x0C7758, 'regular', 'Luggage Room', ('Stomp', 'Double Jump', 'Pole Vault'), (), ('Hover Boots',), (), '', '', ('Hard',), ('Double Jump', 'Stomp'), (), ('Hover Boots',), (), '', ''),
 ]
 
-AIRPORT_INFILTRATION_COINS: List[CoinEntry] = [
-    # Coin 1
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 2
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 3
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 4
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 5
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 6
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 7
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 8
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 9
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 10
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 11
-    (['Stomp'], [], [], [], None, [], [], [], []),
-    # Coin 12
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 13
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 14
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 15
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 16
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 17
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 18
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 19
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 20
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 21
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 22
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 23
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 24
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 25
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 26
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 27
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 28
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 29
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 30
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 31
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 32
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 33
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 34
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 35
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 36
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 37
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 38
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 39
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 40
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Ledge Grab'], [], [], []),
-    # Coin 41
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Ledge Grab'], [], [], []),
-    # Coin 42
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Ledge Grab'], [], [], []),
-    # Coin 43
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Ledge Grab'], [], [], []),
-    # Coin 44
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Ledge Grab'], [], [], []),
-    # Coin 45
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Ledge Grab'], [], [], []),
-    # Coin 46
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Ledge Grab'], [], [], []),
-    # Coin 47
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Ledge Grab'], [], [], []),
-    # Coin 48
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Ledge Grab'], [], [], []),
-    # Coin 49
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Ledge Grab'], [], [], []),
-    # Coin 50
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Ledge Grab'], [], [], []),
-    # Coin 51
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Ledge Grab', 'Pole Climb'], [], [], []),
-    # Coin 52
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Ledge Grab', 'Pole Climb'], [], [], []),
-    # Coin 53
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Ledge Grab', 'Pole Climb'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Ledge Grab', 'Pole Climb'], [], [], []),
-    # Coin 54
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 55
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 56
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 57
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 58
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 59
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 60
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], [], [], 'Hard', ['Double Jump', 'Stomp'], [], [], []),
-    # Coin 61
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Pole Climb'], [], [], []),
-    # Coin 62
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Pole Climb'], [], [], []),
-    # Coin 63
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Pole Climb'], [], [], []),
-    # Coin 64
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Pole Climb'], [], [], []),
-    # Coin 65
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Pole Climb'], [], [], []),
-    # Coin 66
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Pole Climb'], [], [], []),
-    # Coin 67
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Pole Climb'], [], [], []),
-    # Coin 68
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'], [], [], [], 'Hard', ['Double Jump', 'Stomp', 'Pole Climb'], [], [], []),
-    # Coin 69
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'], ['Rope Sliding', 'Ledge Grab'], [], [], 'Hard', ['Double Jump', 'Stomp', 'Ledge Grab', 'Pole Climb'], [], [], []),
-    # Coin 70
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'], ['Rope Sliding', 'Ledge Grab'], [], [], 'Hard', ['Double Jump', 'Stomp', 'Ledge Grab', 'Pole Climb'], [], [], []),
-    # Coin 71
-    (['Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb'], ['Rope Sliding', 'Ledge Grab'], [], [], 'Hard', ['Double Jump', 'Stomp', 'Ledge Grab', 'Pole Climb'], [], [], []),
-    # Coin 72
-    (['Stomp', 'Double Jump', 'Pole Vault'], [], ['Hover Boots'], [], 'Hard', ['Double Jump', 'Stomp'], [], ['Hover Boots'], []),
+TARMAC_TROUBLE_COINS: List[Coin] = [
+    Coin(1, 'Tarmac Trouble - Coin - Zone 2 - Rex Cart', 'Zone 2', 0x0C7488, 'regular', 'Zone 2', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), (), (), (), (), 'No requirements', ''),
+    Coin(2, 'Tarmac Trouble - Coin - Zone 2 - Rex-less Cart', 'Zone 2', 0x0C7478, 'regular', 'Zone 2', ('Double Jump', 'Ledge Grab'), (), (), (), '', '', ('Easy',), (), (), (), (), 'No requirements', ''),
+    Coin(3, 'Tarmac Trouble - Coin - Zone 4 - At Start', 'Zone 4', 0x0C7698, 'regular', 'Zone 4', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(4, 'Tarmac Trouble - Coin - Zone 4 - Middle', 'Zone 4', 0x0C76A8, 'regular', 'Zone 4', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(5, 'Tarmac Trouble - Coin - Zone 4 - By Luggage', 'Zone 4', 0x0C76B8, 'regular', 'Zone 4', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(6, 'Tarmac Trouble - Coin - Plane Road - #1 - Zone 4', 'Zone 4', 0x0C74B8, 'regular', 'Plane Road', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(7, 'Tarmac Trouble - Coin - Plane Road - #2 - Zone 4', 'Zone 4', 0x0C74C8, 'regular', 'Plane Road', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(8, 'Tarmac Trouble - Coin - Plane Road - #3 - Zone 4', 'Zone 4', 0x0C74D8, 'regular', 'Plane Road', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(9, 'Tarmac Trouble - Coin - Plane Road - #4 - Zone 5', 'Zone 5', 0x0C74E8, 'regular', 'Plane Road', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(10, 'Tarmac Trouble - Coin - Plane Road - #5 - Zone 6', 'Zone 6', 0x0C74F8, 'regular', 'Plane Road', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(11, 'Tarmac Trouble - Coin - Plane Road - #6 - Zone 6', 'Zone 6', 0x0C7508, 'regular', 'Plane Road', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(12, 'Tarmac Trouble - Coin - Plane Road - #7 - Zone 6', 'Zone 6', 0x0C7518, 'regular', 'Plane Road', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(13, 'Tarmac Trouble - Coin - Plane Road - #8 - Zone 7', 'Zone 7', 0x0C7528, 'regular', 'Plane Road', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(14, 'Tarmac Trouble - Coin - Plane Road - #9 - Zone 8', 'Zone 8', 0x0C7538, 'regular', 'Plane Road', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(15, 'Tarmac Trouble - Coin - Plane Road - #10 - Zone 8', 'Zone 8', 0x0C7548, 'regular', 'Plane Road', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(16, 'Tarmac Trouble - Coin - Plane Road - #11 - Zone 8', 'Zone 8', 0x0C7558, 'regular', 'Plane Road', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(17, 'Tarmac Trouble - Coin - Plane Road - #12 - Zone 1', 'Zone 1', 0x0C7568, 'regular', 'Plane Road', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(18, 'Tarmac Trouble - Coin - Plane Road - #13 - Zone 2', 'Zone 2', 0x0C7578, 'regular', 'Plane Road', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(19, 'Tarmac Trouble - Coin - Plane Road - #14 - Zone 2', 'Zone 2', 0x0C7588, 'regular', 'Plane Road', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(20, 'Tarmac Trouble - Coin - Plane Road - #15 - Zone 3', 'Zone 3', 0x0C7498, 'regular', 'Plane Road', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(21, 'Tarmac Trouble - Coin - Plane Road - #16 - Zone 3', 'Zone 3', 0x0C74A8, 'regular', 'Plane Road', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(22, 'Tarmac Trouble - Coin - Slime Maze - #1', 'Center', 0x0C7768, 'regular', 'Slime Maze', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(23, 'Tarmac Trouble - Coin - Slime Maze - #2', 'Center', 0x0C7778, 'regular', 'Slime Maze', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(24, 'Tarmac Trouble - Coin - Slime Maze - #3', 'Center', 0x0C7788, 'regular', 'Slime Maze', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(25, 'Tarmac Trouble - Coin - Zone 3 - Near Slime', 'Zone 3', 0x0C7688, 'regular', 'Zone 3', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(26, 'Tarmac Trouble - Coin - Zone 3 - Near Tikes', 'Zone 3', 0x0C7678, 'regular', 'Zone 3', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(27, 'Tarmac Trouble - Coin - Zone 3 - Near Zone 2', 'Zone 3', 0x0C7668, 'regular', 'Zone 3', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(28, 'Tarmac Trouble - Coin - Zone 5 - Near Zone 4', 'Zone 5', 0x0C76C8, 'regular', 'Zone 5', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(29, 'Tarmac Trouble - Coin - Zone 5 - Near Hamm', 'Zone 5', 0x0C76D8, 'regular', 'Zone 5', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(30, 'Tarmac Trouble - Coin - Zone 5 - Near Zone 6', 'Zone 5', 0x0C76E8, 'regular', 'Zone 5', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(31, 'Tarmac Trouble - Coin - Zone 6 - Near Slime', 'Zone 6', 0x0C76F8, 'regular', 'Zone 6', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(32, 'Tarmac Trouble - Coin - Zone 6 - Middle', 'Zone 6', 0x0C7708, 'regular', 'Zone 6', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(33, 'Tarmac Trouble - Coin - Zone 6 - Behind to Conveyor Belt', 'Zone 6', 0x0C7718, 'regular', 'Zone 6', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(34, 'Tarmac Trouble - Coin - Zone 7 - Ground Near Zone 6', 'Zone 7', 0x0C7728, 'regular', 'Zone 7', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(35, 'Tarmac Trouble - Coin - Zone 7 - Ground Near Zone 8', 'Zone 7', 0x0C7738, 'regular', 'Zone 7', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(36, 'Tarmac Trouble - Coin - Zone 8 - Middle', 'Zone 8', 0x0C7748, 'regular', 'Zone 8', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(37, 'Tarmac Trouble - Coin - Zone 8 - Near Zone 1', 'Zone 8', 0x0C7758, 'regular', 'Zone 8', (), (), (), (), 'No requirements', '', (), (), (), (), (), '', ''),
+    Coin(38, 'Tarmac Trouble - Coin - Zone 4 - Gunman #1', 'Zone 4', 0x0C2F1A, 'enemy', 'Zone 4', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(39, 'Tarmac Trouble - Coin - Zone 4 - Gunman #2', 'Zone 4', 0x0C2FB2, 'enemy', 'Zone 4', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(40, 'Tarmac Trouble - Coin - Zone 5 - Vulture #1', 'Zone 5', 0x0C304A, 'enemy', 'Zone 5', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(41, 'Tarmac Trouble - Coin - Zone 4 - Vulture', 'Zone 4', 0x0C3CC2, 'enemy', 'Zone 4', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(42, 'Tarmac Trouble - Coin - Zone 4 - Snake', 'Zone 4', 0x0C42B2, 'enemy', 'Zone 4', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(43, 'Tarmac Trouble - Coin - Zone 5 - Gunman #1', 'Zone 5', 0x0C4052, 'enemy', 'Zone 5', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(44, 'Tarmac Trouble - Coin - Zone 5 - Gunman #2', 'Zone 5', 0x0C30E2, 'enemy', 'Zone 5', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(45, 'Tarmac Trouble - Coin - Zone 6 - Snake #1', 'Zone 6', 0x0C421A, 'enemy', 'Zone 6', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(46, 'Tarmac Trouble - Coin - Zone 6 - Snake #2', 'Zone 6', 0x0C3342, 'enemy', 'Zone 6', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(47, 'Tarmac Trouble - Coin - Zone 6 - Snake #3', 'Zone 6', 0x0C32AA, 'enemy', 'Zone 6', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(48, 'Tarmac Trouble - Coin - Zone 6 - Vulture #1', 'Zone 6', 0x0C317A, 'enemy', 'Zone 6', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(49, 'Tarmac Trouble - Coin - Zone 6 - Vulture #2', 'Zone 6', 0x0C3212, 'enemy', 'Zone 6', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(50, 'Tarmac Trouble - Coin - Zone 6 - Vulture #3', 'Zone 6', 0x0C3DF2, 'enemy', 'Zone 6', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(51, 'Tarmac Trouble - Coin - Zone 6 - Snake #4', 'Zone 6', 0x0C4182, 'enemy', 'Zone 6', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(52, 'Tarmac Trouble - Coin - Zone 6 - Gunman', 'Zone 6', 0x0C33DA, 'enemy', 'Zone 6', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(53, 'Tarmac Trouble - Coin - Zone 7 - Gunman', 'Zone 7', 0x0C3FBA, 'enemy', 'Zone 7', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(54, 'Tarmac Trouble - Coin - Zone 7 - Vulture', 'Zone 7', 0x0C3472, 'enemy', 'Zone 7', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(55, 'Tarmac Trouble - Coin - Zone 8 - Gunman #1', 'Zone 8', 0x0C350A, 'enemy', 'Zone 8', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(56, 'Tarmac Trouble - Coin - Zone 8 - Gunman #2', 'Zone 8', 0x0C35A2, 'enemy', 'Zone 8', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(57, 'Tarmac Trouble - Coin - Zone 8 - Gunman #3', 'Zone 8', 0x0C3802, 'enemy', 'Zone 8', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(58, 'Tarmac Trouble - Coin - Zone 8 - Vulture #1', 'Zone 8', 0x0C36D2, 'enemy', 'Zone 8', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(59, 'Tarmac Trouble - Coin - Zone 8 - Vulture #2', 'Zone 8', 0x0C3D5A, 'enemy', 'Zone 8', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(60, 'Tarmac Trouble - Coin - Zone 8 - Snake #1', 'Zone 8', 0x0C4512, 'enemy', 'Zone 8', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(61, 'Tarmac Trouble - Coin - Zone 8 - Snake #2', 'Zone 8', 0x0C447A, 'enemy', 'Zone 8', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(62, 'Tarmac Trouble - Coin - Zone 8 - Snake #3', 'Zone 8', 0x0C363A, 'enemy', 'Zone 8', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(63, 'Tarmac Trouble - Coin - Zone 1 - Vulture', 'Zone 1', 0x0C376A, 'enemy', 'Zone 1', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(64, 'Tarmac Trouble - Coin - Zone 1 - Gunman #1', 'Zone 1', 0x0C389A, 'enemy', 'Zone 1', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(65, 'Tarmac Trouble - Coin - Zone 1 - Gunman #2', 'Zone 1', 0x0C40EA, 'enemy', 'Zone 1', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(66, 'Tarmac Trouble - Coin - Zone 2 - Vulture #1', 'Zone 2', 0x0C3932, 'enemy', 'Zone 2', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(67, 'Tarmac Trouble - Coin - Zone 2 - Vulture #2', 'Zone 2', 0x0C39CA, 'enemy', 'Zone 2', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(68, 'Tarmac Trouble - Coin - Zone 2 - Vulture #3', 'Zone 2', 0x0C3E8A, 'enemy', 'Zone 2', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(69, 'Tarmac Trouble - Coin - Zone 2 - Snake #1', 'Zone 2', 0x0C3A62, 'enemy', 'Zone 2', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(70, 'Tarmac Trouble - Coin - Zone 2 - Snake #2', 'Zone 2', 0x0C3AFA, 'enemy', 'Zone 2', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(71, 'Tarmac Trouble - Coin - Zone 2 - Snake #3', 'Zone 2', 0x0C43E2, 'enemy', 'Zone 2', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(72, 'Tarmac Trouble - Coin - Zone 3 - Snake', 'Zone 3', 0x0C434A, 'enemy', 'Zone 3', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(73, 'Tarmac Trouble - Coin - Zone 3 - Vulture #1', 'Zone 3', 0x0C3C2A, 'enemy', 'Zone 3', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(74, 'Tarmac Trouble - Coin - Zone 3 - Vulture #2', 'Zone 3', 0x0C3B92, 'enemy', 'Zone 3', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(75, 'Tarmac Trouble - Coin - Zone 3 - Gunman', 'Zone 3', 0x0C3F22, 'enemy', 'Zone 3', (), ('Laser', 'Spin', 'Stomp'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(76, 'Tarmac Trouble - Coin - Zone 7 - Near Satellite Dish', 'Zone 7', 0x0C75C8, 'regular', 'Zone 7', ('Pole Climb', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(77, 'Tarmac Trouble - Coin - Zone 7 - Boss Arena #1', 'Zone 7', 0x0C75D8, 'regular', 'Zone 7', ('Pole Climb', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(78, 'Tarmac Trouble - Coin - Zone 7 - Boss Arena #2', 'Zone 7', 0x0C75E8, 'regular', 'Zone 7', ('Pole Climb', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(79, 'Tarmac Trouble - Coin - Zone 7 - Boss Arena #3', 'Zone 7', 0x0C75F8, 'regular', 'Zone 7', ('Pole Climb', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(80, 'Tarmac Trouble - Coin - Zone 7 - Boss Arena #4', 'Zone 7', 0x0C7608, 'regular', 'Zone 7', ('Pole Climb', 'Double Jump'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(81, 'Tarmac Trouble - Coin - Zone 1 - Step to Helipad', 'Zone 1', 0x0C7598, 'regular', 'Zone 1', ('Pole Climb', 'Double Jump'), ('Rope Sliding', 'Ledge Grab'), (), (), 'Any 1 of OR', '', (), (), (), (), (), '', ''),
+    Coin(82, 'Tarmac Trouble - Coin - Zone 1 - Helipad #1', 'Zone 1', 0x0C75A8, 'regular', 'Zone 1', ('Pole Climb', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(83, 'Tarmac Trouble - Coin - Zone 1 - Helipad #2', 'Zone 1', 0x0C75B8, 'regular', 'Zone 1', ('Pole Climb', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(84, 'Tarmac Trouble - Coin - Zone 1 - Helipad #3', 'Zone 1', 0x0C7658, 'regular', 'Zone 1', ('Pole Climb', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(85, 'Tarmac Trouble - Coin - Zone 1 - Helipad #4', 'Zone 1', 0x0C7618, 'regular', 'Zone 1', ('Pole Climb', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(86, 'Tarmac Trouble - Coin - Zone 1 - Helipad #5', 'Zone 1', 0x0C7628, 'regular', 'Zone 1', ('Pole Climb', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(87, 'Tarmac Trouble - Coin - Zone 1 - Helipad #6', 'Zone 1', 0x0C7638, 'regular', 'Zone 1', ('Pole Climb', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
+    Coin(88, 'Tarmac Trouble - Coin - Zone 1 - Helipad #7', 'Zone 1', 0x0C7648, 'regular', 'Zone 1', ('Pole Climb', 'Double Jump', 'Ledge Grab'), (), (), (), '', '', (), (), (), (), (), '', ''),
 ]
 
-TARMAC_TROUBLE_COINS: List[CoinEntry] = [
-    # Coin 1
-    (['Double Jump', 'Ledge Grab'], [], [], [], 'Easy', [], [], [], []),
-    # Coin 2
-    (['Double Jump', 'Ledge Grab'], [], [], [], 'Easy', [], [], [], []),
-    # Coin 3
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 4
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 5
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 6
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 7
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 8
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 9
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 10
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 11
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 12
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 13
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 14
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 15
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 16
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 17
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 18
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 19
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 20
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 21
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 22
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 23
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 24
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 25
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 26
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 27
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 28
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 29
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 30
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 31
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 32
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 33
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 34
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 35
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 36
-    ([], [], [], [], None, [], [], [], []),
-    # Coin 37
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 38
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 39
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 40
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 41
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 42
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 43
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 44
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 45
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 46
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 47
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 48
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 49
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 50
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 51
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 52
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 53
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 54
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 55
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 56
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 57
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 58
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 59
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 60
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 61
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 62
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 63
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 64
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 65
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 66
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 67
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 68
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 69
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 70
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 71
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 72
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 73
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 74
-    ([], ['Laser', 'Spin', 'Stomp'], [], [], None, [], [], [], []),
-    # Coin 75
-    (['Pole Climb', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 76
-    (['Pole Climb', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 77
-    (['Pole Climb', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 78
-    (['Pole Climb', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 79
-    (['Pole Climb', 'Double Jump'], [], [], [], None, [], [], [], []),
-    # Coin 80
-    (['Pole Climb', 'Double Jump'], ['Rope Sliding', 'Ledge Grab'], [], [], None, [], [], [], []),
-    # Coin 81
-    (['Pole Climb', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 82
-    (['Pole Climb', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 83
-    (['Pole Climb', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 84
-    (['Pole Climb', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 85
-    (['Pole Climb', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 86
-    (['Pole Climb', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 87
-    (['Pole Climb', 'Double Jump', 'Ledge Grab'], [], [], [], None, [], [], [], []),
-    # Coin 88
-    ([], [], [], [], None, [], [], [], []),
-]
-
-# Map level name -> coin list
-COIN_DATA = {
-    "Andy's House":          ANDYS_HOUSE_COINS,
-    "Andy's Neighborhood":   ANDYS_NEIGHBORHOOD_COINS,
-    "Construction Yard":      CONSTRUCTION_YARD_COINS,
-    "Alleys and Gullies":     ALLEYS_AND_GULLIES_COINS,
-    "Al's Toy Barn":         ALS_TOY_BARN_COINS,
-    "Al's Space Land":       ALS_SPACE_LAND_COINS,
-    "Elevator Hop":           ELEVATOR_HOP_COINS,
-    "Al's Penthouse":        ALS_PENTHOUSE_COINS,
-    "Airport Infiltration":   AIRPORT_INFILTRATION_COINS,
-    "Tarmac Trouble":         TARMAC_TROUBLE_COINS,
+COIN_DATA: Dict[str, List[Coin]] = {
+    "Andy's House": ANDYS_HOUSE_COINS,
+    "Andy's Neighborhood": ANDYS_NEIGHBORHOOD_COINS,
+    'Construction Yard': CONSTRUCTION_YARD_COINS,
+    'Alleys and Gullies': ALLEYS_AND_GULLIES_COINS,
+    "Al's Toy Barn": ALS_TOY_BARN_COINS,
+    "Al's Space Land": ALS_SPACE_LAND_COINS,
+    'Elevator Hop': ELEVATOR_HOP_COINS,
+    "Al's Penthouse": ALS_PENTHOUSE_COINS,
+    'Airport Infiltration': AIRPORT_INFILTRATION_COINS,
+    'Tarmac Trouble': TARMAC_TROUBLE_COINS,
 }

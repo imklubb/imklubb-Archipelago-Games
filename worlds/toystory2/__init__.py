@@ -13,9 +13,10 @@ from .items import (
     GADGET_ITEMS, MISSING_PART_ITEMS, LEVEL_UNLOCK_ITEMS,
     COIN_LEVEL_UNLOCK_ITEMS, BOSS_UNLOCK_ITEMS,
     COIN_BUNDLE_ITEMS, TRAP_ITEMS, FILLER_ITEMS, MISSING_TOY_ITEMS,
+    MISSING_TOY_BUNDLE_ITEMS, TOY_BUNDLE_NAME,
 )
 from .locations import LOCATION_TABLE, ToyStory2Location, LOC_BASE
-from .coin_data import COIN_DATA
+from .logic_data import COIN_DATA
 from .rules import set_rules, can_access_level
 
 # ── LAUNCHER COMPONENT (custom client) ────────────────────────
@@ -322,6 +323,13 @@ class ToyStory2World(World):
     options_dataclass = ToyStory2Options
     options: ToyStory2Options
 
+    # Universal Tracker: opt in to yaml-less tracking. With this set, UT writes a
+    # template (empty-options) yaml for the connected slot so its generator has a
+    # player, then interpret_slot_data + the re_gen_passthrough restore in
+    # generate_early override every option from slot_data to match the real seed.
+    # Without this flag UT requires the player's yaml in the Players folder.
+    ut_can_gen_without_yaml: ClassVar[bool] = True
+
     # Built at class level — includes ALL possible locations and items
     # Dynamic ones (coin bundles) are added in create_regions
     item_name_to_id: ClassVar[Dict[str, int]] = {
@@ -352,6 +360,23 @@ class ToyStory2World(World):
             _loc_name = f"{_level} - Coin Bundle {_bn}"
             location_name_to_id[_loc_name] = _COIN_BUNDLE_OFFSET + (_li * _COIN_BUNDLE_PER_LEVEL) + _bn
 
+    # ── DESCRIPTIVE COIN LOCATION IDS ─────────────────────────
+    # When coinsanity_checks_bundle_size == 1, each coin is its own AP check
+    # using its descriptive name (e.g. "Andy's House - Andy's Room - On Chair -
+    # Coin") instead of a "Coin Bundle N" milestone. Register a stable ID for
+    # every coin so the datapackage covers both modes. The ID is keyed by the
+    # coin's 1-based in-game index per level and sits well clear of bundle IDs.
+    _COIN_DESC_OFFSET = LOC_BASE + 5000
+    _COIN_DESC_PER_LEVEL = 150
+
+    @classmethod
+    def _coin_desc_id(cls, level_idx: int, coin_idx: int) -> int:
+        return cls._COIN_DESC_OFFSET + (level_idx * cls._COIN_DESC_PER_LEVEL) + coin_idx
+
+    for _li, _level in enumerate(COIN_LEVELS):
+        for _c in COIN_DATA.get(_level, []):
+            location_name_to_id[_c.name] = _COIN_DESC_OFFSET + (_li * _COIN_DESC_PER_LEVEL) + _c.idx
+
     required_client_version: Tuple[int, int, int] = (0, 5, 0)
 
     item_name_groups = {
@@ -360,7 +385,7 @@ class ToyStory2World(World):
         "Traversal Moves":  frozenset(TRAVERSAL_MOVE_ITEMS),
         "Gadgets":          frozenset(GADGET_ITEMS),
         "Missing Parts":    frozenset(MISSING_PART_ITEMS),
-        "Missing Toys":     frozenset(MISSING_TOY_ITEMS),
+        "Missing Toys":     frozenset(MISSING_TOY_ITEMS) | frozenset(MISSING_TOY_BUNDLE_ITEMS),
         "Level Unlocks":    frozenset(LEVEL_UNLOCK_ITEMS),
         "Coin Bundles":     frozenset(COIN_BUNDLE_ITEMS),
         "Traps":            frozenset(TRAP_ITEMS),
@@ -441,6 +466,7 @@ class ToyStory2World(World):
             "Damage Buzz Trap":         self.options.damage_buzz_trap_weight.value,
             "Freeze Buzz Trap":         self.options.freeze_buzz_trap_weight.value,
             "Invincible Enemies Trap":  self.options.invincible_enemies_trap_weight.value,
+            "Dizzy Buzz":               self.options.dizzy_buzz_trap_weight.value,
         }
         for trap_name, weight in weights.items():
             traps.extend([trap_name] * TRAP_WEIGHT_VALUES[weight])
@@ -453,12 +479,15 @@ class ToyStory2World(World):
             "1 Life":        self.options.one_life_filler_weight.value,
             "Extra Battery": self.options.extra_battery_filler_weight.value,
             "Invincible Buzz": self.options.invincible_buzz_filler_weight.value,
+            "Determination to Save Woody": self.options.determination_filler_weight.value,
         }
         for name, weight in weights.items():
             filler.extend([name] * TRAP_WEIGHT_VALUES[weight])
-        # If both are Off, fall back to an even split so we always have filler.
+        # If EVERY filler is set to Off, Archipelago would have nothing to fill
+        # empty locations with. "Determination to Save Woody" does nothing when
+        # received (pure flavor), so force it to High as the safe fallback.
         if not filler:
-            filler = ["1 Life", "Extra Battery"]
+            filler = ["Determination to Save Woody"] * TRAP_WEIGHT_VALUES[3]
         return filler
 
     def _get_filler_or_trap(self) -> str:
@@ -481,15 +510,19 @@ class ToyStory2World(World):
         _passthrough = getattr(self.multiworld, "re_gen_passthrough", None)
         _ut_sd = _passthrough.get("Toy Story 2") if isinstance(_passthrough, dict) else None
         if isinstance(_ut_sd, dict):
-            for _opt in ("game_mode", "skips", "goal_conditions",
-                         "final_showdown_token_gate", "defeated_bosses_required",
-                         "linear_final_showdown_token_gate",
-                         "bombs_away_token_gate", "slime_time_token_gate",
-                         "toy_barn_encounter_token_gate", "evil_emperor_zurg_token_gate",
-                         "coinsanity_checks_bundle_size"):
-                if _opt in _ut_sd:
+            # Restore EVERY option carried in slot_data so UT's regeneration
+            # matches the real seed even with no player yaml in the Players
+            # folder. Looping over the slot_data keys (rather than a hand-kept
+            # list) means any option added to fill_slot_data later — including the
+            # upcoming coinsanity ones — is picked up automatically.
+            # starting_levels is a derived list, not an option, applied below.
+            for _opt, _val in _ut_sd.items():
+                if _opt == "starting_levels":
+                    continue
+                _attr = getattr(options, _opt, None)
+                if _attr is not None and hasattr(_attr, "value"):
                     try:
-                        getattr(options, _opt).value = _ut_sd[_opt]
+                        _attr.value = _val
                     except Exception:
                         pass
 
@@ -558,16 +591,25 @@ class ToyStory2World(World):
                 loc = ToyStory2Location(self.player, loc_name, loc_data.code, region)
                 region.locations.append(loc)
 
-            # Add coin bundle CHECK locations (count uses the checks bundle size)
+            # Add coin CHECK locations. In 1-coin mode (checks bundle size == 1)
+            # each coin is its own descriptive location; otherwise coins are
+            # grouped into "Coin Bundle N" milestone locations.
             if self._is_coinsanity() and level_name in COIN_LEVELS:
                 level_idx = COIN_LEVELS.index(level_name)
-                num_bundles = self._num_check_bundles(level_name)
-                for bn in range(1, num_bundles + 1):
-                    loc_name = f"{level_name} - Coin Bundle {bn}"
-                    loc_id = self._coin_bundle_id(level_idx, bn)
-                    loc = ToyStory2Location(self.player, loc_name, loc_id, region)
-                    region.locations.append(loc)
-                    self.coin_bundle_locations.append(loc_name)
+                if self._checks_bundle_size() == 1:
+                    for _c in COIN_DATA.get(level_name, []):
+                        loc_id = self._coin_desc_id(level_idx, _c.idx)
+                        loc = ToyStory2Location(self.player, _c.name, loc_id, region)
+                        region.locations.append(loc)
+                        self.coin_bundle_locations.append(_c.name)
+                else:
+                    num_bundles = self._num_check_bundles(level_name)
+                    for bn in range(1, num_bundles + 1):
+                        loc_name = f"{level_name} - Coin Bundle {bn}"
+                        loc_id = self._coin_bundle_id(level_idx, bn)
+                        loc = ToyStory2Location(self.player, loc_name, loc_id, region)
+                        region.locations.append(loc)
+                        self.coin_bundle_locations.append(loc_name)
 
         # Place goal event
         prospector = self.multiworld.get_region("Prospector Showdown", self.player)
@@ -611,17 +653,27 @@ class ToyStory2World(World):
         elif movesanity == 1:
             # Full movesanity — all moves in pool
             for move in MOVE_ITEMS:
-                if move == "Progressive Laser":
-                    for _ in range(3):
-                        items_to_add.append(self._make_item("Progressive Laser"))
+                if move in ("Progressive Laser", "Progressive Spin"):
+                    # Only level 1 is required for logic; levels 2-3 are pure
+                    # upgrades, so the first copy is progression and the other two
+                    # are marked useful to free up the fill.
+                    for i in range(3):
+                        items_to_add.append(self._make_item(
+                            move,
+                            override_class=(ItemClassification.useful if i else None)))
                 else:
                     items_to_add.append(self._make_item(move))
         elif movesanity == 2:
             # LITE Weapons
             for move in WEAPON_MOVE_ITEMS:
-                if move == "Progressive Laser":
-                    for _ in range(3):
-                        items_to_add.append(self._make_item("Progressive Laser"))
+                if move in ("Progressive Laser", "Progressive Spin"):
+                    # Only level 1 is required for logic; levels 2-3 are pure
+                    # upgrades, so the first copy is progression and the other two
+                    # are marked useful to free up the fill.
+                    for i in range(3):
+                        items_to_add.append(self._make_item(
+                            move,
+                            override_class=(ItemClassification.useful if i else None)))
                 else:
                     items_to_add.append(self._make_item(move))
         elif movesanity == 3:
@@ -638,12 +690,19 @@ class ToyStory2World(World):
             items_to_add.append(self._make_item(part))
 
         # ── MISSING TOYS (5 progressive of each, both modes) ──
-        # The 50 toy locations are always in the pool, so always add the matching
-        # 50 toy items (5 per type). The client counts received toy items and
+        # The 50 toy locations are always in the pool. Individual mode adds the
+        # matching 50 toy items (5 per type); bundle mode adds 10 (one "5 X" per
+        # level) and the freed slots become filler. The client counts received and
         # writes the count to SHARED_TOY_RECEIVED for that level.
+        bundle5 = (options.missing_toy_bundle_size.value == 5)
         for toy_item in MISSING_TOY_ITEMS:
-            for _ in range(5):
-                items_to_add.append(self._make_item(toy_item))
+            if bundle5:
+                # One item grants all 5 of the level's toys. The 40 toy-item
+                # slots this frees up are taken up by filler in the balance step.
+                items_to_add.append(self._make_item(TOY_BUNDLE_NAME[toy_item]))
+            else:
+                for _ in range(5):
+                    items_to_add.append(self._make_item(toy_item))
 
         # ── PIZZA PLANET TOKENS ───────────────────────────────
         # Deferred to the balance step: the requested pool size is capped to the
@@ -829,9 +888,46 @@ class ToyStory2World(World):
 
         # Fill any remaining slots with filler/traps.
         item_count = len(items_to_add)
-        filler_needed = loc_count - item_count
-        for _ in range(max(0, filler_needed)):
-            items_to_add.append(self._make_item(self._get_filler_or_trap()))
+        filler_needed = max(0, loc_count - item_count)
+
+        # Local Filler: rather than constraining the shared pool via local_items
+        # (which overflows when this slot has far more checks than its co-op
+        # partners — its own progression crowds its world and leaves fewer open
+        # spots than it has filler, which is then forbidden from leaving), we
+        # RESERVE the spots up front. Dynamic filler items (not traps) are locked
+        # into this slot's own open locations before the main fill, so progression
+        # fill works around them and item/location counts stay exactly balanced.
+        # Traps always travel to the multiworld normally.
+        local_filler_on = False
+        try:
+            local_filler_on = bool(self.options.local_filler)
+        except Exception:
+            local_filler_on = False
+
+        pending_local: List[ToyStory2Item] = []
+        for _ in range(filler_needed):
+            name = self._get_filler_or_trap()
+            if local_filler_on and name in FILLER_ITEMS:
+                pending_local.append(self._make_item(name))
+            else:
+                items_to_add.append(self._make_item(name))
+
+        if pending_local:
+            try:
+                own_open = [l for l in self.multiworld.get_locations(self.player)
+                            if not l.is_event and l.item is None and not l.locked]
+                self.multiworld.random.shuffle(own_open)
+                idx = 0
+                for it in pending_local:
+                    if idx < len(own_open):
+                        own_open[idx].place_locked_item(it)
+                        idx += 1
+                    else:
+                        items_to_add.append(it)  # ran out of own spots: pool it
+            except Exception:
+                # Any failure: fall back to normal (non-local) filler so that
+                # generation always succeeds.
+                items_to_add.extend(pending_local)
 
         # Submit all items
         self.multiworld.itempool += items_to_add
@@ -880,13 +976,13 @@ class ToyStory2World(World):
             "coinsanity":                       options.coinsanity.value,
             "coinsanity_checks_bundle_size":    options.coinsanity_checks_bundle_size.value,
             "coinsanity_received_bundle_size":  options.coinsanity_received_bundle_size.value,
+            "missing_toy_bundle_size":          options.missing_toy_bundle_size.value,
             "lifesanity":                       options.lifesanity.value,
             "batterysanity":                    options.batterysanity.value,
             "green_laser_sanity":               options.green_laser_sanity.value,
             "rexsanity":                        options.rexsanity.value,
             "hint_block_sanity":                options.hint_block_sanity.value,
             # QOL
-            "collect_enemy_coins_automatically": options.collect_enemy_coins_automatically.value,
             "skip_cutscenes":                   options.skip_cutscenes.value,
             "disc_launcher_fill_pockets":       options.disc_launcher_fill_pockets.value,
             "on_screen_item_feed":              options.on_screen_item_feed.value,

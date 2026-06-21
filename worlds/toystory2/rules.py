@@ -1,6 +1,8 @@
 from typing import TYPE_CHECKING, Callable, List, Optional
+import re
 from BaseClasses import CollectionState
-from .coin_data import COIN_DATA, CoinEntry
+from .logic_data import ALL_LOCATIONS, COIN_DATA, LOC_BY_NAME, Loc
+from .items import TOY_BUNDLE_NAME
 
 if TYPE_CHECKING:
     from . import ToyStory2World
@@ -11,6 +13,7 @@ if TYPE_CHECKING:
 SKIPS_OFF  = 0
 SKIPS_EASY = 1
 SKIPS_HARD = 2
+SKIPS_INSANE = 3
 
 GAME_MODE_OPEN   = 0
 GAME_MODE_LINEAR = 1
@@ -31,7 +34,7 @@ def has_laser(state: CollectionState, player: int) -> bool:
     return state.has("Progressive Laser", player)
 
 def has_spin(state: CollectionState, player: int) -> bool:
-    return state.has("Spin", player)
+    return state.has("Progressive Spin", player)
 
 def has_stomp(state: CollectionState, player: int) -> bool:
     return state.has("Stomp", player)
@@ -350,568 +353,170 @@ def can_access_level(state: CollectionState, player: int, level: str, world: "To
     return False
 
 # ============================================================
-# STANDARD RULE EVALUATOR
+# RULE COMPILER
 # ============================================================
+# Evaluates the canonical logic expressions from logic_data.py against a
+# CollectionState. Movement leaves route through has_move; gadget leaves through
+# has_gadget_by_name(level) so per-level gadget reachability still applies. Skip
+# tiers are NESTED (Off < Easy < Hard < Insane): a location is reachable via its
+# base logic, OR (skips>=Easy) its easy path, OR (skips>=Hard) its hard path, OR
+# (skips>=Insane) its insane path. The misc gate (50 Coins / 5 Missing Toys /
+# Missing <part>) is ANDed on top. Operators: '+' = AND (tightest), bare OR (and
+# comma) = OR, bare AND = AND (loosest); parens override; "(always)" = no req.
+import re as _re
 
-def standard_rule(
-    state: CollectionState,
-    player: int,
-    skips: int,
-    moves_and: List[str],
-    moves_or: List[str],
-    gadgets_and: List[str],
-    gadgets_or: List[str],
-    glitch_tier: Optional[str],
-    g_moves_and: List[str],
-    g_moves_or: List[str],
-    g_gadgets_and: List[str],
-    g_gadgets_or: List[str],
-    level: str = "",
-) -> bool:
-    # Check glitch shortcut first
-    if glitch_tier and skips != SKIPS_OFF:
-        tiers = [t.strip() for t in glitch_tier.split(",")]
-        glitch_applies = (
-            (skips == SKIPS_EASY and "Easy" in tiers) or
-            (skips == SKIPS_HARD and ("Hard" in tiers or "Easy" in tiers))
-        )
-        if glitch_applies:
-            gma_ok = has_all_moves(state, player, g_moves_and) if g_moves_and else True
-            gga_ok = has_all_gadgets(state, player, g_gadgets_and, level) if g_gadgets_and else True
-            if g_moves_or and g_gadgets_or:
-                gor_ok = (has_any_move(state, player, g_moves_or)
-                          or has_any_gadget(state, player, g_gadgets_or, level))
-                if gma_ok and gga_ok and gor_ok:
-                    return True
-            else:
-                gmo_ok = has_any_move(state, player, g_moves_or) if g_moves_or else True
-                ggo_ok = has_any_gadget(state, player, g_gadgets_or, level) if g_gadgets_or else True
-                if gma_ok and gmo_ok and gga_ok and ggo_ok:
-                    return True
+_MOVES   = set(MOVE_CHECKERS.keys())
+_GADGETS = set(GADGET_CHECKERS.keys())
+_NAMES   = sorted(_MOVES | _GADGETS | {"Climb"}, key=len, reverse=True)
+_ALIAS   = {"climb": "Pole Climb"}
 
-    # Normal requirements
-    ma_ok = has_all_moves(state, player, moves_and) if moves_and else True
-    ga_ok = has_all_gadgets(state, player, gadgets_and, level) if gadgets_and else True
-    # OR-moves and OR-gadgets form ONE combined "any 1 of" pool when both are
-    # present (per the "Any 1 of OR Movement & Gadgets" logic note): satisfying
-    # EITHER an OR-move OR an OR-gadget is enough. (Previously these were ANDed,
-    # which wrongly required both an attack AND the gadget — e.g. Laser AND Disc
-    # Launcher instead of Laser OR Disc Launcher.) has_any_gadget still enforces the
-    # per-level gadget-accessibility gates.
-    if moves_or and gadgets_or:
-        or_ok = (has_any_move(state, player, moves_or)
-                 or has_any_gadget(state, player, gadgets_or, level))
-        return ma_ok and ga_ok and or_ok
-    mo_ok = has_any_move(state, player, moves_or) if moves_or else True
-    go_ok = has_any_gadget(state, player, gadgets_or, level) if gadgets_or else True
-    return ma_ok and mo_ok and ga_ok and go_ok
+class _PErr(Exception):
+    pass
 
-# ============================================================
-# COIN BUNDLE RULES
-# ============================================================
+def _tok(s):
+    toks = []
+    i = 0
+    while i < len(s):
+        ch = s[i]
+        if ch.isspace():
+            i += 1; continue
+        if ch in "()+,":
+            toks.append(ch); i += 1; continue
+        m = _re.match(r'(?i)(or|and)\b', s[i:])
+        if m:
+            toks.append(m.group(1).upper()); i += len(m.group(1)); continue
+        hit = None
+        for nm in _NAMES:
+            if s[i:i + len(nm)].lower() == nm.lower():
+                hit = nm; break
+        if hit:
+            toks.append(("I", _ALIAS.get(hit.lower(), hit))); i += len(hit); continue
+        raise _PErr("bad token: %r" % s[i:i + 20])
+    return toks
 
-# ── COMPLEX COIN OVERRIDES ───────────────────────────────────
-# These handle coins whose logic can't be expressed by simple AND/OR
+class _P:
+    def __init__(self, t):
+        self.t = t; self.i = 0
+    def pk(self):
+        return self.t[self.i] if self.i < len(self.t) else None
+    def eat(self, x=None):
+        t = self.pk()
+        if x is not None and t != x:
+            raise _PErr("expected %r" % x)
+        self.i += 1; return t
+    def go(self):
+        a = self.a()
+        if self.i != len(self.t):
+            raise _PErr("trailing tokens")
+        return a
+    def a(self):            # bare AND (loosest): joins OR-layers
+        p = [self.o()]
+        while self.pk() == "AND":
+            self.eat(); p.append(self.o())
+        return p[0] if len(p) == 1 else ("and", p)
+    def o(self):            # OR-layer (comma is also OR)
+        p = [self.pl()]
+        while self.pk() in ("OR", ","):
+            while self.pk() in ("OR", ","):
+                self.eat()
+            p.append(self.pl())
+        return p[0] if len(p) == 1 else ("or", p)
+    def pl(self):           # '+' AND (tightest)
+        p = [self.at()]
+        while self.pk() == "+":
+            self.eat(); p.append(self.at())
+        return p[0] if len(p) == 1 else ("and", p)
+    def at(self):
+        t = self.pk()
+        if t == "(":
+            self.eat("("); a = self.a(); self.eat(")"); return a
+        if isinstance(t, tuple):
+            self.eat(); return ("leaf", t[1])
+        raise _PErr("expected atom, got %r" % (t,))
 
-def _alleys_coins_40_42(state: CollectionState, player: int, skips: int) -> bool:
-    # (Ledge Grab OR Double Jump) AND (Laser OR Spin OR Stomp)
-    return (
-        has_any_move(state, player, ["Ledge Grab", "Double Jump"]) and
-        has_any_attack(state, player) and
-        has_rope_sliding(state, player)
+def _parse(s):
+    s = (s or "").strip()
+    if not s or s == "(always)":
+        return ("true",)
+    return _P(_tok(s)).go()
+
+def _ev(ast, state, player, level):
+    k = ast[0]
+    if k == "true":
+        return True
+    if k == "leaf":
+        n = ast[1]
+        if n in _GADGETS:
+            return has_gadget_by_name(state, player, n, level)
+        return has_move(state, player, n)
+    if k == "and":
+        return all(_ev(c, state, player, level) for c in ast[1])
+    return any(_ev(c, state, player, level) for c in ast[1])
+
+# Pre-parse every location's expressions once at import.
+_COMPILED = {}   # name -> (level, logic, easy|None, hard|None, insane|None, misc)
+for _loc in ALL_LOCATIONS:
+    _COMPILED[_loc.name] = (
+        _loc.level,
+        _parse(_loc.logic),
+        _parse(_loc.easy) if _loc.easy else None,
+        _parse(_loc.hard) if _loc.hard else None,
+        _parse(_loc.insane) if _loc.insane else None,
+        _loc.misc,
     )
 
-def _alleys_coins_79_83(state: CollectionState, player: int, skips: int) -> bool:
-    # (Laser OR Spin) AND (Ledge Grab OR Double Jump) + Visor + Pole Climb + Rope Sliding + Grappling Hook
-    return (
-        has_laser_or_spin(state, player) and
-        has_any_move(state, player, ["Ledge Grab", "Double Jump"]) and
-        has_visor(state, player) and
-        has_pole_climb(state, player) and
-        has_rope_sliding(state, player) and
-        has_grappling_hook_alleys(state, player)
-    )
-
-def _als_penthouse_coins_44_45(state: CollectionState, player: int, skips: int) -> bool:
-    # Laser + Double Jump + Stomp OR Laser + Visor + Ledge Grab
-    normal = (
-        (has_laser(state, player) and has_double_jump(state, player) and has_stomp(state, player)) or
-        (has_laser(state, player) and has_visor(state, player) and has_ledge_grab(state, player))
-    )
-    if normal:
+def _reach(state, player, name, skips):
+    """Movement/gadget reachability for a location (logic + skip tiers), no misc."""
+    c = _COMPILED.get(name)
+    if c is None:
         return True
-    if skips in (SKIPS_EASY, SKIPS_HARD):
-        return (has_double_jump(state, player) and has_ledge_grab(state, player) and
-                has_stomp(state, player))
+    lvl, la, ea, ha, ia, _ = c
+    if _ev(la, state, player, lvl):
+        return True
+    if ea is not None and skips >= SKIPS_EASY and _ev(ea, state, player, lvl):
+        return True
+    if ha is not None and skips >= SKIPS_HARD and _ev(ha, state, player, lvl):
+        return True
+    if ia is not None and skips >= SKIPS_INSANE and _ev(ia, state, player, lvl):
+        return True
     return False
 
-def _als_toybarn_coins_59_60(state: CollectionState, player: int, skips: int) -> bool:
-    # Double Jump + Rocket Boots OR Double Jump + Ledge Grab + Pole Vault + Rope Sliding
-    normal = (
-        (has_double_jump(state, player) and has_rocket_boots_toybarn(state, player)) or
-        (has_double_jump(state, player) and has_ledge_grab(state, player) and
-         has_pole_vault(state, player) and has_rope_sliding(state, player))
-    )
-    if normal:
-        return True
-    if skips in (SKIPS_EASY, SKIPS_HARD):
-        if has_double_jump(state, player) and has_ledge_grab(state, player):
-            return True
-    if skips == SKIPS_HARD:
-        return has_double_jump(state, player)
-    return False
-
-def _als_toybarn_coins_61_68(state: CollectionState, player: int, skips: int) -> bool:
-    # Stomp + Double Jump + Rocket Boots OR Double Jump + Pole Vault + Rope Sliding
-    # OR Ledge Grab + Pole Vault + Rope Sliding
-    normal = (
-        (has_stomp(state, player) and has_double_jump(state, player) and
-         has_rocket_boots_toybarn(state, player)) or
-        (has_double_jump(state, player) and has_pole_vault(state, player) and
-         has_rope_sliding(state, player)) or
-        (has_ledge_grab(state, player) and has_pole_vault(state, player) and
-         has_rope_sliding(state, player))
-    )
-    if normal:
-        return True
-    if skips in (SKIPS_EASY, SKIPS_HARD):
-        return (has_double_jump(state, player) and has_pole_vault(state, player) and
-                has_ledge_grab(state, player))
-    return False
-
-def _als_toybarn_coins_69_70(state: CollectionState, player: int, skips: int) -> bool:
-    # Normal: Double Jump + Stomp + Pole Vault + Rocket Boots
-    # Easy:   Double Jump + (Rocket Boots OR Ledge Grab)   [note: "DJ + RB OR DJ + LG"]
-    if (has_double_jump(state, player) and has_stomp(state, player) and
-            has_pole_vault(state, player) and has_rocket_boots_toybarn(state, player)):
-        return True
-    if skips in (SKIPS_EASY, SKIPS_HARD):
-        return has_double_jump(state, player) and (
-            has_rocket_boots_toybarn(state, player) or has_ledge_grab(state, player))
-    return False
-
-def _construction_coins_66_67(state: CollectionState, player: int, skips: int, level: str) -> bool:
-    # (Laser + Visor) OR Disc Launcher, plus Stomp + Double Jump + Ledge Grab + Pole Climb
-    base = (has_stomp(state, player) and has_double_jump(state, player) and
-            has_ledge_grab(state, player) and has_pole_climb(state, player))
-    attack = (
-        (has_laser(state, player) and has_visor(state, player)) or
-        has_disc_launcher_construction(state, player)
-    )
-    normal = base and attack
-    if normal:
-        return True
-    if skips in (SKIPS_EASY, SKIPS_HARD):
-        g_base = has_double_jump(state, player)
-        g_attack = (
-            (has_laser(state, player) and has_visor(state, player)) or
-            has_disc_launcher_construction(state, player)
-        )
-        return g_base and g_attack
-    return False
-
-# ── COIN OVERRIDE MAP ─────────────────────────────────────────
-# Maps (level, coin_index_0based) -> override function or None
-
-def _andys_house_coin_50(state: CollectionState, player: int, skips: int) -> bool:
-    # Normal: Push + Pole Climb + Ledge Grab + (Laser|Spin|Stomp) + (Double Jump|Pole Vault)
-    attack = has_any_move(state, player, ["Laser", "Spin", "Stomp"])
-    normal = (
-        has_all_moves(state, player, ["Push", "Pole Climb", "Ledge Grab"]) and
-        attack and
-        has_any_move(state, player, ["Double Jump", "Pole Vault"])
-    )
-    if normal:
-        return True
-    # Easy: (Laser|Spin|Stomp) + Pole Climb + Double Jump + (Pole Vault|Ledge Grab)
-    if skips in (SKIPS_EASY, SKIPS_HARD):
-        return (
-            attack and
-            has_all_moves(state, player, ["Pole Climb", "Double Jump"]) and
-            has_any_move(state, player, ["Pole Vault", "Ledge Grab"])
-        )
-    return False
-
-def _als_toybarn_coins_24_29(state: CollectionState, player: int, skips: int) -> bool:
-    # Note: "Double Jump + Ledge Grab OR Pole Climb"
-    return ((has_double_jump(state, player) and has_ledge_grab(state, player))
-            or has_pole_climb(state, player))
-
-def _als_toybarn_coins_56_57(state: CollectionState, player: int, skips: int) -> bool:
-    # Normal: DJ + Ledge Grab + Rope Sliding + Pole Vault ; Easy: DJ + Ledge Grab ; Hard: DJ
-    if has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Rope Sliding", "Pole Vault"]):
-        return True
-    if skips in (SKIPS_EASY, SKIPS_HARD):
-        if has_double_jump(state, player) and has_ledge_grab(state, player):
-            return True
-    if skips == SKIPS_HARD:
-        return has_double_jump(state, player)
-    return False
-
-def _als_toybarn_coin_58(state: CollectionState, player: int, skips: int) -> bool:
-    # Normal: DJ + Ledge Grab + Rope Sliding + Pole Vault + (Laser|Spin) ; Easy: DJ + LG ; Hard: DJ
-    if (has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Rope Sliding", "Pole Vault"])
-            and has_any_move(state, player, ["Laser", "Spin"])):
-        return True
-    if skips in (SKIPS_EASY, SKIPS_HARD):
-        if has_double_jump(state, player) and has_ledge_grab(state, player):
-            return True
-    if skips == SKIPS_HARD:
-        return has_double_jump(state, player)
-    return False
-
-def _andys_house_coin_52(state: CollectionState, player: int, skips: int) -> bool:
-    # (DJ + Ledge Grab) OR (Stomp + (Ledge Grab OR Pole Climb OR DJ))
-    return ((has_double_jump(state, player) and has_ledge_grab(state, player)) or
-            (has_stomp(state, player) and
-             (has_ledge_grab(state, player) or has_pole_climb(state, player) or
-              has_double_jump(state, player))))
-
-def _andys_house_coin_53(state: CollectionState, player: int, skips: int) -> bool:
-    # ((Laser|Spin|Stomp) + DJ + Ledge Grab) OR (Stomp + (Ledge Grab OR Pole Climb OR DJ))
-    attack = has_any_move(state, player, ["Laser", "Spin", "Stomp"])
-    return ((attack and has_double_jump(state, player) and has_ledge_grab(state, player)) or
-            (has_stomp(state, player) and
-             (has_ledge_grab(state, player) or has_pole_climb(state, player) or
-              has_double_jump(state, player))))
-
-def _andys_house_coin_82(state: CollectionState, player: int, skips: int) -> bool:
-    # Normal: Push + DJ + Ledge Grab + (Laser|Spin|Stomp)
-    # Easy:   DJ + (Laser OR Spin) + (Pole Climb OR Ledge Grab)
-    if (has_push(state, player) and has_double_jump(state, player) and
-            has_ledge_grab(state, player) and
-            has_any_move(state, player, ["Laser", "Spin", "Stomp"])):
-        return True
-    if skips in (SKIPS_EASY, SKIPS_HARD):
-        return (has_double_jump(state, player) and
-                has_any_move(state, player, ["Laser", "Spin"]) and
-                (has_pole_climb(state, player) or has_ledge_grab(state, player)))
-    return False
-
-def _andys_house_coin_83(state: CollectionState, player: int, skips: int) -> bool:
-    # Normal: Push + DJ + Ledge Grab + (Laser|Spin)
-    # Easy:   DJ + (Laser OR Spin OR Stomp) + (Pole Climb OR Ledge Grab)
-    if (has_push(state, player) and has_double_jump(state, player) and
-            has_ledge_grab(state, player) and
-            has_any_move(state, player, ["Laser", "Spin"])):
-        return True
-    if skips in (SKIPS_EASY, SKIPS_HARD):
-        return (has_double_jump(state, player) and
-                has_any_move(state, player, ["Laser", "Spin", "Stomp"]) and
-                (has_pole_climb(state, player) or has_ledge_grab(state, player)))
-    return False
-
-def _andys_house_coins_92_93(state: CollectionState, player: int, skips: int) -> bool:
-    # Normal: DJ + Ledge Grab + Pole Climb + Push ; Easy: DJ + Ledge Grab + Push ; Hard: DJ + Ledge Grab
-    if has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb", "Push"]):
-        return True
-    if skips in (SKIPS_EASY, SKIPS_HARD):
-        if has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Push"]):
-            return True
-    if skips == SKIPS_HARD:
-        return has_double_jump(state, player) and has_ledge_grab(state, player)
-    return False
-
-def _andys_neighborhood_coin_55(state: CollectionState, player: int, skips: int) -> bool:
-    # Normal: Stomp + Ledge Grab + Push ; Easy: DJ + Ledge Grab ; Hard: No Requirements
-    if has_all_moves(state, player, ["Stomp", "Ledge Grab", "Push"]):
-        return True
-    if skips == SKIPS_HARD:
-        return True
-    if skips == SKIPS_EASY:
-        return has_double_jump(state, player) and has_ledge_grab(state, player)
-    return False
-
-def _construction_yard_coin_72(state: CollectionState, player: int, skips: int) -> bool:
-    # Defeating the boss awards both the coin and the token, so Coin 72 == Boss Token:
-    # Normal: DJ + Ledge Grab + Stomp + Pole Climb + Disc Launcher ; Easy: DJ + Disc Launcher
-    if (has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Stomp", "Pole Climb"])
-            and has_disc_launcher_construction(state, player)):
-        return True
-    if skips in (SKIPS_EASY, SKIPS_HARD):
-        return has_double_jump(state, player) and has_disc_launcher_construction(state, player)
-    return False
-
-def _alleys_coin_42(state: CollectionState, player: int, skips: int) -> bool:
-    # Rope Sliding + (Ledge Grab OR Double Jump) + (Laser OR Spin)
-    return (has_rope_sliding(state, player)
-            and (has_ledge_grab(state, player) or has_double_jump(state, player))
-            and has_any_move(state, player, ["Laser", "Spin"]))
-
-def _alleys_coins_30_31(state: CollectionState, player: int, skips: int) -> bool:
-    # Normal: Push + Ledge Grab + DJ + (Laser|Spin|Disc Launcher) ; Hard adds Stomp path
-    base = has_all_moves(state, player, ["Push", "Ledge Grab", "Double Jump"])
-    disc = has_disc_launcher_alleys(state, player)   # eval unconditionally (discovery)
-    if not base:
+def _fifty_coins_ok(state, player, level, skips, world):
+    """The "50 coins in this level" half of a Hamm token (Coinsanity-aware)."""
+    options = world.options
+    coins = COIN_DATA.get(level, [])
+    if len(coins) < 50:
         return False
-    if has_any_move(state, player, ["Laser", "Spin"]) or disc:
-        return True
-    if skips == SKIPS_HARD and has_stomp(state, player):
-        return True
-    return False
+    if options.coinsanity.value:
+        recv = options.coinsanity_received_bundle_size.value or 5
+        import math as _math
+        return state.has(f"Coin Bundle - {level}", player, _math.ceil(50 / recv))
+    return sum(1 for c in coins if _reach(state, player, c.name, skips)) >= 50
 
-def _alleys_coin_45(state: CollectionState, player: int, skips: int) -> bool:
-    # DJ + Rope Sliding + Ledge Grab + ((Laser + Visor) OR Disc Launcher)
-    base = has_all_moves(state, player, ["Double Jump", "Rope Sliding", "Ledge Grab"])
-    disc = has_disc_launcher_alleys(state, player)   # eval unconditionally (discovery)
-    if not base:
-        return False
-    return has_all_moves(state, player, ["Laser", "Visor"]) or disc
-
-def _alleys_coins_54_62(state: CollectionState, player: int, skips: int) -> bool:
-    # Normal: DJ+RopeSliding+LedgeGrab+Stomp+PoleVault ; Easy: DJ+RopeSliding+LedgeGrab+Stomp
-    # Hard: DJ + Ledge Grab + Rope Sliding
-    if has_all_moves(state, player, ["Double Jump", "Rope Sliding", "Ledge Grab", "Stomp", "Pole Vault"]):
+def location_access_rule(name, world):
+    """Full access rule for a sheet location: reachability + misc gate."""
+    player = world.player
+    level  = _COMPILED[name][0]
+    misc   = _COMPILED[name][5]
+    def fn(state):
+        skips = world.options.skips.value
+        if not _reach(state, player, name, skips):
+            return False
+        if misc == "50 Coins":
+            return _fifty_coins_ok(state, player, level, skips, world)
+        if misc == "5 Missing Toys":
+            return has_all_level_toys(state, player, level)
+        if misc.startswith("Missing "):
+            return state.has(misc, player)
         return True
-    if skips in (SKIPS_EASY, SKIPS_HARD):
-        if has_all_moves(state, player, ["Double Jump", "Rope Sliding", "Ledge Grab", "Stomp"]):
-            return True
-    if skips == SKIPS_HARD:
-        return has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Rope Sliding"])
-    return False
+    return fn
 
-def _als_penthouse_coins_40_43(state: CollectionState, player: int, skips: int) -> bool:
-    # Normal: Laser + (Double Jump OR Visor)
-    # Easy:   Spin OR (Double Jump + Ledge Grab + Stomp)
-    if has_all_moves(state, player, ["Laser"]) and has_any_move(state, player, ["Double Jump", "Visor"]):
-        return True
-    if skips in (SKIPS_EASY, SKIPS_HARD):
-        if (has_any_move(state, player, ["Spin"]) or
-                has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Stomp"])):
-            return True
-    return False
-
-def _andys_garage_rule(state: CollectionState, player: int, skips: int, base_moves: List[str]) -> bool:
-    # Andy's House garage logic. Base = base_moves ; Easy = Double Jump + Ledge
-    # Grab ; Hard = Double Jump. Easy is shared into Hard (middle branch); Hard
-    # additionally allows the easier Double-Jump-only route.
-    if has_all_moves(state, player, base_moves):
-        return True
-    if skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player) and has_ledge_grab(state, player):
-        return True
-    if skips == SKIPS_HARD and has_double_jump(state, player):
-        return True
-    return False
-
-def _andys_house_coins_58_67(state: CollectionState, player: int, skips: int) -> bool:
-    return _andys_garage_rule(state, player, skips, ["Double Jump", "Ledge Grab", "Pole Climb"])
-
-def _andys_house_coin_68(state: CollectionState, player: int, skips: int) -> bool:
-    return _andys_garage_rule(state, player, skips, ["Double Jump", "Ledge Grab", "Pole Climb", "Pole Vault"])
-
-def _andys_house_coins_36_37(state: CollectionState, player: int, skips: int) -> bool:
-    # Base: DJ + LG + Push + Pole Climb + Rope Sliding + Visor
-    # Easy: Double Jump OR (Ledge Grab + Pole Climb + Push)   (shared into Hard)
-    if has_all_moves(state, player,
-                     ["Double Jump", "Ledge Grab", "Push", "Pole Climb", "Rope Sliding", "Visor"]):
-        return True
-    if skips in (SKIPS_EASY, SKIPS_HARD) and (
-        has_double_jump(state, player) or
-        has_all_moves(state, player, ["Ledge Grab", "Pole Climb", "Push"])
-    ):
-        return True
-    return False
-
-
-def _andys_house_coin_90(state: CollectionState, player: int, skips: int) -> bool:
-    # base DJ+LG+Pole Climb ; easy DJ+LG ; hard DJ
-    if has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]):
-        return True
-    if skips in (SKIPS_EASY, SKIPS_HARD) and has_all_moves(state, player, ["Double Jump", "Ledge Grab"]):
-        return True
-    if skips == SKIPS_HARD and has_double_jump(state, player):
-        return True
-    return False
-
-def _andys_neighborhood_coins_95_99(state: CollectionState, player: int, skips: int) -> bool:
-    # base/easy DJ+LG+Pole Climb+Pole Vault ; hard DJ+LG+Pole Climb
-    if has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb", "Pole Vault"]):
-        return True
-    if skips == SKIPS_HARD and has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]):
-        return True
-    return False
-
-def _andys_neighborhood_coin_96(state: CollectionState, player: int, skips: int) -> bool:
-    # base/easy (DJ+LG+PC+PV)+(Laser|Spin|Stomp) ; hard (DJ+LG+PC)+(Laser|Spin|Stomp)
-    attack = has_any_move(state, player, ["Laser", "Spin", "Stomp"])
-    if has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb", "Pole Vault"]) and attack:
-        return True
-    if skips == SKIPS_HARD and has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]) and attack:
-        return True
-    return False
-
-def _als_toybarn_coins_41_43(state: CollectionState, player: int, skips: int) -> bool:
-    # (Double Jump OR Hover Boots) + Pole Climb + Ledge Grab  (all tiers)
-    return ((has_double_jump(state, player) or has_hover_boots_toybarn(state, player)) and
-            has_all_moves(state, player, ["Pole Climb", "Ledge Grab"]))
-
-def _elevator_hop_coin_10(state: CollectionState, player: int, skips: int) -> bool:
-    # base Pole Vault+DJ+Rope Sliding+LG ; easy/hard DJ+Pole Vault+LG
-    if has_all_moves(state, player, ["Pole Vault", "Double Jump", "Rope Sliding", "Ledge Grab"]):
-        return True
-    if skips in (SKIPS_EASY, SKIPS_HARD) and has_all_moves(state, player, ["Double Jump", "Pole Vault", "Ledge Grab"]):
-        return True
-    return False
-
-
-def _get_coin_override(level: str, idx: int):
-    overrides = {
-        ("Andy's House", 89): _andys_house_coin_90,
-        ("Andy's Neighborhood", 94): _andys_neighborhood_coins_95_99,
-        ("Andy's Neighborhood", 95): _andys_neighborhood_coin_96,
-        ("Andy's Neighborhood", 96): _andys_neighborhood_coins_95_99,
-        ("Andy's Neighborhood", 97): _andys_neighborhood_coins_95_99,
-        ("Andy's Neighborhood", 98): _andys_neighborhood_coins_95_99,
-        ("Al's Toy Barn", 40): _als_toybarn_coins_41_43,
-        ("Al's Toy Barn", 41): _als_toybarn_coins_41_43,
-        ("Al's Toy Barn", 42): _als_toybarn_coins_41_43,
-        ("Elevator Hop", 9): _elevator_hop_coin_10,
-        ("Andy's House", 49): _andys_house_coin_50,
-        ("Andy's House", 35): _andys_house_coins_36_37,
-        ("Andy's House", 36): _andys_house_coins_36_37,
-        ("Andy's House", 57): _andys_house_coins_58_67,
-        ("Andy's House", 58): _andys_house_coins_58_67,
-        ("Andy's House", 59): _andys_house_coins_58_67,
-        ("Andy's House", 60): _andys_house_coins_58_67,
-        ("Andy's House", 61): _andys_house_coins_58_67,
-        ("Andy's House", 62): _andys_house_coins_58_67,
-        ("Andy's House", 63): _andys_house_coins_58_67,
-        ("Andy's House", 64): _andys_house_coins_58_67,
-        ("Andy's House", 65): _andys_house_coins_58_67,
-        ("Andy's House", 66): _andys_house_coins_58_67,
-        ("Andy's House", 67): _andys_house_coin_68,
-        ("Andy's Neighborhood", 54): _andys_neighborhood_coin_55,
-        ("Construction Yard", 71): _construction_yard_coin_72,
-        ("Alleys and Gullies", 29): _alleys_coins_30_31,
-        ("Alleys and Gullies", 30): _alleys_coins_30_31,
-        ("Alleys and Gullies", 41): _alleys_coin_42,
-        ("Al's Penthouse", 39): _als_penthouse_coins_40_43,
-        ("Al's Penthouse", 40): _als_penthouse_coins_40_43,
-        ("Al's Penthouse", 41): _als_penthouse_coins_40_43,
-        ("Al's Penthouse", 42): _als_penthouse_coins_40_43,
-        ("Alleys and Gullies", 44): _alleys_coin_45,
-        ("Alleys and Gullies", 53): _alleys_coins_54_62,
-        ("Alleys and Gullies", 54): _alleys_coins_54_62,
-        ("Alleys and Gullies", 55): _alleys_coins_54_62,
-        ("Alleys and Gullies", 56): _alleys_coins_54_62,
-        ("Alleys and Gullies", 57): _alleys_coins_54_62,
-        ("Alleys and Gullies", 58): _alleys_coins_54_62,
-        ("Alleys and Gullies", 59): _alleys_coins_54_62,
-        ("Alleys and Gullies", 60): _alleys_coins_54_62,
-        ("Alleys and Gullies", 61): _alleys_coins_54_62,
-        ("Andy's House", 51): _andys_house_coin_52,
-        ("Andy's House", 52): _andys_house_coin_53,
-        ("Andy's House", 81): _andys_house_coin_82,
-        ("Andy's House", 82): _andys_house_coin_83,
-        ("Andy's House", 91): _andys_house_coins_92_93,
-        ("Andy's House", 92): _andys_house_coins_92_93,
-        ("Alleys and Gullies", 39): _alleys_coins_40_42,
-        ("Alleys and Gullies", 40): _alleys_coins_40_42,
-        ("Alleys and Gullies", 78): _alleys_coins_79_83,
-        ("Alleys and Gullies", 82): _alleys_coins_79_83,
-        ("Construction Yard", 65): lambda s, p, sk: _construction_coins_66_67(s, p, sk, "Construction Yard"),
-        ("Construction Yard", 66): lambda s, p, sk: _construction_coins_66_67(s, p, sk, "Construction Yard"),
-        ("Al's Toy Barn", 58): _als_toybarn_coins_59_60,
-        ("Al's Toy Barn", 59): _als_toybarn_coins_59_60,
-        ("Al's Toy Barn", 60): _als_toybarn_coins_61_68,
-        ("Al's Toy Barn", 61): _als_toybarn_coins_61_68,
-        ("Al's Toy Barn", 62): _als_toybarn_coins_61_68,
-        ("Al's Toy Barn", 63): _als_toybarn_coins_61_68,
-        ("Al's Toy Barn", 64): _als_toybarn_coins_61_68,
-        ("Al's Toy Barn", 65): _als_toybarn_coins_61_68,
-        ("Al's Toy Barn", 66): _als_toybarn_coins_61_68,
-        ("Al's Toy Barn", 67): _als_toybarn_coins_61_68,
-        ("Al's Toy Barn", 68): _als_toybarn_coins_69_70,
-        ("Al's Toy Barn", 69): _als_toybarn_coins_69_70,
-        ("Al's Toy Barn", 23): _als_toybarn_coins_24_29,
-        ("Al's Toy Barn", 24): _als_toybarn_coins_24_29,
-        ("Al's Toy Barn", 25): _als_toybarn_coins_24_29,
-        ("Al's Toy Barn", 26): _als_toybarn_coins_24_29,
-        ("Al's Toy Barn", 27): _als_toybarn_coins_24_29,
-        ("Al's Toy Barn", 28): _als_toybarn_coins_24_29,
-        ("Al's Toy Barn", 55): _als_toybarn_coins_56_57,
-        ("Al's Toy Barn", 56): _als_toybarn_coins_56_57,
-        ("Al's Toy Barn", 57): _als_toybarn_coin_58,
-        ("Al's Penthouse", 43): _als_penthouse_coins_44_45,
-        ("Al's Penthouse", 44): _als_penthouse_coins_44_45,
-    }
-    return overrides.get((level, idx))
-
-
-def can_reach_coin(
-    state: CollectionState,
-    player: int,
-    level: str,
-    coin_idx: int,  # 0-based
-    skips: int,
-) -> bool:
+def can_reach_coin(state, player, level, coin_idx, skips):
+    """True if the coin at 0-based coin_idx in `level` is logically reachable."""
     coins = COIN_DATA.get(level, [])
     if coin_idx >= len(coins):
-        return True  # out of range, allow
-    coin = coins[coin_idx]
-    ma, mo, ga, go, glitch, gma, gmo, gga, ggo = coin
-
-    # Check for override
-    override = _get_coin_override(level, coin_idx)
-    if override:
-        return override(state, player, skips)
-
-    # Handle disc launcher as attack alternative for Construction Yard / Alleys
-    if level == "Construction Yard":
-        if go and any(g in ("Disc Launcher",) for g in go):
-            # gadgets_or includes Disc Launcher — treat as attack OR disc
-            other_gadgets = [g for g in go if g != "Disc Launcher"]
-            disc_ok = has_disc_launcher_construction(state, player)
-            mo_ok = has_any_move(state, player, mo) if mo else True
-            combined_ok = disc_ok or mo_ok or has_any_gadget(state, player, other_gadgets, level)
-            ma_ok = has_all_moves(state, player, ma) if ma else True
-            ga_ok = has_all_gadgets(state, player, ga, level) if ga else True
-            normal = ma_ok and combined_ok and ga_ok
-            if normal:
-                return True
-            # glitch
-            if glitch and skips != SKIPS_OFF:
-                tiers = [t.strip() for t in glitch.split(",")]
-                if (skips == SKIPS_EASY and "Easy" in tiers) or \
-                   (skips == SKIPS_HARD and ("Hard" in tiers or "Easy" in tiers)):
-                    gma_ok = has_all_moves(state, player, gma) if gma else True
-                    gmo_ok = has_any_move(state, player, gmo) if gmo else True
-                    g_disc_ok = has_disc_launcher_construction(state, player)
-                    g_other = [g for g in ggo if g != "Disc Launcher"] if ggo else []
-                    g_combined = g_disc_ok or gmo_ok or has_any_gadget(state, player, g_other, level)
-                    gga_ok = has_all_gadgets(state, player, gga, level) if gga else True
-                    if gma_ok and g_combined and gga_ok:
-                        return True
-            return False
-
-    if level == "Alleys and Gullies":
-        disc_in_go = go and "Disc Launcher" in go
-        disc_in_ggo = ggo and "Disc Launcher" in ggo
-        if disc_in_go:
-            other_go = [g for g in go if g != "Disc Launcher"]
-            disc_ok = has_disc_launcher_alleys(state, player)
-            mo_ok = has_any_move(state, player, mo) if mo else True
-            combined_ok = disc_ok or mo_ok or has_any_gadget(state, player, other_go, level)
-            ma_ok = has_all_moves(state, player, ma) if ma else True
-            ga_ok = has_all_gadgets(state, player, ga, level) if ga else True
-            normal = ma_ok and combined_ok and ga_ok
-            if normal:
-                return True
-            if glitch and skips != SKIPS_OFF:
-                tiers = [t.strip() for t in glitch.split(",")]
-                if (skips == SKIPS_EASY and "Easy" in tiers) or \
-                   (skips == SKIPS_HARD and ("Hard" in tiers or "Easy" in tiers)):
-                    gma_ok = has_all_moves(state, player, gma) if gma else True
-                    gmo_ok = has_any_move(state, player, gmo) if gmo else True
-                    g_disc = has_disc_launcher_alleys(state, player) if disc_in_ggo else False
-                    g_other = [g for g in ggo if g != "Disc Launcher"] if ggo else []
-                    g_combined = g_disc or gmo_ok or has_any_gadget(state, player, g_other, level)
-                    gga_ok = has_all_gadgets(state, player, gga, level) if gga else True
-                    if gma_ok and g_combined and gga_ok:
-                        return True
-            return False
-
-    return standard_rule(state, player, skips, ma, mo, ga, go, glitch, gma, gmo, gga, ggo, level)
+        return True
+    return _reach(state, player, coins[coin_idx].name, skips)
 
 
 def coin_bundle_rule(
@@ -1014,6 +619,19 @@ MISSING_TOYS_TOKEN_ITEM = {
     "Tarmac Trouble":        "Luggage",
 }
 
+def has_all_level_toys(state: CollectionState, player: int, level: str) -> bool:
+    """True if the player owns all 5 of a level's missing toys, honoring the
+    missing_toy_bundle_size option: individual mode needs 5 copies of the base
+    toy; bundle mode needs 1 copy of that level's "5 <toy>" item."""
+    base = MISSING_TOYS_TOKEN_ITEM.get(level)
+    if not base:
+        return True
+    world = state.multiworld.worlds[player]
+    if getattr(world.options, "missing_toy_bundle_size", None) and \
+            world.options.missing_toy_bundle_size.value == 5:
+        return state.has(TOY_BUNDLE_NAME[base], player, 1)
+    return state.has(base, player, 5)
+
 def missing_toys_token_rule(
     state: CollectionState,
     player: int,
@@ -1026,8 +644,7 @@ def missing_toys_token_rule(
     movement/gadgets to reach the token. The 5-toy requirement is real AP logic
     now that toys are received items — previously this only checked movement, so
     the tracker thought the token was reachable with zero toys."""
-    toy_item = MISSING_TOYS_TOKEN_ITEM.get(level)
-    if toy_item and not state.has(toy_item, player, 5):
+    if not has_all_level_toys(state, player, level):
         return False
     ma_ok = has_all_moves(state, player, moves_and) if moves_and else True
     mo_ok = has_any_move(state, player, moves_or) if moves_or else True
@@ -1094,1246 +711,73 @@ def goal_rule(state: CollectionState, player: int, world: "ToyStory2World") -> b
 # ============================================================
 
 def set_rules(world: "ToyStory2World") -> None:
-    from worlds.AutoWorld import World
-    multiworld = world.multiworld
-    player     = world.player
-    options    = world.options
-    skips      = options.skips.value
-    mode       = options.game_mode.value
+    multiworld  = world.multiworld
+    player      = world.player
+    options     = world.options
+    skips       = options.skips.value
     bundle_size = options.coinsanity_checks_bundle_size.value
 
-    def rule(loc_name: str, fn: Callable[[CollectionState], bool]) -> None:
+    def rule(loc_name, fn):
         # A location may not exist if the sanity that creates it is disabled
-        # (e.g. lifesanity off -> no "Life (...)" locations). get_location raises
+        # (e.g. lifesanity off -> no "Life (...)" locations), or if a coin's
+        # descriptive location only exists in 1-coin mode. get_location raises
         # KeyError in that case, so swallow it and skip applying the rule.
+        #
+        # NAME-FORMAT BRIDGE: logic_data (the rule source) writes sublocations with
+        # a "(X)" suffix — e.g. "Airport Infiltration - Battery (Luggage Pile)" —
+        # but the REGISTERED location in LOCATION_TABLE uses " - X":
+        # "Airport Infiltration - Battery - Luggage Pile". A direct get_location on
+        # the paren form raised KeyError, the rule was silently skipped, and the
+        # location got NO access rule -> always reachable (a sphere-1 free check for
+        # every battery/life/toy/hint-block/luggage with a parenthesised spot). On
+        # miss we retry with the paren->dash form so the rule attaches regardless of
+        # which format logic_data uses. The rule fn itself still closes over the
+        # original logic_data name (its _COMPILED entry is keyed that way).
         try:
             loc = multiworld.get_location(loc_name, player)
         except KeyError:
-            return
+            alt = re.sub(r' \(([^)]+)\)', r' - \1', loc_name)
+            if alt == loc_name:
+                return
+            try:
+                loc = multiworld.get_location(alt, player)
+            except KeyError:
+                return
         if loc:
             loc.access_rule = fn
 
-    def s(fn): return lambda state: fn(state)
-
-    # ── ANDY'S HOUSE ─────────────────────────────────────────
-
-    # Coin bundles
-    for loc in multiworld.get_locations(player):
-        if "Coin Bundle" in loc.name and "Andy's House" in loc.name:
-            bundle_num = int(loc.name.split("Coin Bundle ")[1])
-            loc.access_rule = lambda state, bn=bundle_num: coin_bundle_rule(
-                state, player, "Andy's House", bn, bundle_size, skips, world)
-
-    rule("Andy's House - Hamm's 50 Coins Token",
-         lambda state: hamms_50_coins_rule(state, player, "Andy's House", skips,
-                                            [], ["Double Jump", "Ledge Grab", "Pole Climb"], world))
-
-    rule("Andy's House - Missing Toys Token",
-         lambda state: (
-             missing_toys_token_rule(state, player, "Andy's House", [], ["Pole Climb"], []) or
-             missing_toys_token_rule(state, player, "Andy's House", ["Double Jump", "Ledge Grab"], [], [])
-         ))
-
-    # Race Token - no requirements
-    # Hidden Token
-    rule("Andy's House - Hidden Token",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb", "Push"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Push"])) or
-             (skips == SKIPS_HARD and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab"]))
-         ))
-
-    rule("Andy's House - Boss Token",
-         lambda state: (
-             (has_pole_climb(state, player) and has_laser_or_spin(state, player)) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Pole Climb", "Stomp"]))
-         ))
-
-    rule("Andy's House - Sheep (Basement)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Rope Sliding"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab"]))
-         ))
-
-    rule("Andy's House - Sheep (Living Room)",
-         lambda state: (
-             has_all_moves(state, player, ["Stomp", "Double Jump", "Ledge Grab"]) or
-             (skips == SKIPS_HARD and
-              has_double_jump(state, player) and
-              has_any_move(state, player, ["Ledge Grab", "Pole Climb"]))
-         ))
-
-    rule("Andy's House - Sheep (Kitchen)",
-         lambda state: (
-             has_all_moves(state, player, ["Push", "Double Jump", "Ledge Grab"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Push"]))
-         ))
-
-    rule("Andy's House - Sheep (Attic)",
-         lambda state: (
-             (has_all_moves(state, player, ["Push", "Pole Climb", "Ledge Grab"]) and
-              has_any_move(state, player, ["Double Jump", "Pole Vault"]))
-             or (skips in (SKIPS_EASY, SKIPS_HARD) and
-                 has_all_moves(state, player, ["Pole Climb", "Double Jump"]) and
-                 has_any_move(state, player, ["Pole Vault", "Ledge Grab"]))
-         ))
-
-    rule("Andy's House - Sheep (Garage)",
-         lambda state: _andys_garage_rule(state, player, skips,
-                                          ["Double Jump", "Ledge Grab", "Pole Climb", "Pole Vault"]))
-
-    rule("Andy's House - Missing Ear",
-         lambda state: (
-             (has_stomp(state, player) and
-              has_any_move(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"])) or
-             (skips == SKIPS_HARD and
-              has_double_jump(state, player) and
-              has_any_move(state, player, ["Ledge Grab", "Pole Climb"]))
-         ))
-
-    rule("Andy's House - Give Potato Head His Ear",
-         lambda state: give_potato_head_rule(state, player, "Missing Ear"))
-
-    rule("Andy's House - Life (Crib)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Push", "Pole Climb", "Rope Sliding", "Visor"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and (
-                 has_double_jump(state, player) or
-                 has_all_moves(state, player, ["Ledge Grab", "Pole Climb", "Push"])
-             ))
-         ))
-
-    rule("Andy's House - Life (Living Room)",
-         lambda state: (
-             has_all_moves(state, player, ["Stomp", "Double Jump", "Ledge Grab"]) or
-             (skips == SKIPS_HARD and
-              has_double_jump(state, player) and has_ledge_grab(state, player))
-         ))
-
-    rule("Andy's House - Life (Garage)",
-         lambda state: _andys_garage_rule(state, player, skips,
-                                          ["Double Jump", "Ledge Grab", "Pole Climb"]))
-
-    rule("Andy's House - Green Laser",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_double_jump(state, player) and has_ledge_grab(state, player))
-         ))
-
-    rule("Andy's House - Battery (Andy's Room)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Push", "Pole Climb"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab"]))
-         ))
-
-    rule("Andy's House - Battery (Attic)",
-         lambda state: (
-             (has_all_moves(state, player, ["Push", "Pole Climb", "Ledge Grab"]) and
-              has_any_move(state, player, ["Double Jump", "Pole Vault"]))
-             or (skips in (SKIPS_EASY, SKIPS_HARD) and
-                 has_all_moves(state, player, ["Pole Climb", "Double Jump"]) and
-                 has_any_move(state, player, ["Pole Vault", "Ledge Grab"]))
-         ))
-
-    rule("Andy's House - Battery (Basement)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab"])) or
-             (skips == SKIPS_HARD and has_double_jump(state, player))
-         ))
-
-    rule("Andy's House - Battery (Garage)",
-         lambda state: _andys_garage_rule(state, player, skips,
-                                          ["Double Jump", "Ledge Grab", "Pole Climb"]))
-
-    rule("Andy's House - Battery (Living Room)",
-         lambda state: (
-             (has_stomp(state, player) and
-              has_any_move(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"])) or
-             (skips == SKIPS_HARD and
-              has_double_jump(state, player) and
-              has_any_move(state, player, ["Ledge Grab", "Pole Climb"]))
-         ))
-
-    rule("Andy's House - Battery (Handrail)",
-         lambda state: (
-             has_any_move(state, player, ['Double Jump', 'Ledge Grab', 'Pole Climb'])
-         ))
-
-    # Talk to Rex - no requirements
-
-    # ── ANDY'S NEIGHBORHOOD ───────────────────────────────────
-
-    for loc in multiworld.get_locations(player):
-        if "Coin Bundle" in loc.name and "Andy's Neighborhood" in loc.name:
-            bundle_num = int(loc.name.split("Coin Bundle ")[1])
-            loc.access_rule = lambda state, bn=bundle_num: coin_bundle_rule(
-                state, player, "Andy's Neighborhood", bn, bundle_size, skips, world)
-
-    rule("Andy's Neighborhood - Hamm's 50 Coins Token",
-         lambda state: hamms_50_coins_rule(state, player, "Andy's Neighborhood", skips,
-                                            ["Double Jump", "Ledge Grab", "Pole Climb"], [], world))
-
-    # Missing Toys Token - no requirements (already has 5 toys condition handled by misc)
-
-    rule("Andy's Neighborhood - Race Token",
-         lambda state: (
-             has_rocket_boots_neighborhood(state, player) or
-             (skips == SKIPS_HARD)
-         ))
-
-    rule("Andy's Neighborhood - Hidden Token",
-         lambda state: (
-             has_all_moves(state, player, ['Stomp', 'Double Jump']) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ['Stomp', 'Ledge Grab'])) or
-             (skips == SKIPS_HARD and
-              has_all_moves(state, player, ['Double Jump', 'Pole Climb', 'Ledge Grab']))
-         ))
-
-    rule("Andy's Neighborhood - Boss Token",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb", "Pole Vault", "Laser"]) or
-             (skips == SKIPS_HARD and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb", "Laser"]))
-         ))
-
-    rule("Andy's Neighborhood - Soldier (Molehill)",
-         lambda state: has_stomp(state, player))
-
-    rule("Andy's Neighborhood - Soldier (Clothes Line)",
-         lambda state: (
-             (has_all_moves(state, player, ['Stomp', 'Ledge Grab', 'Push', 'Rope Sliding'])) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_all_moves(state, player, ['Rope Sliding', 'Double Jump', 'Ledge Grab']))
-         ))
-
-    rule("Andy's Neighborhood - Soldier (Swing)",
-         lambda state: has_all_moves(state, player, ["Double Jump", "Ledge Grab"]))
-
-    rule("Andy's Neighborhood - Soldier (Pool Plant)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Pole Climb", "Pole Vault"]) or
-             (skips == SKIPS_HARD and
-              has_all_moves(state, player, ["Double Jump", "Pole Climb", "Ledge Grab"]))
-         ))
-
-    rule("Andy's Neighborhood - Soldier (Tree)",
-         lambda state: has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]))
-
-    rule("Andy's Neighborhood - Life (Top of Swing)",
-         lambda state: has_all_moves(state, player, ["Double Jump", "Ledge Grab"]))
-
-    # Green Laser - no requirements
-
-    # Battery (Lawnmower Yard) - no requirements
-
-    rule("Andy's Neighborhood - Battery (Washing Machine)",
-         lambda state: (
-             has_all_moves(state, player, ["Stomp", "Double Jump", "Ledge Grab"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab"]))
-         ))
-
-    rule("Andy's Neighborhood - Battery (Pool Yard)",
-         lambda state: has_all_moves(state, player, ["Double Jump", "Pole Climb"]))
-
-    rule("Andy's Neighborhood - Battery (Swing)",
-         lambda state: has_all_moves(state, player, ["Double Jump", "Ledge Grab"]))
-
-    rule("Andy's Neighborhood - Battery (Top of Tree)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb", "Pole Vault"]) or
-             (skips == SKIPS_HARD and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]))
-         ))
-
-    # Talk to Rex - no requirements
-
-    # ── BOMBS AWAY! ───────────────────────────────────────────
-
-    rule("Bombs Away! - Defeat Reward 1",
-         lambda state: has_any_attack(state, player))
-    rule("Bombs Away! - Defeat Reward 2",
-         lambda state: has_any_attack(state, player))
-    # Batteries - no requirements
-
-    # ── CONSTRUCTION YARD ─────────────────────────────────────
-
-    for loc in multiworld.get_locations(player):
-        if "Coin Bundle" in loc.name and "Construction Yard" in loc.name:
-            bundle_num = int(loc.name.split("Coin Bundle ")[1])
-            loc.access_rule = lambda state, bn=bundle_num: coin_bundle_rule(
-                state, player, "Construction Yard", bn, bundle_size, skips, world)
-
-    rule("Construction Yard - Hamm's 50 Coins Token",
-         lambda state: (
-             hamms_50_coins_rule(state, player, "Construction Yard", skips,
-                                  ["Push", "Double Jump", "Ledge Grab"], [], world) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              hamms_50_coins_rule(state, player, "Construction Yard", skips,
-                                   ["Double Jump"], [], world))
-         ))
-
-    rule("Construction Yard - Missing Toys Token",
-         lambda state: missing_toys_token_rule(state, player, "Construction Yard",
-                                                ["Double Jump"], [], []))
-
-    rule("Construction Yard - Race Token",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD))
-         ))
-
-    rule("Construction Yard - Hidden Token",
-         lambda state: (
-             has_all_moves(state, player,
-                            ["Double Jump", "Ledge Grab", "Pole Climb", "Stomp", "Push"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Stomp", "Double Jump", "Ledge Grab", "Push"]))
-         ))
-
-    rule("Construction Yard - Boss Token",
-         lambda state: (
-             (has_all_moves(state, player, ['Double Jump', 'Ledge Grab', 'Stomp', 'Pole Climb']) and
-              has_disc_launcher_construction(state, player)) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player) and
-              has_disc_launcher_construction(state, player))
-         ))
-
-    rule("Construction Yard - Worker Tike (Wheelbarrow)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Push", "Ledge Grab"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player))
-         ))
-
-    rule("Construction Yard - Worker Tike (Filing Cabinets)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab"]))
-         ))
-
-    rule("Construction Yard - Worker Tike (Bulldozer)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player))
-         ))
-
-    rule("Construction Yard - Worker Tike (Construction Floor 1)",
-         lambda state: (
-             has_all_moves(state, player, ["Stomp", "Double Jump", "Ledge Grab"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player))
-         ))
-
-    rule("Construction Yard - Worker Tike (Boss Arena)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Stomp", "Pole Climb"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player))
-         ))
-
-    rule("Construction Yard - Missing Eye",
-         lambda state: (
-             has_all_moves(state, player, ["Stomp", "Double Jump", "Ledge Grab", "Pole Climb"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player))
-         ))
-
-    rule("Construction Yard - Give Potato Head His Eye",
-         lambda state: give_potato_head_rule(state, player, "Missing Eye"))
-
-    rule("Construction Yard - Life (Top of Bulldozer)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Stomp", "Pole Climb"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player))
-         ))
-
-    rule("Construction Yard - Life (Roof of Green Building)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Stomp", "Pole Climb"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player))
-         ))
-
-    # Green Laser - no requirements
-
-    rule("Construction Yard - Battery (Bulldozer)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player))
-         ))
-
-    for battery in ["Battery (Boss Arena Front Left)", "Battery (Boss Arena Back Left)",
-                    "Battery (Boss Arena Back Right)"]:
-        rule(f"Construction Yard - {battery}",
-             lambda state: (
-                 has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Stomp", "Pole Climb"]) or
-                 (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player))
-             ))
-
-    # Talk to Rex - no requirements
-
-    # ── ALLEYS AND GULLIES ────────────────────────────────────
-
-    for loc in multiworld.get_locations(player):
-        if "Coin Bundle" in loc.name and "Alleys and Gullies" in loc.name:
-            bundle_num = int(loc.name.split("Coin Bundle ")[1])
-            loc.access_rule = lambda state, bn=bundle_num: coin_bundle_rule(
-                state, player, "Alleys and Gullies", bn, bundle_size, skips, world)
-
-    rule("Alleys and Gullies - Hamm's 50 Coins Token",
-         lambda state: hamms_50_coins_rule(state, player, "Alleys and Gullies", skips,
-                                            ["Rope Sliding"],
-                                            ["Ledge Grab", "Double Jump"], world))
-
-    # Missing Toys Token - no requirements beyond toys
-
-    rule("Alleys and Gullies - Race Token",
-         lambda state: has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Push"]))
-
-    rule("Alleys and Gullies - Hidden Token",
-         lambda state: (
-             (has_all_moves(state, player, ['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Pole Vault', 'Stomp', 'Pole Climb'])) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_all_moves(state, player, ['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp'])) or
-             (skips == SKIPS_HARD and has_all_moves(state, player, ['Double Jump', 'Ledge Grab', 'Rope Sliding']))
-         ))
-
-    rule("Alleys and Gullies - Boss Token",
-         lambda state: (
-             has_all_moves(state, player,
-                            ["Visor", "Pole Climb", "Rope Sliding", "Double Jump"]) and
-             has_any_attack(state, player) and
-             has_grappling_hook_alleys(state, player)
-         ))
-
-    rule("Alleys and Gullies - Duck (Pool Behind Construction)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Rope Sliding", "Ledge Grab"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_rope_sliding(state, player) and
-              has_any_move(state, player, ["Ledge Grab", "Double Jump"]))
-         ))
-
-    rule("Alleys and Gullies - Duck (Hidden Near Race)",
-         lambda state: has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Push"]))
-
-    rule("Alleys and Gullies - Duck (Incline Parasol)",
-         lambda state: (
-             (has_all_moves(state, player, ['Double Jump', 'Rope Sliding', 'Ledge Grab', 'Stomp', 'Pole Vault']) and has_all_gadgets(state, player, ['Rocket Boots'], "Alleys and Gullies")) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_all_moves(state, player, ['Double Jump', 'Rope Sliding', 'Ledge Grab']))
-         ))
-
-    rule("Alleys and Gullies - Duck (Window Sill)",
-         lambda state: (
-             has_all_moves(state, player, ["Visor", "Pole Climb", "Rope Sliding"]) and
-             has_any_move(state, player, ["Double Jump", "Ledge Grab"]) and
-             has_grappling_hook_alleys(state, player)
-         ))
-
-    rule("Alleys and Gullies - Duck (Rain Gutter)",
-         lambda state: (
-             has_all_moves(state, player, ["Visor", "Pole Climb", "Rope Sliding"]) and
-             has_any_move(state, player, ["Double Jump", "Ledge Grab"]) and
-             has_grappling_hook_alleys(state, player)
-         ))
-
-    # Missing Part - Arm is in Al's Toy Barn
-
-    rule("Alleys and Gullies - Life (Pool Behind Construction)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Rope Sliding", "Ledge Grab"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_rope_sliding(state, player) and
-              has_any_move(state, player, ["Ledge Grab", "Double Jump"]))
-         ))
-
-    rule("Alleys and Gullies - Life (Lily Pad Behind Race)",
-         lambda state: has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Push"]))
-
-    rule("Alleys and Gullies - Life (Window Sill)",
-         lambda state: (
-             has_all_moves(state, player, ["Visor", "Pole Climb", "Rope Sliding"]) and
-             has_any_move(state, player, ["Double Jump", "Ledge Grab"]) and
-             has_grappling_hook_alleys(state, player)
-         ))
-
-    # Green Laser - no requirements
-
-    rule("Alleys and Gullies - Battery (Behind Construction)",
-         lambda state: (
-             has_rope_sliding(state, player) and
-             has_any_move(state, player, ["Ledge Grab", "Double Jump"])
-         ))
-
-    rule("Alleys and Gullies - Battery (Balcony Fence)",
-         lambda state: (
-             has_all_moves(state, player, ["Visor", "Pole Climb", "Rope Sliding"]) and
-             has_any_move(state, player, ["Ledge Grab", "Double Jump"]) and
-             has_grappling_hook_alleys(state, player)
-         ))
-
-    rule("Alleys and Gullies - Battery (Boss Arena)",
-         lambda state: (
-             has_all_moves(state, player,
-                            ["Visor", "Pole Climb", "Rope Sliding", "Double Jump"]) and
-             has_grappling_hook_alleys(state, player)
-         ))
-
-    # Talk to Rex - no requirements
-
-    # ── SLIME TIME ────────────────────────────────────────────
-
-    rule("Slime Time - Defeat Reward 1", lambda state: has_laser(state, player))
-    rule("Slime Time - Defeat Reward 2", lambda state: has_laser(state, player))
-    rule("Slime Time - Green Laser",
-         lambda state: (
-             has_all_moves(state, player, ['Laser'])
-         ))
-
-    # ── AL'S TOY BARN ─────────────────────────────────────────
-
-    for loc in multiworld.get_locations(player):
-        if "Coin Bundle" in loc.name and "Al's Toy Barn" in loc.name:
-            bundle_num = int(loc.name.split("Coin Bundle ")[1])
-            loc.access_rule = lambda state, bn=bundle_num: coin_bundle_rule(
-                state, player, "Al's Toy Barn", bn, bundle_size, skips, world)
-
-    rule("Al's Toy Barn - Hamm's 50 Coins Token",
-         lambda state: hamms_50_coins_rule(state, player, "Al's Toy Barn", skips,
-                                            [], [], world,
-                                            move_check=lambda s, p: (
-                                                has_pole_climb(s, p) or
-                                                (has_double_jump(s, p) and has_ledge_grab(s, p))
-                                            )))
-
-    # Missing Toys Token - no requirements beyond toys
-
-    rule("Al's Toy Barn - Race Token",
-         lambda state: (
-             has_all_moves(state, player, ["Pole Vault", "Rope Sliding", "Double Jump"]) or
-             (skips == SKIPS_HARD and has_double_jump(state, player) and
-              has_rocket_boots_toybarn(state, player))
-         ))
-
-    rule("Al's Toy Barn - Hidden Token",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab"]) and
-             has_disc_launcher_toybarn(state, player)
-         ))
-
-    rule("Al's Toy Barn - Boss Token",
-         lambda state: (
-             ((has_double_jump(state, player) or has_hover_boots_toybarn(state, player)) and
-              has_all_moves(state, player, ['Pole Climb', 'Ledge Grab']) and
-              (has_any_move(state, player, ['Laser', 'Spin', 'Stomp']) or has_disc_launcher_toybarn(state, player))) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              (has_all_moves(state, player, ['Double Jump', 'Ledge Grab']) or has_hover_boots_toybarn(state, player)) and
-              (has_any_move(state, player, ['Laser', 'Spin', 'Stomp']) or has_disc_launcher_toybarn(state, player)))
-         ))
-
-    rule("Al's Toy Barn - Chick (Complete Race)",
-         lambda state: (
-             has_all_moves(state, player, ["Pole Vault", "Rope Sliding", "Double Jump"]) or
-             (skips == SKIPS_HARD and has_double_jump(state, player) and
-              has_rocket_boots_toybarn(state, player))
-         ))
-
-    rule("Al's Toy Barn - Chick (Gumball Machines)",
-         lambda state: (
-             (has_all_moves(state, player, ['Double Jump', 'Stomp', 'Pole Vault']) and has_all_gadgets(state, player, ['Rocket Boots'], "Al's Toy Barn")) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player) and
-              (has_all_gadgets(state, player, ['Rocket Boots'], "Al's Toy Barn") or has_all_moves(state, player, ['Ledge Grab', 'Stomp'])))
-         ))
-
-    rule("Al's Toy Barn - Chick (Shipping Boxes)",
-         lambda state: (
-             has_double_jump(state, player) and has_hover_boots_toybarn(state, player)
-         ))
-
-    rule("Al's Toy Barn - Chick (Near Basketballs)",
-         lambda state: (
-             has_pole_climb(state, player) and
-             has_any_move(state, player, ["Double Jump", "Ledge Grab"])
-         ))
-
-    rule("Al's Toy Barn - Chick (End of Long Aisle)",
-         lambda state: (
-             (has_all_moves(state, player, ['Push', 'Double Jump', 'Ledge Grab'])) or
-             (skips == SKIPS_HARD and has_all_moves(state, player, ['Double Jump']) and has_all_gadgets(state, player, ['Rocket Boots'], "Al's Toy Barn"))
-         ))
-
-    rule("Al's Toy Barn - Missing Arm",
-         lambda state: (
-             has_all_moves(state, player,
-                            ["Double Jump", "Ledge Grab", "Rope Sliding", "Pole Vault"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and (
-                 has_all_moves(state, player, ["Double Jump", "Ledge Grab"]) or
-                 (has_double_jump(state, player) and has_all_gadgets(state, player, ["Rocket Boots"], "Al's Toy Barn")) or
-                 has_all_moves(state, player, ["Double Jump", "Pole Vault", "Rope Sliding"])
-             )) or
-             (skips == SKIPS_HARD and has_double_jump(state, player))
-         ))
-
-    rule("Al's Toy Barn - Give Potato Head His Arm",
-         lambda state: give_potato_head_rule(state, player, "Missing Arm",
-                                              moves_and=["Double Jump"]))
-
-    # Life (Tennis Ball Isle) - no requirements
-    # Green Laser - no requirements
-
-    rule("Al's Toy Barn - Battery (Gumball Machine)",
-         lambda state: (
-             (has_all_moves(state, player, ["Stomp", "Double Jump"]) and
-              has_rocket_boots_toybarn(state, player)) or
-             (has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Vault", "Rope Sliding"])) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Pole Vault", "Ledge Grab"]) and
-              has_any_move(state, player, ["Stomp", "Rope Sliding"]))
-         ))
-
-    rule("Al's Toy Barn - Battery (Ventilation Shaft)",
-         lambda state: (
-             (has_all_moves(state, player, ['Push', 'Double Jump', 'Ledge Grab'])) or
-             (skips == SKIPS_HARD and has_all_moves(state, player, ['Double Jump']) and has_all_gadgets(state, player, ['Rocket Boots'], "Al's Toy Barn"))
-         ))
-
-    rule("Al's Toy Barn - Battery (Between Bicycles)",
-         lambda state: (
-             has_pole_climb(state, player) and
-             has_any_move(state, player, ["Double Jump", "Ledge Grab"])
-         ))
-
-    rule("Al's Toy Barn - Battery (Cardboard Boxes)",
-         lambda state: (
-             has_all_moves(state, player, ['Double Jump', 'Ledge Grab']) or
-             has_any_gadget(state, player, ['Hover Boots'], "Al's Toy Barn")
-         ))
-
-    rule("Al's Toy Barn - Battery (Boss Arena)",
-         lambda state: (
-             ((has_double_jump(state, player) or has_hover_boots_toybarn(state, player)) and
-              has_all_moves(state, player, ['Pole Climb', 'Ledge Grab'])) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              (has_all_moves(state, player, ['Double Jump', 'Ledge Grab']) or has_hover_boots_toybarn(state, player)))
-         ))
-
-    rule("Al's Toy Barn - Talk to Rex",
-         lambda state: (
-             has_all_moves(state, player, ['Double Jump', 'Ledge Grab']) or
-             has_any_gadget(state, player, ['Hover Boots'], "Al's Toy Barn")
-         ))
-
-    # ── AL'S SPACE LAND ───────────────────────────────────────
-
-    for loc in multiworld.get_locations(player):
-        if "Coin Bundle" in loc.name and "Al's Space Land" in loc.name:
-            bundle_num = int(loc.name.split("Coin Bundle ")[1])
-            loc.access_rule = lambda state, bn=bundle_num: coin_bundle_rule(
-                state, player, "Al's Space Land", bn, bundle_size, skips, world)
-
-    rule("Al's Space Land - Hamm's 50 Coins Token",
-         lambda state: (
-             hamms_50_coins_rule(state, player, "Al's Space Land", skips,
-                                  ["Double Jump", "Ledge Grab", "Pole Vault", "Rope Sliding"],
-                                  [], world) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              hamms_50_coins_rule(state, player, "Al's Space Land", skips,
-                                   ["Double Jump", "Pole Vault", "Ledge Grab"], [], world))
-         ))
-
-    # Missing Toys Token - no requirements beyond toys
-
-    rule("Al's Space Land - Race Token",
-         lambda state: has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Rope Sliding"]))
-
-    rule("Al's Space Land - Hidden Token",
-         lambda state: has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Stomp"]))
-
-    rule("Al's Space Land - Boss Token",
-         lambda state: (
-             (has_all_moves(state, player, ['Push', 'Double Jump', 'Ledge Grab', 'Pole Climb']) and has_any_move(state, player, ['Laser', 'Spin', 'Stomp'])) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_all_moves(state, player, ['Double Jump', 'Ledge Grab', 'Pole Climb']) and has_any_move(state, player, ['Laser', 'Spin', 'Stomp']))
-         ))
-
-    rule("Al's Space Land - Alien (Ballpit)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab"]))
-         ))
-
-    rule("Al's Space Land - Alien (Planet Mobile)",
-         lambda state: has_all_moves(state, player,
-                                      ["Push", "Double Jump", "Ledge Grab", "Pole Climb"]))
-
-    rule("Al's Space Land - Alien (End of Race)",
-         lambda state: has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Rope Sliding"]))
-
-    rule("Al's Space Land - Alien (Middle of Zurg Aisle)",
-         lambda state: (
-             has_all_moves(state, player,
-                            ["Double Jump", "Ledge Grab", "Pole Vault", "Rope Sliding"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Pole Vault", "Ledge Grab"]))
-         ))
-
-    rule("Al's Space Land - Alien (End of Zurg Aisle)",
-         lambda state: (
-             has_all_moves(state, player,
-                            ["Double Jump", "Ledge Grab", "Pole Vault", "Rope Sliding"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Pole Vault", "Ledge Grab"]))
-         ))
-
-    rule("Al's Space Land - Life (Planet Mobile)",
-         lambda state: (
-             has_all_moves(state, player,
-                            ["Push", "Double Jump", "Ledge Grab", "Pole Climb"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]))
-         ))
-
-    # Green Laser - no requirements
-
-    rule("Al's Space Land - Battery (Boss Arena)",
-         lambda state: (
-             has_all_moves(state, player,
-                            ["Push", "Double Jump", "Ledge Grab", "Pole Climb"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]))
-         ))
-
-    rule("Al's Space Land - Battery (Arcade Cabinet)",
-         lambda state: has_all_moves(state, player, ["Double Jump", "Ledge Grab"]))
-
-    rule("Al's Space Land - Battery (Blue Shelves)",
-         lambda state: has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Vault"]))
-
-    rule("Al's Space Land - Battery (Red Shelf)",
-         lambda state: (
-             has_all_moves(state, player,
-                            ["Double Jump", "Ledge Grab", "Pole Vault", "Rope Sliding"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Pole Vault", "Ledge Grab"]))
-         ))
-
-    rule("Al's Space Land - Battery (Race Blue Shelf)",
-         lambda state: has_all_moves(state, player,
-                                      ["Double Jump", "Ledge Grab", "Rope Sliding"]))
-
-    # Talk to Rex - no requirements
-
-    # ── TOY BARN ENCOUNTER ────────────────────────────────────
-
-    rule("Toy Barn Encounter - Defeat Reward 1",
-         lambda state: has_any_move(state, player, ["Spin"]) or (has_stomp(state, player) and has_laser(state, player)))
-    rule("Toy Barn Encounter - Defeat Reward 2",
-         lambda state: has_any_move(state, player, ["Spin"]) or (has_stomp(state, player) and has_laser(state, player)))
-    # All batteries - no requirements
-
-    # ── ELEVATOR HOP ──────────────────────────────────────────
-
-    for loc in multiworld.get_locations(player):
-        if "Coin Bundle" in loc.name and "Elevator Hop" in loc.name:
-            bundle_num = int(loc.name.split("Coin Bundle ")[1])
-            loc.access_rule = lambda state, bn=bundle_num: coin_bundle_rule(
-                state, player, "Elevator Hop", bn, bundle_size, skips, world)
-
-    rule("Elevator Hop - Hamm's 50 Coins Token",
-         lambda state: hamms_50_coins_rule(state, player, "Elevator Hop", skips,
-                                            ["Double Jump", "Pole Vault", "Ledge Grab"], [],
-                                            world))
-
-    rule("Elevator Hop - Missing Toys Token",
-         lambda state: (
-             missing_toys_token_rule(state, player, "Elevator Hop",
-                                      ["Visor"], [], ["Grappling Hook - Elevator Hop"])
-         ))
-
-    rule("Elevator Hop - Race Token",
-         lambda state: (
-             has_all_moves(state, player, ["Visor", "Double Jump", "Stomp"]) and
-             has_grappling_hook_elevator(state, player)
-         ))
-
-    rule("Elevator Hop - Hidden Token",
-         lambda state: (
-             has_all_moves(state, player, ["Visor", "Double Jump", "Stomp"]) and
-             has_grappling_hook_elevator(state, player)
-         ))
-
-    rule("Elevator Hop - Boss Token",
-         lambda state: (
-             has_all_moves(state, player, ['Visor', 'Double Jump', 'Stomp']) and has_any_move(state, player, ['Laser', 'Spin']) and has_all_gadgets(state, player, ['Grappling Hook'], "Elevator Hop")
-         ))
-
-    rule("Elevator Hop - Mouse (Electrical Room)",
-         lambda state: (
-             has_all_moves(state, player, ["Pole Vault", "Double Jump", "Rope Sliding", "Ledge Grab"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Pole Vault", "Ledge Grab"]))
-         ))
-
-    rule("Elevator Hop - Mouse (Next to Rex)",
-         lambda state: (
-             has_visor(state, player) and has_grappling_hook_elevator(state, player)
-         ))
-
-    rule("Elevator Hop - Mouse (Control Room)",
-         lambda state: (
-             has_all_moves(state, player, ["Visor", "Double Jump"]) and
-             has_grappling_hook_elevator(state, player)
-         ))
-
-    rule("Elevator Hop - Mouse (Side of Elevator Shaft)",
-         lambda state: (
-             has_all_moves(state, player, ["Visor", "Stomp", "Double Jump"]) and
-             has_grappling_hook_elevator(state, player)
-         ))
-
-    rule("Elevator Hop - Mouse (Top of Elevator)",
-         lambda state: (
-             has_all_moves(state, player, ["Visor", "Double Jump", "Stomp"]) and
-             has_grappling_hook_elevator(state, player)
-         ))
-
-    rule("Elevator Hop - Missing Foot",
-         lambda state: (
-             has_all_moves(state, player, ["Pole Vault", "Double Jump", "Rope Sliding", "Ledge Grab"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Pole Vault", "Ledge Grab"]))
-         ))
-
-    rule("Elevator Hop - Give Potato Head His Foot",
-         lambda state: give_potato_head_rule(state, player, "Missing Foot"))
-
-    rule("Elevator Hop - Green Laser",
-         lambda state: has_visor(state, player) and has_grappling_hook_elevator(state, player))
-
-    rule("Elevator Hop - Talk to Rex",
-         lambda state: has_visor(state, player) and has_grappling_hook_elevator(state, player))
-
-    # ── AL'S PENTHOUSE ────────────────────────────────────────
-
-    for loc in multiworld.get_locations(player):
-        if "Coin Bundle" in loc.name and "Al's Penthouse" in loc.name:
-            bundle_num = int(loc.name.split("Coin Bundle ")[1])
-            loc.access_rule = lambda state, bn=bundle_num: coin_bundle_rule(
-                state, player, "Al's Penthouse", bn, bundle_size, skips, world)
-
-    rule("Al's Penthouse - Hamm's 50 Coins Token",
-         lambda state: (
-             hamms_50_coins_rule(state, player, "Al's Penthouse", skips,
-                                  ["Laser"], ["Double Jump", "Visor"], world) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and (
-                 hamms_50_coins_rule(state, player, "Al's Penthouse", skips,
-                                      ["Spin"], [], world) or
-                 hamms_50_coins_rule(state, player, "Al's Penthouse", skips,
-                                      ["Double Jump", "Ledge Grab", "Stomp"], [], world)))
-         ))
-
-    rule("Al's Penthouse - Missing Toys Token",
-         lambda state: missing_toys_token_rule(state, player, "Al's Penthouse",
-                                                ["Visor", "Laser", "Double Jump"], [], []))
-
-    rule("Al's Penthouse - Race Token",
-         lambda state: has_ledge_grab(state, player))
-
-    rule("Al's Penthouse - Hidden Token",
-         lambda state: (
-             has_all_moves(state, player, ["Push", "Double Jump", "Ledge Grab", "Stomp"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Push", "Double Jump", "Ledge Grab"]))
-         ))
-
-    rule("Al's Penthouse - Boss Token",
-         lambda state: (
-             has_all_moves(state, player, ['Push', 'Double Jump', 'Ledge Grab']) and has_any_move(state, player, ['Laser', 'Spin', 'Stomp'])
-         ))
-
-    rule("Al's Penthouse - Critter (Living Room)",
-         lambda state: has_all_moves(state, player,
-                                      ["Double Jump", "Ledge Grab", "Pole Climb", "Pole Vault"]))
-
-    rule("Al's Penthouse - Critter (Kitchen)",
-         lambda state: (
-             (has_all_moves(state, player, ['Laser', 'Stomp', 'Visor', 'Pole Climb', 'Double Jump'])) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_all_moves(state, player, ['Laser', 'Visor', 'Double Jump']))
-         ))
-
-    rule("Al's Penthouse - Critter (Bathroom)",
-         lambda state: (
-             has_all_moves(state, player, ["Laser", "Stomp", "Double Jump", "Ledge Grab"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Stomp"]))
-         ))
-
-    rule("Al's Penthouse - Critter (Train Bed)",
-         lambda state: (
-             has_all_moves(state, player, ["Push", "Double Jump", "Ledge Grab", "Stomp"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Push", "Double Jump", "Ledge Grab"]))
-         ))
-
-    rule("Al's Penthouse - Critter (Woody Room)",
-         lambda state: has_all_moves(state, player, ["Push", "Double Jump", "Ledge Grab"]))
-
-    rule("Al's Penthouse - Life (Fireplace)",
-         lambda state: has_cosmic_shield_penthouse(state, player))
-
-    rule("Al's Penthouse - Green Laser",
-         lambda state: has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]))
-
-    # Battery (Under Table) - no requirements
-
-    rule("Al's Penthouse - Battery (Bathroom)",
-         lambda state: (
-             (has_all_moves(state, player, ['Laser', 'Stomp', 'Double Jump', 'Ledge Grab'])) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_all_moves(state, player, ['Double Jump', 'Ledge Grab', 'Stomp']))
-         ))
-
-    # Battery (Kitchen) - no requirements
-
-    rule("Al's Penthouse - Battery (Train Bed)",
-         lambda state: (
-             has_all_moves(state, player, ["Push", "Double Jump", "Ledge Grab", "Stomp"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Push", "Double Jump", "Ledge Grab"]))
-         ))
-
-    rule("Al's Penthouse - Battery (Television)",
-         lambda state: has_all_moves(state, player, ["Push", "Double Jump", "Ledge Grab"]))
-
-    # Talk to Rex - no requirements
-
-    # ── THE EVIL EMPEROR ZURG ─────────────────────────────────
-
-    rule("The Evil Emperor Zurg - Defeat Reward 1",
-         lambda state: has_spin(state, player))
-    rule("The Evil Emperor Zurg - Defeat Reward 2",
-         lambda state: has_spin(state, player))
-
-    # ── AIRPORT INFILTRATION ──────────────────────────────────
-
-    for loc in multiworld.get_locations(player):
-        if "Coin Bundle" in loc.name and "Airport Infiltration" in loc.name:
-            bundle_num = int(loc.name.split("Coin Bundle ")[1])
-            loc.access_rule = lambda state, bn=bundle_num: coin_bundle_rule(
-                state, player, "Airport Infiltration", bn, bundle_size, skips, world)
-
-    def airport_base(state): return has_all_moves(state, player, ["Stomp", "Double Jump", "Pole Vault"])
-    def airport_hard(state): return has_all_moves(state, player, ["Double Jump", "Stomp"])
-
-    rule("Airport Infiltration - Hamm's 50 Coins Token",
-         lambda state: (
-             (hamms_50_coins_rule(state, player, "Airport Infiltration", skips,
-                                   ["Stomp", "Double Jump", "Pole Vault", "Pole Climb"],
-                                   [], world)) or
-             (skips == SKIPS_HARD and
-              hamms_50_coins_rule(state, player, "Airport Infiltration", skips,
-                                   ["Double Jump", "Stomp"], [], world))
-         ))
-
-    rule("Airport Infiltration - Missing Toys Token",
-         lambda state: (
-             airport_base(state) or
-             (skips == SKIPS_HARD and airport_hard(state))
-         ))
-
-    rule("Airport Infiltration - Race Token",
-         lambda state: (
-             has_all_moves(state, player, ["Stomp", "Double Jump", "Pole Vault", "Ledge Grab"]) or
-             (skips == SKIPS_HARD and
-              has_all_moves(state, player, ["Double Jump", "Stomp", "Ledge Grab"]))
-         ))
-
-    rule("Airport Infiltration - Hidden Token",
-         lambda state: (
-             (has_all_moves(state, player, ["Stomp", "Double Jump", "Pole Vault", "Ledge Grab", "Pole Climb"]) and
-              has_hover_boots_airport(state, player)) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Stomp", "Double Jump", "Pole Vault", "Ledge Grab", "Pole Climb"])) or
-             (skips == SKIPS_HARD and
-              has_all_moves(state, player, ["Stomp", "Double Jump", "Ledge Grab", "Pole Climb"]))
-         ))
-
-    rule("Airport Infiltration - Boss Token",
-         lambda state: (
-             (has_all_moves(state, player, ['Stomp', 'Double Jump', 'Pole Vault']) and has_all_gadgets(state, player, ['Hover Boots'], "Airport Infiltration")) or
-             (skips == SKIPS_HARD and has_all_moves(state, player, ['Double Jump', 'Stomp']) and has_all_gadgets(state, player, ['Hover Boots'], "Airport Infiltration"))
-         ))
-
-    rule("Airport Infiltration - Passenger Tike (Near Start)",
-         lambda state: (
-             has_all_moves(state, player, ["Stomp", "Double Jump", "Pole Vault", "Pole Climb"]) or
-             (skips == SKIPS_HARD and
-              has_all_moves(state, player, ["Double Jump", "Stomp"]))
-         ))
-
-    rule("Airport Infiltration - Passenger Tike (Top of Conveyor Belts)",
-         lambda state: (
-             (has_all_moves(state, player,
-                             ["Stomp", "Double Jump", "Pole Vault", "Pole Climb"]) and
-              has_any_move(state, player, ["Rope Sliding", "Ledge Grab"])) or
-             (skips == SKIPS_HARD and
-              has_all_moves(state, player,
-                             ["Double Jump", "Stomp", "Pole Climb", "Ledge Grab"]))
-         ))
-
-    rule("Airport Infiltration - Passenger Tike (Near Boss Arena)",
-         lambda state: (
-             (has_all_moves(state, player, ['Stomp', 'Double Jump', 'Pole Vault', 'Pole Climb', 'Rope Sliding']) and has_all_gadgets(state, player, ['Hover Boots'], "Airport Infiltration")) or
-             (skips == SKIPS_HARD and has_all_moves(state, player, ['Double Jump', 'Stomp', 'Pole Climb', 'Rope Sliding']) and has_all_gadgets(state, player, ['Hover Boots'], "Airport Infiltration"))
-         ))
-
-    rule("Airport Infiltration - Passenger Tike (Top of Jet)",
-         lambda state: (
-             has_all_moves(state, player, ["Stomp", "Double Jump", "Pole Vault", "Ledge Grab", "Pole Climb"]) or
-             (skips == SKIPS_HARD and
-              has_all_moves(state, player, ["Double Jump", "Stomp", "Ledge Grab"]))
-         ))
-
-    rule("Airport Infiltration - Passenger Tike (Scaffolding)",
-         lambda state: (
-             has_all_moves(state, player, ["Stomp", "Double Jump", "Pole Vault", "Ledge Grab", "Pole Climb"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Stomp", "Double Jump", "Pole Vault", "Ledge Grab"])) or
-             (skips == SKIPS_HARD and
-              has_all_moves(state, player, ["Stomp", "Double Jump", "Ledge Grab"]))
-         ))
-
-    rule("Airport Infiltration - Missing Mouth",
-         lambda state: (
-             has_all_moves(state, player,
-                            ["Stomp", "Double Jump", "Pole Vault", "Push", "Ledge Grab"]) or
-             (skips == SKIPS_HARD and
-              has_all_moves(state, player, ["Double Jump", "Stomp", "Ledge Grab"]))
-         ))
-
-    rule("Airport Infiltration - Give Potato Head His Mouth",
-         lambda state: (
-             give_potato_head_rule(state, player, "Missing Mouth",
-                                   moves_and=["Stomp", "Double Jump", "Pole Vault"]) or
-             (skips == SKIPS_HARD and
-              give_potato_head_rule(state, player, "Missing Mouth",
-                                    moves_and=["Double Jump", "Stomp"]))
-         ))
-
-    rule("Airport Infiltration - Green Laser",
-         lambda state: (
-             airport_base(state) or
-             (skips == SKIPS_HARD and airport_hard(state))
-         ))
-
-    rule("Airport Infiltration - Battery (Luggage Pile)",
-         lambda state: (
-             airport_base(state) or
-             (skips == SKIPS_HARD and
-              has_all_moves(state, player, ["Double Jump", "Stomp", "Pole Climb"]))
-         ))
-
-    rule("Airport Infiltration - Battery (Near Hidden Token)",
-         lambda state: (
-             (has_all_moves(state, player,
-                             ["Stomp", "Double Jump", "Pole Vault",
-                              "Ledge Grab", "Pole Climb"]) and
-              has_hover_boots_airport(state, player)) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player,
-                             ["Stomp", "Double Jump", "Pole Vault",
-                              "Ledge Grab", "Pole Climb"])) or
-             (skips == SKIPS_HARD and
-              has_all_moves(state, player,
-                             ["Stomp", "Double Jump", "Ledge Grab", "Pole Climb"]))
-         ))
-
-    rule("Airport Infiltration - Battery (Boss Arena)",
-         lambda state: (
-             (has_all_moves(state, player, ['Stomp', 'Double Jump', 'Pole Vault']) and has_all_gadgets(state, player, ['Hover Boots'], "Airport Infiltration")) or
-             (skips == SKIPS_HARD and has_all_moves(state, player, ['Double Jump', 'Stomp']) and has_all_gadgets(state, player, ['Hover Boots'], "Airport Infiltration"))
-         ))
-
-    rule("Airport Infiltration - Talk to Rex",
-         lambda state: (
-             airport_base(state) or
-             (skips == SKIPS_HARD and airport_hard(state))
-         ))
-
-    # ── TARMAC TROUBLE ────────────────────────────────────────
-
-    for loc in multiworld.get_locations(player):
-        if "Coin Bundle" in loc.name and "Tarmac Trouble" in loc.name:
-            bundle_num = int(loc.name.split("Coin Bundle ")[1])
-            loc.access_rule = lambda state, bn=bundle_num: coin_bundle_rule(
-                state, player, "Tarmac Trouble", bn, bundle_size, skips, world)
-
-    # Hamm's 50 Coins - no move requirements beyond coins
-    rule("Tarmac Trouble - Hamm's 50 Coins Token",
-         lambda state: hamms_50_coins_rule(state, player, "Tarmac Trouble", skips,
-                                            [], [], world))
-
-    # Missing Toys Token - no requirements beyond toys
-
-    # Race Token - no requirements
-
-    rule("Tarmac Trouble - Hidden Token",
-         lambda state: has_all_moves(state, player,
-                                      ["Double Jump", "Ledge Grab", "Pole Climb", "Stomp"]))
-
-    rule("Tarmac Trouble - Boss Token",
-         lambda state: (
-             has_all_moves(state, player, ["Pole Climb", "Double Jump"]) and
-             has_any_move(state, player, ["Spin", "Stomp"])
-         ))
-
-    rule("Tarmac Trouble - Luggage (Top of Plane)",
-         lambda state: has_pole_climb(state, player))
-
-    rule("Tarmac Trouble - Luggage (Zone 2 Cart)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player))
-         ))
-
-    rule("Tarmac Trouble - Luggage (Zone 8)",
-         lambda state: has_pole_climb(state, player))
-
-    rule("Tarmac Trouble - Luggage (Zone 6 Conveyor Belt)",
-         lambda state: has_pole_climb(state, player))
-
-    # Luggage (Zone 4) - no requirements
-
-    rule("Tarmac Trouble - Life (Zone 6)",
-         lambda state: has_pole_climb(state, player))
-
-    # Green Laser - no requirements
-    # Battery (Road Opposite Zone 8) - no requirements
-
-    rule("Tarmac Trouble - Battery (Helicopter Pad)",
-         lambda state: has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]))
-
-    # Battery (Zone 3) - no requirements
-    # Battery (Green Slime Maze) - no requirements
-
-    rule("Tarmac Trouble - Battery (Boss Arena)",
-         lambda state: has_all_moves(state, player, ["Pole Climb", "Double Jump"]))
-
-    rule("Tarmac Trouble - Talk to Rex",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD))
-         ))
-
-    # ── PROSPECTOR SHOWDOWN ───────────────────────────────────
-
+    # ── COIN BUNDLE LOCATIONS (only when bundle_size != 1) ───────
+    # In 1-coin mode every coin is its own descriptive location, handled by the
+    # compiled-rule loop below. In bundle mode the seed instead has milestone
+    # "<Level> - Coin Bundle N" locations gated on reaching N of the level's coins.
+    if bundle_size != 1:
+        for loc in multiworld.get_locations(player):
+            if " - Coin Bundle " not in loc.name:
+                continue
+            for lvl in COIN_DATA:
+                if loc.name.startswith(lvl + " - Coin Bundle "):
+                    bn = int(loc.name.rsplit("Coin Bundle ", 1)[1])
+                    loc.access_rule = (lambda state, l=lvl, b=bn:
+                        coin_bundle_rule(state, player, l, b, bundle_size, skips, world))
+                    break
+
+    # ── ALL SHEET LOCATIONS (data-driven compiled rules) ────────
+    # Every coin and non-coin location's reachability — base logic, the Easy/
+    # Hard/Insane skip tiers, and the 50-coins / 5-toys / potato-part misc gates —
+    # comes straight from logic_data.py via the compiler. Locations absent from
+    # this seed (option disabled, or coins while in bundle mode) are skipped by
+    # rule()'s KeyError guard, so this single loop is safe for every option combo.
+    for _loc in ALL_LOCATIONS:
+        rule(_loc.name, location_access_rule(_loc.name, world))
+
+    # ── GOAL / VICTORY ──────────────────────────────────────────
+    # "Prospector Showdown - Defeat GOAL" is created in code (not in the sheet)
+    # and carries the locked Victory item; its rule is the full goal condition.
     rule("Prospector Showdown - Defeat GOAL",
          lambda state: goal_rule(state, player, world))
 
-    # ── MISSING TOYS TOKEN: require 5 toys (blanket safety pass) ──
-    # Several per-level Missing Toys Tokens were left without an access rule
-    # (just a comment), so they defaulted to always-reachable — the tracker then
-    # thought you could claim them with zero toys. Ensure EVERY Missing Toys
-    # Token requires all 5 of its level's toy item, wrapping any existing rule.
-    for level_name, toy_item in MISSING_TOYS_TOKEN_ITEM.items():
-        loc_name = f"{level_name} - Missing Toys Token"
-        try:
-            loc = multiworld.get_location(loc_name, player)
-        except KeyError:
-            continue
-        if loc is None:
-            continue
-        prev = loc.access_rule
-        loc.access_rule = lambda state, ti=toy_item, er=prev: (
-            state.has(ti, player, 5) and er(state)
-        )
-
-    # ── LEVEL ACCESS RULES ────────────────────────────────────
-    # NOTE: Level access is enforced by each region's ENTRANCE rule (set in
-    # create_regions: the "To <level>" entrance uses can_access_level). A location
-    # is only reachable if its region is reachable AND its own access_rule passes,
-    # so we do NOT also wrap every location's access_rule with can_access_level.
-    # The old wrapper here did that redundantly and, after locations were renamed
-    # to "<Level> - <Thing>", its suffix/substring region detection mis-assigned
-    # regions and created an infinite recursion through the boss-defeat checks.
-
-    # ── HINT BLOCK SANITY ─────────────────────────────────────
-    # Rules translated from the per-level logic sheets. Hard branch is the
-    # default required move set; the Easy/Hard skip branches relax it. "No
-    # requirements" locations get no rule (reachable once the region is).
-    rule("Andy's House - Hint Block (Andy's Room Bookshelf)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_any_move(state, player, ["Double Jump", "Ledge Grab"]))
-         ))
-    rule("Andy's House - Hint Block (Andy's Room Bed)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Push"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and has_double_jump(state, player))
-         ))
-    rule("Andy's House - Hint Block (Andy's Room Dresser Shelf)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Push", "Pole Climb"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab"]))
-         ))
-    rule("Andy's House - Hint Block (Andy's Room Crib)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Push", "Pole Climb", "Rope Sliding"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and (
-                 has_double_jump(state, player) or
-                 has_all_moves(state, player, ["Ledge Grab", "Pole Climb", "Push"])
-             ))
-         ))
-    # Top of Stairs - No requirements
-    rule("Andy's House - Hint Block (Attic)",
-         lambda state: has_pole_climb(state, player))
-    # Bottom of Stairs - No requirements
-    rule("Andy's House - Hint Block (Top of Garage)",
-         lambda state: _andys_garage_rule(state, player, skips,
-                                          ["Double Jump", "Ledge Grab", "Pole Climb"]))
-    rule("Andy's House - Hint Block (Living Room Recliner)",
-         lambda state: (
-             has_any_move(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD))  # Easy branch: No requirements
-         ))
-
-    # Andy's Neighborhood - No requirements
-    # (Lawnmower Yard)
-
-    rule("Construction Yard - Hint Block (Paint Can Room)",
-         lambda state: (
-             has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Pole Climb"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and
-              has_all_moves(state, player, ["Double Jump", "Ledge Grab"]))
-         ))
-
-    # Al's Toy Barn - No requirements
-    # (Hay Bale Ride)
-
-    # Elevator Hop - East/West Shortcut Fan - No requirements
-    rule("Elevator Hop - Hint Block (Control Room)",
-         lambda state: (
-             has_all_moves(state, player, ["Visor", "Double Jump"]) and
-             has_grappling_hook_elevator(state, player)
-         ))
-
-    rule("Al's Penthouse - Hint Block (Bathtub)",
-         lambda state: (
-             has_laser(state, player) or
-             has_all_moves(state, player, ["Double Jump", "Visor"]) or
-             (skips in (SKIPS_EASY, SKIPS_HARD) and (
-                 has_spin(state, player) or
-                 has_all_moves(state, player, ["Double Jump", "Ledge Grab", "Stomp"])
-             ))
-         ))
-    rule("Al's Penthouse - Hint Block (Train Bed)",
-         lambda state: has_all_moves(state, player, ["Push", "Double Jump", "Ledge Grab"]))
-
-    rule("Tarmac Trouble - Hint Block (Light Puzzle)",
-         lambda state: has_all_moves(state, player, ["Pole Climb", "Double Jump"]))
+    # NOTE: Level access is enforced by each region's ENTRANCE rule (the World's
+    # set_rules method sets "To <level>" entrances to can_access_level), so a
+    # location is only reachable once its region is. We deliberately do NOT also
+    # wrap every location's access_rule with can_access_level here — doing so
+    # previously caused infinite recursion through the boss-defeat checks.

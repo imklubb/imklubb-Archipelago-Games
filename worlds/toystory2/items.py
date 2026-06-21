@@ -31,7 +31,7 @@ ITEM_TABLE: Dict[str, TS2ItemData] = {
 
     # -- MOVES (Movesanity) --
     "Progressive Laser":        TS2ItemData(BASE_ID + 0,  prog),
-    "Spin":                     TS2ItemData(BASE_ID + 1,  prog),
+    "Progressive Spin":         TS2ItemData(BASE_ID + 1,  prog),
     "Stomp":                    TS2ItemData(BASE_ID + 2,  prog),
     "Double Jump":              TS2ItemData(BASE_ID + 3,  prog),
     "Pole Climb":               TS2ItemData(BASE_ID + 4,  prog),
@@ -105,11 +105,13 @@ ITEM_TABLE: Dict[str, TS2ItemData] = {
     "Cutscene Trap":                TS2ItemData(BASE_ID + 58, trap),
     "Invincible Enemies Trap":      TS2ItemData(BASE_ID + 59, trap),
     "Narrow Vision Trap":           TS2ItemData(BASE_ID + 60, trap),
+    "Dizzy Buzz":                   TS2ItemData(BASE_ID + 85, trap),
 
     # -- FILLER --
     "1 Life":                   TS2ItemData(BASE_ID + 61, filler),
     "Extra Battery":            TS2ItemData(BASE_ID + 62, filler),
     "Invincible Buzz":          TS2ItemData(BASE_ID + 73, filler),
+    "Determination to Save Woody": TS2ItemData(BASE_ID + 84, filler),
 
     # -- MISSING TOYS (per coin level; progression class) --
     "Sheep":            TS2ItemData(BASE_ID + 63, prog),
@@ -122,6 +124,19 @@ ITEM_TABLE: Dict[str, TS2ItemData] = {
     "Critter":          TS2ItemData(BASE_ID + 70, prog),
     "Passenger Tike":   TS2ItemData(BASE_ID + 71, prog),
     "Luggage":          TS2ItemData(BASE_ID + 72, prog),
+
+    # -- MISSING TOY BUNDLES (one item grants all 5 of a level's toys; used when
+    #    missing_toy_bundle_size == 5; progression, same as the individual toys) --
+    "5 Sheep":            TS2ItemData(BASE_ID + 74, prog),
+    "5 Soldiers":         TS2ItemData(BASE_ID + 75, prog),
+    "5 Worker Tikes":     TS2ItemData(BASE_ID + 76, prog),
+    "5 Ducks":            TS2ItemData(BASE_ID + 77, prog),
+    "5 Chicks":           TS2ItemData(BASE_ID + 78, prog),
+    "5 Aliens":           TS2ItemData(BASE_ID + 79, prog),
+    "5 Mice":             TS2ItemData(BASE_ID + 80, prog),
+    "5 Critters":         TS2ItemData(BASE_ID + 81, prog),
+    "5 Passenger Tikes":  TS2ItemData(BASE_ID + 82, prog),
+    "5 Luggage":          TS2ItemData(BASE_ID + 83, prog),
 }
 
 # -- DYNAMIC CLASSIFICATION HELPERS --
@@ -141,12 +156,12 @@ def get_cosmic_shield_penthouse_classification(lifesanity: bool) -> ItemClassifi
 # -- ITEM GROUPS --
 
 MOVE_ITEMS = {
-    "Progressive Laser", "Spin", "Stomp", "Double Jump", "Pole Climb",
+    "Progressive Laser", "Progressive Spin", "Stomp", "Double Jump", "Pole Climb",
     "Ledge Grab", "Pole Vault", "Push", "Rope Sliding", "Visor",
 }
 
 WEAPON_MOVE_ITEMS = {
-    "Progressive Laser", "Spin", "Stomp", "Visor",
+    "Progressive Laser", "Progressive Spin", "Stomp", "Visor",
 }
 
 TRAVERSAL_MOVE_ITEMS = {
@@ -211,11 +226,11 @@ COIN_BUNDLE_ITEMS = {
 
 TRAP_ITEMS = {
     "Freeze Buzz Trap", "Damage Buzz Trap", "Cutscene Trap",
-    "Invincible Enemies Trap", "Narrow Vision Trap",
+    "Invincible Enemies Trap", "Narrow Vision Trap", "Dizzy Buzz",
 }
 
 FILLER_ITEMS = {
-    "1 Life", "Extra Battery", "Invincible Buzz",
+    "1 Life", "Extra Battery", "Invincible Buzz", "Determination to Save Woody",
 }
 
 # Missing toy items: item name -> level id. Each is Progressive with 5 copies in
@@ -233,4 +248,24 @@ MISSING_TOY_ITEMS = {
     "Critter":          11,
     "Passenger Tike":   13,
     "Luggage":          14,
+}
+
+# Display name of each level's toy bundle (proper plurals). Single source of
+# truth used by the pool, the token gate, the client and the tracker.
+TOY_BUNDLE_NAME = {
+    "Sheep":          "5 Sheep",
+    "Soldier":        "5 Soldiers",
+    "Worker Tike":    "5 Worker Tikes",
+    "Duck":           "5 Ducks",
+    "Chick":          "5 Chicks",
+    "Alien":          "5 Aliens",
+    "Mouse":          "5 Mice",
+    "Critter":        "5 Critters",
+    "Passenger Tike": "5 Passenger Tikes",
+    "Luggage":        "5 Luggage",
+}
+# Bundle variants: one item per level granting all 5 of that level's toys at
+# once (used when missing_toy_bundle_size == 5). Same level id as the base toy.
+MISSING_TOY_BUNDLE_ITEMS = {
+    TOY_BUNDLE_NAME[name]: lvl for name, lvl in MISSING_TOY_ITEMS.items()
 }

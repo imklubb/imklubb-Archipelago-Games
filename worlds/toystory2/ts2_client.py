@@ -72,6 +72,7 @@ SHARED_LEVEL_UNLOCKS_LOW   = (0x1FFFE5, 1, "MainRAM")  # bitmask levels 7-14
 SHARED_LEVEL_UNLOCKS_HIGH  = (0x1FFFE7, 1, "MainRAM")  # bitmask levels 15-21
 SHARED_TICKETS_RECEIVED    = (0x1FFFE9, 1, "MainRAM")
 SHARED_LASER_LEVEL         = (0x1FFFEB, 1, "MainRAM")  # 0-3
+SHARED_SPIN_LEVEL          = (0x1FFFEC, 1, "MainRAM")  # 0-3 (Progressive Spin)
 SHARED_MOVE_UNLOCKS_LOW    = (0x1FFFED, 1, "MainRAM")  # bitmask bits 0-7
 SHARED_MOVE_UNLOCKS_HIGH   = (0x1FFFEF, 1, "MainRAM")  # bit 0 = rope
 SHARED_BOSS_DEFEATS        = (0x1FFFF2, 1, "MainRAM")  # bitmask
@@ -171,6 +172,19 @@ FEED_CYCLE_ADDR                 = (0x1FF970, 1, "MainRAM")
 # Prospector open mode unlock
 SHARED_PROSPECTOR_UNLOCK        = (0x1FF9C6, 1, "MainRAM")
 
+# Goal breakdown for the in-game #12 "Missing Goal Conditions" flashing message +
+# the goal-gate shorthand label (open mode). FLAGS bitmask: b0 tokens unmet,
+# b1 bosses unmet, b2 level-unlock unmet. The Lua reads these at 0x1FF96C-0x1FF96F.
+# NOTE: these live in the SAFE low-shared region (alongside the game-mode mirror at
+# 0x1FF97D). They were previously at 0x1FFFF3-F6, which is past the end of the
+# validated shared map (last byte 0x1FFFF2) in the top-of-RAM region the game
+# corrupts -- the client's writes there were being stomped, so the in-game goal
+# label/popup read 0 ("locked" / "missing goal conditions").
+SHARED_GOAL_FLAGS               = (0x1FF96C, 1, "MainRAM")
+SHARED_GOAL_BOSS_DEF            = (0x1FF96D, 1, "MainRAM")
+SHARED_GOAL_BOSS_REQ           = (0x1FF96E, 1, "MainRAM")
+SHARED_GOAL_TOK_REQ            = (0x1FF96F, 1, "MainRAM")
+
 # ── DESPAWN SEEDS (server -> Lua, one direction only) ─────────────────────────
 # The AP server is the source of truth for what's collected. Each tick the client
 # derives the CURRENT level's collected mask from checked_locations and writes it
@@ -205,6 +219,7 @@ SHARED_TRAP_FREEZE_BUZZ         = (0x1FF983, 1, "MainRAM")
 SHARED_TRAP_CUTSCENE            = (0x1FF984, 1, "MainRAM")
 SHARED_TRAP_DAMAGE_BUZZ         = (0x1FF985, 1, "MainRAM")
 SHARED_DEATH_LINK_QUEUE         = (0x1FF986, 1, "MainRAM")
+SHARED_TRAP_DIZZY_BUZZ          = (0x1FFFD2, 1, "MainRAM")  # high region (low trap block full)
 
 # Filler items
 SHARED_FILLER_EXTRA_LIFE        = (0x1FF987, 1, "MainRAM")
@@ -327,7 +342,8 @@ BUZZ_DEATH_ADDR  = (0x0A136E, 1, "MainRAM")  # == 2 means Buzz has died (in-leve
 
 # Bitmasks for move unlocks (SHARED_MOVE_UNLOCKS_LOW bits 0-7)
 MOVE_BITS_LOW = {
-    "Spin":        0,
+    # "Spin" is now "Progressive Spin" (level-based, handled in _process_items);
+    # it still sets bit 0 there so the spin move works from level 1.
     "Stomp":       1,
     "Double Jump": 2,
     "Visor":       3,
@@ -392,6 +408,7 @@ TRAP_ITEM_TO_ADDR = {
     "Freeze Buzz Trap":         SHARED_TRAP_FREEZE_BUZZ,
     "Cutscene Trap":            SHARED_TRAP_CUTSCENE,
     "Damage Buzz Trap":         SHARED_TRAP_DAMAGE_BUZZ,
+    "Dizzy Buzz":               SHARED_TRAP_DIZZY_BUZZ,
 }
 
 # Coin bundle item -> shared address
@@ -503,45 +520,45 @@ TOY_LEVEL_MAP = {
 }
 
 BATTERY_LOCATIONS = {
-    1:  ["Andy's House - Battery (Andy's Room)", "Andy's House - Battery (Attic)",
-         "Andy's House - Battery (Basement)", "Andy's House - Battery (Garage)",
-         "Andy's House - Battery (Living Room)", "Andy's House - Battery (Handrail)"],
-    2:  ["Andy's Neighborhood - Battery (Lawnmower Yard)", "Andy's Neighborhood - Battery (Washing Machine)",
-         "Andy's Neighborhood - Battery (Pool Yard)", "Andy's Neighborhood - Battery (Swing)",
-         "Andy's Neighborhood - Battery (Top of Tree)"],
-    6:  ["Bombs Away! - Battery (Back Right)", "Bombs Away! - Battery (Back Left)",
-         "Bombs Away! - Battery (Front Left)", "Bombs Away! - Battery (Front Right)"],
-    4:  ["Construction Yard - Battery (Bulldozer)", "Construction Yard - Battery (Boss Arena Front Left)",
-         "Construction Yard - Battery (Boss Arena Back Left)", "Construction Yard - Battery (Boss Arena Back Right)"],
-    5:  ["Alleys and Gullies - Battery (Behind Construction)", "Alleys and Gullies - Battery (Balcony Fence)",
-         "Alleys and Gullies - Battery (Boss Arena)"],
-    7:  ["Al's Toy Barn - Battery (Gumball Machine)", "Al's Toy Barn - Battery (Ventilation Shaft)",
-         "Al's Toy Barn - Battery (Between Bicycles)", "Al's Toy Barn - Battery (Cardboard Boxes)",
-         "Al's Toy Barn - Battery (Boss Arena)"],
-    8:  ["Al's Space Land - Battery (Boss Arena)", "Al's Space Land - Battery (Arcade Cabinet)",
-         "Al's Space Land - Battery (Blue Shelves)", "Al's Space Land - Battery (Red Shelf)",
-         "Al's Space Land - Battery (Race Blue Shelf)"],
-    9:  ["Toy Barn Encounter - Battery (South)", "Toy Barn Encounter - Battery (North)",
-         "Toy Barn Encounter - Battery (East)", "Toy Barn Encounter - Battery (West)"],
-    11: ["Al's Penthouse - Battery (Under Table)", "Al's Penthouse - Battery (Bathroom)",
-         "Al's Penthouse - Battery (Kitchen)", "Al's Penthouse - Battery (Train Bed)",
-         "Al's Penthouse - Battery (Television)"],
-    13: ["Airport Infiltration - Battery (Luggage Pile)", "Airport Infiltration - Battery (Near Hidden Token)",
-         "Airport Infiltration - Battery (Boss Arena)"],
-    14: ["Tarmac Trouble - Battery (Road Opposite Zone 8)", "Tarmac Trouble - Battery (Helicopter Pad)",
-         "Tarmac Trouble - Battery (Zone 3)", "Tarmac Trouble - Battery (Green Slime Maze)",
-         "Tarmac Trouble - Battery (Boss Arena)"],
+    1:  ["Andy's House - Battery - Andy's Room", "Andy's House - Battery - Attic",
+         "Andy's House - Battery - Basement", "Andy's House - Battery - Garage",
+         "Andy's House - Battery - Living Room", "Andy's House - Battery - Handrail"],
+    2:  ["Andy's Neighborhood - Battery - Lawnmower Yard", "Andy's Neighborhood - Battery - Washing Machine",
+         "Andy's Neighborhood - Battery - Pool Yard", "Andy's Neighborhood - Battery - Swing",
+         "Andy's Neighborhood - Battery - Top of Tree"],
+    6:  ["Bombs Away! - Battery - Back Right", "Bombs Away! - Battery - Back Left",
+         "Bombs Away! - Battery - Front Left", "Bombs Away! - Battery - Front Right"],
+    4:  ["Construction Yard - Battery - Bulldozer", "Construction Yard - Battery - Boss Arena Front Left",
+         "Construction Yard - Battery - Boss Arena Back Left", "Construction Yard - Battery - Boss Arena Back Right"],
+    5:  ["Alleys and Gullies - Battery - Behind Construction", "Alleys and Gullies - Battery - Balcony Fence",
+         "Alleys and Gullies - Battery - Boss Arena"],
+    7:  ["Al's Toy Barn - Battery - Gumball Machine", "Al's Toy Barn - Battery - Ventilation Shaft",
+         "Al's Toy Barn - Battery - Between Bicycles", "Al's Toy Barn - Battery - Cardboard Boxes",
+         "Al's Toy Barn - Battery - Boss Arena"],
+    8:  ["Al's Space Land - Battery - Boss Arena", "Al's Space Land - Battery - Arcade Cabinet",
+         "Al's Space Land - Battery - Blue Shelves", "Al's Space Land - Battery - Red Shelf",
+         "Al's Space Land - Battery - Race Blue Shelf"],
+    9:  ["Toy Barn Encounter - Battery - South", "Toy Barn Encounter - Battery - North",
+         "Toy Barn Encounter - Battery - East", "Toy Barn Encounter - Battery - West"],
+    11: ["Al's Penthouse - Battery - Under Table", "Al's Penthouse - Battery - Bathroom",
+         "Al's Penthouse - Battery - Kitchen", "Al's Penthouse - Battery - Train Bed",
+         "Al's Penthouse - Battery - Television"],
+    13: ["Airport Infiltration - Battery - Luggage Pile", "Airport Infiltration - Battery - Near Hidden Token",
+         "Airport Infiltration - Battery - Boss Arena"],
+    14: ["Tarmac Trouble - Battery - Road Opposite Zone 8", "Tarmac Trouble - Battery - Helicopter Pad",
+         "Tarmac Trouble - Battery - Zone 3", "Tarmac Trouble - Battery - Green Slime Maze",
+         "Tarmac Trouble - Battery - Boss Arena"],
 }
 
 LIFE_LOCATIONS = {
-    1:  ["Andy's House - Life (Crib)", "Andy's House - Life (Living Room)", "Andy's House - Life (Garage)"],
-    2:  ["Andy's Neighborhood - Life (Top of Swing)"],
-    4:  ["Construction Yard - Life (Top of Bulldozer)", "Construction Yard - Life (Roof of Green Building)"],
-    5:  ["Alleys and Gullies - Life (Pool Behind Construction)", "Alleys and Gullies - Life (Lily Pad Behind Race)", "Alleys and Gullies - Life (Window Sill)"],
-    7:  ["Al's Toy Barn - Life (Tennis Ball Isle)"],
-    8:  ["Al's Space Land - Life (Planet Mobile)"],
-    11: ["Al's Penthouse - Life (Fireplace)"],
-    14: ["Tarmac Trouble - Life (Zone 6)"],
+    1:  ["Andy's House - Life - Crib", "Andy's House - Life - Living Room", "Andy's House - Life - Garage"],
+    2:  ["Andy's Neighborhood - Life - Top of Swing"],
+    4:  ["Construction Yard - Life - Top of Bulldozer", "Construction Yard - Life - Roof of Green Building"],
+    5:  ["Alleys and Gullies - Life - Pool Behind Construction", "Alleys and Gullies - Life - Lily Pad Behind Race", "Alleys and Gullies - Life - Window Sill"],
+    7:  ["Al's Toy Barn - Life - Tennis Ball Isle"],
+    8:  ["Al's Space Land - Life - Planet Mobile"],
+    11: ["Al's Penthouse - Life - Fireplace"],
+    14: ["Tarmac Trouble - Life - Zone 6"],
 }
 
 LASER_LOCATIONS = {
@@ -582,36 +599,36 @@ SHARED_HINT_SEED = (0x1FFA83, 2, "MainRAM")
 # table exactly (bit i-1 = entry i).
 HINT_LOCATIONS = {
     1: [
-        "Andy's House - Hint Block (Andy's Room Bookshelf)",
-        "Andy's House - Hint Block (Andy's Room Bed)",
-        "Andy's House - Hint Block (Andy's Room Dresser Shelf)",
-        "Andy's House - Hint Block (Andy's Room Crib)",
-        "Andy's House - Hint Block (Top of Stairs)",
-        "Andy's House - Hint Block (Attic)",
-        "Andy's House - Hint Block (Bottom of Stairs)",
-        "Andy's House - Hint Block (Top of Garage)",
-        "Andy's House - Hint Block (Living Room Recliner)",
+        "Andy's House - Hint Block - Andy's Room Bookshelf",
+        "Andy's House - Hint Block - Andy's Room Bed",
+        "Andy's House - Hint Block - Andy's Room Dresser Shelf",
+        "Andy's House - Hint Block - Andy's Room Crib",
+        "Andy's House - Hint Block - Top of Stairs",
+        "Andy's House - Hint Block - Attic",
+        "Andy's House - Hint Block - Bottom of Stairs",
+        "Andy's House - Hint Block - Top of Garage",
+        "Andy's House - Hint Block - Living Room Recliner",
     ],
     2: [
-        "Andy's Neighborhood - Hint Block (Lawnmower Yard)",
+        "Andy's Neighborhood - Hint Block - Lawnmower Yard",
     ],
     4: [
-        "Construction Yard - Hint Block (Paint Can Room)",
+        "Construction Yard - Hint Block - Paint Can Room",
     ],
     7: [
-        "Al's Toy Barn - Hint Block (Hay Bale Ride)",
+        "Al's Toy Barn - Hint Block - Hay Bale Ride",
     ],
     10: [
-        "Elevator Hop - Hint Block (East Shortcut Fan)",
-        "Elevator Hop - Hint Block (West Shortcut Fan)",
-        "Elevator Hop - Hint Block (Control Room)",
+        "Elevator Hop - Hint Block - East Shortcut Fan",
+        "Elevator Hop - Hint Block - West Shortcut Fan",
+        "Elevator Hop - Hint Block - Control Room",
     ],
     11: [
-        "Al's Penthouse - Hint Block (Bathtub)",
-        "Al's Penthouse - Hint Block (Train Bed)",
+        "Al's Penthouse - Hint Block - Bathtub",
+        "Al's Penthouse - Hint Block - Train Bed",
     ],
     14: [
-        "Tarmac Trouble - Hint Block (Light Puzzle)",
+        "Tarmac Trouble - Hint Block - Light Puzzle",
     ],
 }
 
@@ -627,6 +644,94 @@ COIN_LEVEL_ADDR_MAP = {
     "Airport Infiltration": SHARED_COINS_AIRPORT,
     "Tarmac Trouble":       SHARED_COINS_TARMAC,
 }
+
+# ── COINSANITY 1-COIN (DESCRIPTIVE) DETECTION + SUPPRESSION ────────────────
+# When coinsanity_checks_bundle_size == 1, each coin is its own AP check. The
+# CLIENT (not the Lua) does per-coin detection AND suppression: it reads each
+# coin's RAM, sends the descriptive location, and writes the "collected" value
+# so checked coins stay gone (coins never respawn while coinsanity is on). The
+# Lua's coin-currency economy is count-based and untouched by any of this.
+#   * regular coins (addr >= 0x0C7400): 4-byte. Uncollected = a varied per-coin
+#       value (often a signed coordinate, so the high bit alone is meaningless);
+#       collected == the word becomes EXACTLY 0x80000000. Suppress by writing
+#       0x80000000 EVERY tick (they respawn to their uncollected value on level
+#       re-entry, so an entry-window-only write let checked coins come back).
+#   * enemy / plane (addr <  0x0C7400): 1-byte health; 0 = killed. Suppress by
+#       writing 0 EVERY tick (they respawn mid-level).
+#   * miniboss      : detected once, NEVER suppressed (must respawn for its Boss
+#       token).
+#   * plane_box     : detected normally, but only suppressed once EVERY plane in
+#       the same level+area is checked (it respawns until then).
+# 1-byte detection is gated by a short arming delay after entry AND a "seen-alive"
+# requirement (health was > 0 at least once this visit) so an unspawned/garbage 0
+# can never fire a phantom check.
+COIN_DESC_REG_LO           = 0x0C7400
+COIN_DESC_ARM_TICKS        = 6    # ticks in-level before 1-byte detection arms
+COIN_LOAD_SETTLE_TICKS     = 60   # A 4-byte coin that reads the collected sentinel
+                                  # (0x80000000) continuously for this many ticks
+                                  # from level entry — never once showing its
+                                  # uncollected coordinate value — is treated as
+                                  # collected even without a prior "seen alive"
+                                  # sighting. This catches a coin grabbed the instant
+                                  # the level starts (e.g. the Tarmac Trouble at-start
+                                  # coin right in front of Buzz), which the player can
+                                  # take before the client ever polls it alive. Safe
+                                  # because a genuinely uncollected coin shows its
+                                  # coordinate value once the level finishes loading
+                                  # (the 0x80000000 load transient lasts only a few
+                                  # frames), so distant uncollected coins reset the
+                                  # streak and never trip it. Tunable: raise if a slow
+                                  # load ever false-fires; lower to catch it sooner.
+
+# In-game level id for each coin level (matches the rest of the client).
+COIN_DESC_LEVEL_ID = {
+    "Andy's House": 1, "Andy's Neighborhood": 2, "Construction Yard": 4,
+    "Alleys and Gullies": 5, "Al's Toy Barn": 7, "Al's Space Land": 8,
+    "Elevator Hop": 10, "Al's Penthouse": 11, "Airport Infiltration": 13,
+    "Tarmac Trouble": 14,
+}
+# Coin level ORDER — the index here (li) must match __init__.py's COIN_LEVELS so
+# the descriptive ids (LOC_BASE + 5000 + li*150 + coin.idx) line up exactly.
+COIN_DESC_LEVEL_ORDER = [
+    "Andy's House", "Andy's Neighborhood", "Construction Yard",
+    "Alleys and Gullies", "Al's Toy Barn", "Al's Space Land",
+    "Elevator Hop", "Al's Penthouse", "Airport Infiltration", "Tarmac Trouble",
+]
+
+_COIN_DESC_CACHE = None
+def _build_coin_desc_tables():
+    """Build per-level coin detection/suppression tables from logic_data:
+      table[level_id]      = [ {addr,size,kind,area,id}, ... ]  in coin idx order
+      area_planes[(lid,a)] = set of plane location ids in that level+area
+      levelmeta[level_id]  = (level_name, level_index)
+    """
+    table, area_planes, levelmeta = {}, {}, {}
+    try:
+        from .logic_data import COIN_DATA as _CD
+        from .locations import LOC_BASE
+    except Exception as e:
+        logger.error(f"[TS2] coin-desc table build failed: {e}")
+        return table, area_planes, levelmeta
+    desc_off, per_level = LOC_BASE + 5000, 150
+    for li, name in enumerate(COIN_DESC_LEVEL_ORDER):
+        lid = COIN_DESC_LEVEL_ID[name]
+        levelmeta[lid] = (name, li)
+        lst = []
+        for c in _CD.get(name, []):
+            size = 4 if c.addr >= COIN_DESC_REG_LO else 1
+            cid = desc_off + (li * per_level) + c.idx
+            lst.append({"addr": c.addr, "size": size, "kind": c.kind,
+                        "area": c.area, "id": cid, "idx": c.idx})
+            if c.kind == "plane":
+                area_planes.setdefault((lid, c.area), set()).add(cid)
+        table[lid] = lst
+    return table, area_planes, levelmeta
+
+def _coin_desc_tables():
+    global _COIN_DESC_CACHE
+    if _COIN_DESC_CACHE is None:
+        _COIN_DESC_CACHE = _build_coin_desc_tables()
+    return _COIN_DESC_CACHE
 
 PARTS_RESTORE = [
     (SHARED_EAR_COLLECTED,   SHARED_EAR_EXCHANGED,   "Andy's House - Missing Ear",          "Andy's House - Give Potato Head His Ear"),
@@ -675,6 +780,17 @@ class ToyStory2Client(BizHawkClient):
         # _delivered from already-received items when resyncing into an in-progress
         # game (so one-shot filler/traps are not replayed). See _process_items.
         self._seed_delivered: bool = False
+        # ── coinsanity 1-coin (descriptive) per-visit state ──
+        # Reset whenever the current level id changes so each entry re-arms.
+        self._coin_level_cur: int = -1       # level id the coin state is tracking
+        self._coin_ticks_in_level: int = 0   # ticks since we entered it
+        self._coin_seen_alive: set = set()   # 1-byte coin addrs seen with health>0
+        self._coin_dead_streak: dict = {}    # 4-byte addr -> consecutive collected-sentinel ticks (at-start fallback)
+        # ── coin persistence (bundled modes) — see on_package "Connected" ──
+        self._coins_collected: dict = {}     # li -> set(coin idx)
+        self._coins_loaded: bool = True      # gate (set False on connect if bundled)
+        self._coins_dirty: bool = False      # a datastorage Set is pending
+        self._coins_key: Optional[str] = None
 
     def _location_map(self, ctx: "BizHawkClientContext") -> dict:
         """Build (and cache) a location name -> id map. We derive it from our own
@@ -757,6 +873,35 @@ class ToyStory2Client(BizHawkClient):
             self._last_seen_level = -1
             self._level_stable_ticks = 0
             self._last_pub_tab = None
+            self._coin_level_cur = -1
+            self._coin_ticks_in_level = 0
+            self._coin_seen_alive = set()
+            self._coin_dead_streak = {}
+            # ── Coin persistence (bundled modes: checks_bundle_size != 1) ──
+            # Per-coin collected set, keyed by coin-level index li (0-9), held
+            # SERVER-SIDE in AP datastorage so it survives level exits, BizHawk
+            # resets, and disconnect/reconnect. In bundle-1 mode each coin is its
+            # own checked_location, so checked_locations IS the record and no
+            # datastorage is used. We only need the store when coins are bundled
+            # and individual coins aren't AP checks; the popcount of this set then
+            # drives both despawn (suppression) and how many Coin Bundle checks are
+            # complete. update_coins / the auto-release seeding in the Lua are
+            # untouched — this is the same client-side per-coin path that already
+            # coexists with them in bundle-1 mode, just extended to all sizes.
+            self._coins_collected: dict = {}   # li -> set(coin idx)
+            self._coins_loaded = False         # True once the Get reply merged in
+            self._coins_dirty = False          # a datastorage Set is pending
+            self._coins_key = None
+            _cs  = self.slot_data.get("coinsanity", 0)
+            _bsz = self.slot_data.get("coinsanity_checks_bundle_size", 0)
+            if _cs and _bsz != 1 and args.get("slot"):
+                # Loaded via a Get issued from the connect-restore path in
+                # game_watcher (async + guaranteed post-connect, and re-issued on
+                # every reconnect since restored_from_server resets here).
+                self._coins_key = f"ts2_coins_{args.get('team', 0)}_{args['slot']}"
+            else:
+                # bundle-1 or coinsanity off: nothing to load, never gate on it.
+                self._coins_loaded = True
             self._delivered = {}
             # Defer one seeding pass: if we're resyncing into a game that already
             # has progress, already-received one-shot filler/traps must NOT be
@@ -811,6 +956,30 @@ class ToyStory2Client(BizHawkClient):
             # server with a KeyError, because IDs not placed in this generation
             # aren't valid to scout.
 
+        elif cmd == "Retrieved":
+            # Reply to our connect-time coin Get. The server returns every key we
+            # asked for (value None if never set), so this always fires once and
+            # un-gates coin processing even for a fresh game. UNION into the live
+            # set rather than overwrite — detection may already have added coins
+            # while the reply was in flight; persistence is gated until now so we
+            # never wrote a partial set over the server's fuller one.
+            key = getattr(self, "_coins_key", None)
+            if key and isinstance(args.get("keys"), dict) and key in args["keys"]:
+                val = args["keys"].get(key)
+                if isinstance(val, dict):
+                    for li_s, idxs in val.items():
+                        try:
+                            li = int(li_s)
+                        except (ValueError, TypeError):
+                            continue
+                        if isinstance(idxs, list):
+                            self._coins_collected.setdefault(li, set()).update(
+                                int(i) for i in idxs
+                                if isinstance(i, int) or (isinstance(i, str) and i.isdigit())
+                            )
+                self._coins_loaded = True
+                logger.info("[TS2] Coin persistence loaded from server.")
+
     # ── GAME WATCHER ──────────────────────────────────────────
 
     async def game_watcher(self, ctx: "BizHawkClientContext") -> None:
@@ -831,6 +1000,14 @@ class ToyStory2Client(BizHawkClient):
             # Restore progress from server on first tick after connect
             if not self.restored_from_server:
                 await self._restore_from_server(ctx)
+                # Load the server-backed per-coin set (bundled modes only). Issued
+                # here so it's reliably sent after connect and re-requested on every
+                # reconnect. The Retrieved reply un-gates coin processing.
+                if self._coins_key and not self._coins_loaded:
+                    try:
+                        await ctx.send_msgs([{"cmd": "Get", "keys": [self._coins_key]}])
+                    except Exception:
+                        pass
                 self.restored_from_server = True
 
             # Process received items
@@ -899,7 +1076,7 @@ class ToyStory2Client(BizHawkClient):
             (1 if sd.get("disc_launcher_fill_pockets", 1)        else 0) << 1 |
             (1 if sd.get("disable_falling_animation", 0)         else 0) << 2 |
             (1 if sd.get("skip_cutscenes", 1)                    else 0) << 3 |
-            (1 if sd.get("collect_enemy_coins_automatically", 1) else 0) << 4 |
+            (1 << 4) |  # enemy-coin auto-collect: always on (required for coins)
             (1 if sd.get("start_every_level_with_full_health", 1) else 0) << 5 |
             (1 if sd.get("never_game_over", 1)                   else 0) << 6
         )
@@ -953,6 +1130,7 @@ class ToyStory2Client(BizHawkClient):
         # with an incremental approach and drop the starting-level unlock.
         token_count  = 0
         laser_level  = 0
+        spin_level   = 0
         moves_low    = 0
         moves_high   = 0
         unlocks_low  = 0
@@ -971,6 +1149,11 @@ class ToyStory2Client(BizHawkClient):
                 token_count = min(token_count + 1, 99)
             elif item_name == "Progressive Laser":
                 laser_level = min(laser_level + 1, 3)
+            elif item_name == "Progressive Spin":
+                # Level 1 = the base spin move (bit 0, same as the old "Spin" item);
+                # levels 2-3 are upgrades the Lua applies from SHARED_SPIN_LEVEL.
+                spin_level = min(spin_level + 1, 3)
+                moves_low |= (1 << 0)
             elif item_name in MOVE_BITS_LOW:
                 moves_low |= (1 << MOVE_BITS_LOW[item_name])
             elif item_name == "Rope Sliding":
@@ -1073,10 +1256,58 @@ class ToyStory2Client(BizHawkClient):
         writes += [
             (SHARED_TOKENS_RECEIVED[0],   [token_count],  "MainRAM"),
             (SHARED_LASER_LEVEL[0],       [laser_level],  "MainRAM"),
+            (SHARED_SPIN_LEVEL[0],        [spin_level],   "MainRAM"),
             (SHARED_MOVE_UNLOCKS_LOW[0],  [moves_low],    "MainRAM"),
             (SHARED_MOVE_UNLOCKS_HIGH[0], [moves_high],   "MainRAM"),
             (SHARED_TICKETS_RECEIVED[0],  [tickets],      "MainRAM"),
         ]
+
+        # ── OPEN-MODE FINAL SHOWDOWN (Prospector) GOAL ────────
+        # Compute the goal here, BEFORE the unlock-bitmask write below, so a met
+        # goal can set the Final Showdown bit in that bitmask — the same proven
+        # mechanism every other level uses. Tokens/bosses goals never receive a
+        # "Final Showdown Unlock" item, so previously the bit was never set and the
+        # final level stayed locked even with the goal met (we only wrote the
+        # standalone SHARED_PROSPECTOR_UNLOCK flag, which the in-game unlock did not
+        # actually honor on its own).
+        prospector_goal_met = False
+        if self.slot_data.get("game_mode", 0) == 0:
+            _goal     = self.slot_data.get("goal_conditions", 0)
+            _tok_gate = self.slot_data.get("final_showdown_token_gate", 50)
+            _boss_req = self.slot_data.get("defeated_bosses_required", 4)
+            _tokens_ok = token_count >= _tok_gate
+            _bosses_ok = tickets >= _boss_req
+            _owned = {ctx.item_names.lookup_in_game(it.item) for it in ctx.items_received}
+            _levels_ok = "Final Showdown Unlock" in _owned
+            prospector_goal_met = {
+                0: _tokens_ok,
+                1: _bosses_ok,
+                2: _levels_ok,
+                3: _tokens_ok and _bosses_ok,
+                4: _tokens_ok and _levels_ok,
+                5: _bosses_ok and _levels_ok,
+                6: _tokens_ok and _bosses_ok and _levels_ok,
+            }.get(_goal, _tokens_ok)
+            if prospector_goal_met:
+                unlocks_high |= (1 << (21 - 15))   # Final Showdown bit (hover 21)
+
+            # Publish the goal breakdown for the in-game #12 messages (shorthand
+            # label + "Missing Goal Conditions" flash). FLAGS = which ACTIVE goal
+            # conditions are still UNMET (b0 tokens / b1 bosses / b2 level).
+            _active = {
+                0: (1, 0, 0), 1: (0, 1, 0), 2: (0, 0, 1),
+                3: (1, 1, 0), 4: (1, 0, 1), 5: (0, 1, 1), 6: (1, 1, 1),
+            }.get(_goal, (1, 0, 0))
+            _flags = 0
+            if _active[0] and not _tokens_ok: _flags |= 1
+            if _active[1] and not _bosses_ok: _flags |= 2
+            if _active[2] and not _levels_ok: _flags |= 4
+            writes += [
+                (SHARED_GOAL_FLAGS[0],    [_flags & 0xFF],            "MainRAM"),
+                (SHARED_GOAL_BOSS_DEF[0], [min(max(tickets, 0), 255)], "MainRAM"),
+                (SHARED_GOAL_BOSS_REQ[0], [min(max(_boss_req, 0), 255)], "MainRAM"),
+                (SHARED_GOAL_TOK_REQ[0],  [min(max(_tok_gate, 0), 255)], "MainRAM"),
+            ]
 
         # Level unlock bitmask: ONLY write it in OPEN mode, where unlocks come from
         # received Level Unlock items. In LINEAR mode the Lua owns this same
@@ -1090,39 +1321,12 @@ class ToyStory2Client(BizHawkClient):
                 (SHARED_LEVEL_UNLOCKS_HIGH[0],[unlocks_high], "MainRAM"),
             ]
 
-        # ── OPEN-MODE FINAL SHOWDOWN (Prospector) UNLOCK ──────
-        # The Prospector unlocks when the player's chosen GOAL CONDITIONS are met.
-        # The Lua previously hard-required tokens AND bosses regardless of the
-        # selected goal, so a non-token (or non-boss) goal never unlocked it. We
-        # compute it here from slot_data + received items and write a single
-        # unlock flag the Lua reads.
+        # ── OPEN-MODE FINAL SHOWDOWN (Prospector) FLAG ────────
+        # Also write the standalone unlock flag (computed as prospector_goal_met
+        # above, where it already set the bitmask bit). Kept for any Lua path that
+        # reads it; the bitmask bit is what actually opens the level.
         if self.slot_data.get("game_mode", 0) == 0:  # open mode only
-            goal = self.slot_data.get("goal_conditions", 0)
-            tok_gate = self.slot_data.get("final_showdown_token_gate", 50)
-            boss_req = self.slot_data.get("defeated_bosses_required", 4)
-            tokens_ok = token_count >= tok_gate
-            bosses_ok = tickets >= boss_req
-            # "Level unlock" goal: matches the generator's rule (rules.py), which
-            # defines this condition as owning the FINAL SHOWDOWN UNLOCK item — the
-            # dedicated unlock for the final level — NOT owning every level unlock.
-            # (The earlier client logic required all 14 unlocks, which both
-            # disagreed with generation AND was impossible since starting-level
-            # unlocks are pre-collected and never received.)
-            owned_unlocks = {
-                ctx.item_names.lookup_in_game(it.item)
-                for it in ctx.items_received
-            }
-            levels_ok = "Final Showdown Unlock" in owned_unlocks
-            goal_met = {
-                0: tokens_ok,
-                1: bosses_ok,
-                2: levels_ok,
-                3: tokens_ok and bosses_ok,
-                4: tokens_ok and levels_ok,
-                5: bosses_ok and levels_ok,
-                6: tokens_ok and bosses_ok and levels_ok,
-            }.get(goal, tokens_ok)
-            writes.append((SHARED_PROSPECTOR_UNLOCK[0], [1 if goal_met else 0], "MainRAM"))
+            writes.append((SHARED_PROSPECTOR_UNLOCK[0], [1 if prospector_goal_met else 0], "MainRAM"))
 
         # Coin bundle item counts are absolute. Write ALL coin-item addresses
         # authoritatively (0 for levels with no received bundles) so that game
@@ -1151,12 +1355,37 @@ class ToyStory2Client(BizHawkClient):
             "Mouse": 10, "Critter": 11,
             "Passenger Tike": 13, "Luggage": 14,
         }
+        # In bundle mode (missing_toy_bundle_size == 5) a single "5 X" item grants
+        # all five of a level's toys at once.
+        toy_bundle_to_level = {
+            "5 Sheep": 1, "5 Soldiers": 2, "5 Worker Tikes": 4, "5 Ducks": 5,
+            "5 Chicks": 7, "5 Aliens": 8, "5 Mice": 10, "5 Critters": 11,
+            "5 Passenger Tikes": 13, "5 Luggage": 14,
+        }
         toy_recv_counts = {lvl: 0 for lvl in TOY_LEVEL_MAP}
         for item in ctx.items_received:
             iname = ctx.item_names.lookup_in_game(item.item)
             lvl = toy_item_to_level.get(iname)
             if lvl is not None:
                 toy_recv_counts[lvl] = min(toy_recv_counts[lvl] + 1, 5)
+            else:
+                blvl = toy_bundle_to_level.get(iname)
+                if blvl is not None:
+                    toy_recv_counts[blvl] = 5
+        # Once a level's "Missing Toys Token" is checked the toys have been turned
+        # in, so the in-level toy counter should read 0 from then on (instead of
+        # forever showing e.g. 5 sheep). checked_locations persists on the server,
+        # so this stays 0 across reconnects and re-entering the level.
+        try:
+            _id_to_name = {v: k for k, v in self._location_map(ctx).items()}
+            _checked = {_id_to_name.get(i) for i in ctx.checked_locations
+                        if i in _id_to_name}
+            for level_id in toy_recv_counts:
+                _lvl_name = TOY_LEVEL_MAP[level_id][1]
+                if f"{_lvl_name} - Missing Toys Token" in _checked:
+                    toy_recv_counts[level_id] = 0
+        except Exception:
+            pass
         for level_id, count in toy_recv_counts.items():
             recv_addr = SHARED_TOY_RECEIVED.get(level_id)
             if recv_addr:
@@ -1244,7 +1473,7 @@ class ToyStory2Client(BizHawkClient):
         for level_id, (toy_type, level_name, suffixes) in toy_restore_map.items():
             mask = 0
             for i, suffix in enumerate(suffixes):
-                if f"{level_name} - {toy_type} ({suffix})" in checked_names:
+                if f"{level_name} - {toy_type} - {suffix}" in checked_names:
                     mask |= (1 << i)
             if mask:
                 addr = SHARED_TOY_COLLECTED.get(level_id)
@@ -1390,7 +1619,7 @@ class ToyStory2Client(BizHawkClient):
         if toy:
             toy_type, level_name, suffixes = toy
             for i, suffix in enumerate(suffixes):
-                if f"{level_name} - {toy_type} ({suffix})" in checked_names:
+                if f"{level_name} - {toy_type} - {suffix}" in checked_names:
                     toy_mask |= (1 << i)
         writes.append((SHARED_DESPAWN_TOY[0], [toy_mask], "MainRAM"))
 
@@ -1715,7 +1944,7 @@ class ToyStory2Client(BizHawkClient):
             collected_mask = toy_data[0][0]
             for i, loc_suffix in enumerate(locations):
                 if (collected_mask >> i) & 1:
-                    loc_name = f"{level_name} - {toy_type} ({loc_suffix})"
+                    loc_name = f"{level_name} - {toy_type} - {loc_suffix}"
                     loc_id = self._location_map(ctx).get(loc_name)
                     if loc_id is not None:
                         new_checks.add(loc_id)
@@ -1724,75 +1953,75 @@ class ToyStory2Client(BizHawkClient):
         if self.slot_data.get("batterysanity", 0):
             battery_locations = {
                 1:  [
-                    "Andy's House - Battery (Andy's Room)",
-                    "Andy's House - Battery (Attic)",
-                    "Andy's House - Battery (Basement)",
-                    "Andy's House - Battery (Garage)",
-                    "Andy's House - Battery (Living Room)",
-                    "Andy's House - Battery (Handrail)",
+                    "Andy's House - Battery - Andy's Room",
+                    "Andy's House - Battery - Attic",
+                    "Andy's House - Battery - Basement",
+                    "Andy's House - Battery - Garage",
+                    "Andy's House - Battery - Living Room",
+                    "Andy's House - Battery - Handrail",
                 ],
                 2:  [
-                    "Andy's Neighborhood - Battery (Lawnmower Yard)",
-                    "Andy's Neighborhood - Battery (Washing Machine)",
-                    "Andy's Neighborhood - Battery (Pool Yard)",
-                    "Andy's Neighborhood - Battery (Swing)",
-                    "Andy's Neighborhood - Battery (Top of Tree)",
+                    "Andy's Neighborhood - Battery - Lawnmower Yard",
+                    "Andy's Neighborhood - Battery - Washing Machine",
+                    "Andy's Neighborhood - Battery - Pool Yard",
+                    "Andy's Neighborhood - Battery - Swing",
+                    "Andy's Neighborhood - Battery - Top of Tree",
                 ],
                 6:  [
-                    "Bombs Away! - Battery (Back Right)",
-                    "Bombs Away! - Battery (Back Left)",
-                    "Bombs Away! - Battery (Front Left)",
-                    "Bombs Away! - Battery (Front Right)",
+                    "Bombs Away! - Battery - Back Right",
+                    "Bombs Away! - Battery - Back Left",
+                    "Bombs Away! - Battery - Front Left",
+                    "Bombs Away! - Battery - Front Right",
                 ],
                 4:  [
-                    "Construction Yard - Battery (Bulldozer)",
-                    "Construction Yard - Battery (Boss Arena Front Left)",
-                    "Construction Yard - Battery (Boss Arena Back Left)",
-                    "Construction Yard - Battery (Boss Arena Back Right)",
+                    "Construction Yard - Battery - Bulldozer",
+                    "Construction Yard - Battery - Boss Arena Front Left",
+                    "Construction Yard - Battery - Boss Arena Back Left",
+                    "Construction Yard - Battery - Boss Arena Back Right",
                 ],
                 5:  [
-                    "Alleys and Gullies - Battery (Behind Construction)",
-                    "Alleys and Gullies - Battery (Balcony Fence)",
-                    "Alleys and Gullies - Battery (Boss Arena)",
+                    "Alleys and Gullies - Battery - Behind Construction",
+                    "Alleys and Gullies - Battery - Balcony Fence",
+                    "Alleys and Gullies - Battery - Boss Arena",
                 ],
                 7:  [
-                    "Al's Toy Barn - Battery (Gumball Machine)",
-                    "Al's Toy Barn - Battery (Ventilation Shaft)",
-                    "Al's Toy Barn - Battery (Between Bicycles)",
-                    "Al's Toy Barn - Battery (Cardboard Boxes)",
-                    "Al's Toy Barn - Battery (Boss Arena)",
+                    "Al's Toy Barn - Battery - Gumball Machine",
+                    "Al's Toy Barn - Battery - Ventilation Shaft",
+                    "Al's Toy Barn - Battery - Between Bicycles",
+                    "Al's Toy Barn - Battery - Cardboard Boxes",
+                    "Al's Toy Barn - Battery - Boss Arena",
                 ],
                 8:  [
-                    "Al's Space Land - Battery (Boss Arena)",
-                    "Al's Space Land - Battery (Arcade Cabinet)",
-                    "Al's Space Land - Battery (Blue Shelves)",
-                    "Al's Space Land - Battery (Red Shelf)",
-                    "Al's Space Land - Battery (Race Blue Shelf)",
+                    "Al's Space Land - Battery - Boss Arena",
+                    "Al's Space Land - Battery - Arcade Cabinet",
+                    "Al's Space Land - Battery - Blue Shelves",
+                    "Al's Space Land - Battery - Red Shelf",
+                    "Al's Space Land - Battery - Race Blue Shelf",
                 ],
                 9:  [
-                    "Toy Barn Encounter - Battery (South)",
-                    "Toy Barn Encounter - Battery (North)",
-                    "Toy Barn Encounter - Battery (East)",
-                    "Toy Barn Encounter - Battery (West)",
+                    "Toy Barn Encounter - Battery - South",
+                    "Toy Barn Encounter - Battery - North",
+                    "Toy Barn Encounter - Battery - East",
+                    "Toy Barn Encounter - Battery - West",
                 ],
                 11: [
-                    "Al's Penthouse - Battery (Under Table)",
-                    "Al's Penthouse - Battery (Bathroom)",
-                    "Al's Penthouse - Battery (Kitchen)",
-                    "Al's Penthouse - Battery (Train Bed)",
-                    "Al's Penthouse - Battery (Television)",
+                    "Al's Penthouse - Battery - Under Table",
+                    "Al's Penthouse - Battery - Bathroom",
+                    "Al's Penthouse - Battery - Kitchen",
+                    "Al's Penthouse - Battery - Train Bed",
+                    "Al's Penthouse - Battery - Television",
                 ],
                 13: [
-                    "Airport Infiltration - Battery (Luggage Pile)",
-                    "Airport Infiltration - Battery (Near Hidden Token)",
-                    "Airport Infiltration - Battery (Boss Arena)",
+                    "Airport Infiltration - Battery - Luggage Pile",
+                    "Airport Infiltration - Battery - Near Hidden Token",
+                    "Airport Infiltration - Battery - Boss Arena",
                 ],
                 14: [
-                    "Tarmac Trouble - Battery (Road Opposite Zone 8)",
-                    "Tarmac Trouble - Battery (Helicopter Pad)",
-                    "Tarmac Trouble - Battery (Zone 3)",
-                    "Tarmac Trouble - Battery (Green Slime Maze)",
-                    "Tarmac Trouble - Battery (Boss Arena)",
+                    "Tarmac Trouble - Battery - Road Opposite Zone 8",
+                    "Tarmac Trouble - Battery - Helicopter Pad",
+                    "Tarmac Trouble - Battery - Zone 3",
+                    "Tarmac Trouble - Battery - Green Slime Maze",
+                    "Tarmac Trouble - Battery - Boss Arena",
                 ],
             }
             for level_key, locs in battery_locations.items():
@@ -1812,14 +2041,14 @@ class ToyStory2Client(BizHawkClient):
         # ── LIFE SANITY ───────────────────────────────────────
         if self.slot_data.get("lifesanity", 0):
             life_locations = {
-                1:  ["Andy's House - Life (Crib)", "Andy's House - Life (Living Room)", "Andy's House - Life (Garage)"],
-                2:  ["Andy's Neighborhood - Life (Top of Swing)"],
-                4:  ["Construction Yard - Life (Top of Bulldozer)", "Construction Yard - Life (Roof of Green Building)"],
-                5:  ["Alleys and Gullies - Life (Pool Behind Construction)", "Alleys and Gullies - Life (Lily Pad Behind Race)", "Alleys and Gullies - Life (Window Sill)"],
-                7:  ["Al's Toy Barn - Life (Tennis Ball Isle)"],
-                8:  ["Al's Space Land - Life (Planet Mobile)"],
-                11: ["Al's Penthouse - Life (Fireplace)"],
-                14: ["Tarmac Trouble - Life (Zone 6)"],
+                1:  ["Andy's House - Life - Crib", "Andy's House - Life - Living Room", "Andy's House - Life - Garage"],
+                2:  ["Andy's Neighborhood - Life - Top of Swing"],
+                4:  ["Construction Yard - Life - Top of Bulldozer", "Construction Yard - Life - Roof of Green Building"],
+                5:  ["Alleys and Gullies - Life - Pool Behind Construction", "Alleys and Gullies - Life - Lily Pad Behind Race", "Alleys and Gullies - Life - Window Sill"],
+                7:  ["Al's Toy Barn - Life - Tennis Ball Isle"],
+                8:  ["Al's Space Land - Life - Planet Mobile"],
+                11: ["Al's Penthouse - Life - Fireplace"],
+                14: ["Tarmac Trouble - Life - Zone 6"],
             }
             for level_key, locs in life_locations.items():
                 if level_id != level_key:
@@ -1862,34 +2091,18 @@ class ToyStory2Client(BizHawkClient):
                     if loc_id is not None:
                         new_checks.add(loc_id)
 
-        # ── COIN BUNDLES ──────────────────────────────────────
+        # ── COINS ─────────────────────────────────────────────
+        # Per-coin detection + suppression for ALL bundle sizes (see
+        # _process_coins). It detects each coin in RAM, despawns collected ones so
+        # they can't respawn on re-entry, and issues checks: bundle-1 sends a
+        # descriptive location per coin (persisted by checked_locations); bundle
+        # >=2 / 0(ALL) persist the per-coin set in AP datastorage and derive
+        # Coin Bundle checks from its popcount. The method sends its own
+        # LocationChecks. The old SHARED_COINS counter read is gone — the client
+        # now owns coin counting; the Lua's update_coins (currency/UI/auto-release)
+        # still runs untouched, exactly as it already did alongside bundle-1.
         if self.slot_data.get("coinsanity", 0):
-            # Map the current level_id to its coin level name + address. Only the
-            # level we are actually in has a meaningful coin counter; reading the
-            # others returns stale/garbage values (this caused mass phantom sends
-            # on the map screen).
-            coin_level_by_id = {
-                1:  ("Andy's House",         SHARED_COINS_ANDYS_HOUSE),
-                2:  ("Andy's Neighborhood",  SHARED_COINS_NEIGHBORHOOD),
-                4:  ("Construction Yard",    SHARED_COINS_CONSTRUCTION),
-                5:  ("Alleys and Gullies",   SHARED_COINS_ALLEYS),
-                7:  ("Al's Toy Barn",        SHARED_COINS_TOY_BARN),
-                8:  ("Al's Space Land",      SHARED_COINS_SPACE_LAND),
-                10: ("Elevator Hop",         SHARED_COINS_ELEVATOR),
-                11: ("Al's Penthouse",       SHARED_COINS_PENTHOUSE),
-                13: ("Airport Infiltration", SHARED_COINS_AIRPORT),
-                14: ("Tarmac Trouble",       SHARED_COINS_TARMAC),
-            }
-            entry = coin_level_by_id.get(level_id)
-            if entry is not None:
-                level_name, addr = entry
-                coin_data = await read(ctx.bizhawk_ctx, [addr])
-                bundles_collected = coin_data[0][0]
-                for bn in range(1, bundles_collected + 1):
-                    loc_name = f"{level_name} - Coin Bundle {bn}"
-                    loc_id = self._location_map(ctx).get(loc_name)
-                    if loc_id is not None:
-                        new_checks.add(loc_id)
+            await self._process_coins(ctx, level_id)
 
         # ── PIZZA PLANET TOKENS (Hamm's/Missing Toys/Race/Hidden/Boss) ─────
         # The Lua publishes collected token bits per hover_id. Only the current
@@ -1932,6 +2145,184 @@ class ToyStory2Client(BizHawkClient):
             }])
 
     # ── DEATH LINK ────────────────────────────────────────────
+
+    async def _process_coins(self, ctx: "BizHawkClientContext", level_id: int) -> None:
+        """Per-coin detection + suppression (despawn) for ALL coinsanity bundle
+        sizes. Detection and suppression are identical across modes; only the
+        source of the "already collected" set, how checks are issued, and how the
+        set is persisted differ:
+
+          * bundle 1   : each coin is its own descriptive AP check. The collected
+                         set comes from checked_locations (which IS the persistence);
+                         newly collected coins send descriptive LocationChecks.
+          * bundle >=2 : individual coins aren't AP checks. The collected set is the
+                         server-backed self._coins_collected (loaded via the connect
+                         Get); newly collected coins are added to it, the set is
+                         persisted to AP datastorage, and "Coin Bundle N" checks are
+                         derived from its popcount (matching the apworld's bundle
+                         thresholds, including the partial last bundle).
+          * bundle 0   : ALL — one "Coin Bundle 1" check once every coin is collected.
+
+        Suppression re-asserts each collected coin's collected value EVERY tick, so
+        coins never respawn on level re-entry — for every bundle size, which is the
+        fix. The Lua's update_coins (coin currency, UI suppression, and the
+        auto-release seeding) is untouched and coexists exactly as it already does
+        in bundle-1 mode."""
+        _table, _area_planes, _levelmeta = _coin_desc_tables()
+
+        # Reset per-visit state on any level change so the next entry re-arms.
+        if self._coin_level_cur != level_id:
+            self._coin_level_cur = level_id
+            self._coin_ticks_in_level = 0
+            self._coin_seen_alive = set()
+            self._coin_dead_streak = {}
+
+        if level_id not in _levelmeta:
+            return  # not in a coin level
+        coins = _table.get(level_id) or []
+        if not coins:
+            return
+        level_name, li = _levelmeta[level_id]
+        bundle = self.slot_data.get("coinsanity_checks_bundle_size", 0)
+
+        self._coin_ticks_in_level += 1
+        armed = self._coin_ticks_in_level >= COIN_DESC_ARM_TICKS
+
+        # ── COLLECTED SET for this level (mode-dependent source) ──
+        if bundle == 1:
+            # checked_locations is the record; derive collected coin idx from it.
+            collected_idx = {c["idx"] for c in coins if c["id"] in self.checked_locations}
+        else:
+            # Server-backed set. Wait for the connect Get to merge in before acting,
+            # so we never under-count bundles or persist a partial set over the
+            # server's fuller one. (Detection is cheap to defer a few frames.)
+            if not self._coins_loaded:
+                return
+            collected_idx = set(self._coins_collected.get(li, set()))
+
+        # Descriptor ids for the currently-collected coins (detection skip + suppress).
+        collected_ids = {c["id"] for c in coins if c["idx"] in collected_idx}
+
+        # ── DETECTION — only read coins NOT yet collected (shrinks as we progress) ──
+        new_idx = set()
+        unchecked = [c for c in coins if c["id"] not in collected_ids]
+        if unchecked:
+            try:
+                vals = await read(ctx.bizhawk_ctx,
+                                  [(c["addr"], c["size"], "MainRAM") for c in unchecked])
+            except Exception:
+                vals = None
+            if vals and len(vals) == len(unchecked):
+                for c, raw in zip(unchecked, vals):
+                    if c["size"] == 4:
+                        v = raw[0] | (raw[1] << 8) | (raw[2] << 16) | (raw[3] << 24)
+                        # Uncollected regular coins hold a varied per-coin value
+                        # (often a signed coordinate, high bit set but NOT collected).
+                        # The word becomes EXACTLY 0x80000000 only when collected.
+                        # Require having seen it non-collected first this visit so a
+                        # transient 0x80000000 during level load can't phantom-fire.
+                        seen = c["addr"] in self._coin_seen_alive
+                        if v != 0x80000000:
+                            self._coin_seen_alive.add(c["addr"])
+                            self._coin_dead_streak.pop(c["addr"], None)
+                            seen = True
+                        collected = (v == 0x80000000) and seen
+                        # AT-START fallback: a coin grabbed before we ever polled it
+                        # alive reads 0x80000000 from level entry onward. If it stays
+                        # the collected sentinel continuously, well past the brief
+                        # load transient (never showing a coordinate -> never "seen
+                        # alive"), treat it as collected. See COIN_LOAD_SETTLE_TICKS.
+                        if v == 0x80000000 and not seen:
+                            n = self._coin_dead_streak.get(c["addr"], 0) + 1
+                            self._coin_dead_streak[c["addr"]] = n
+                            if n >= COIN_LOAD_SETTLE_TICKS:
+                                collected = True
+                    else:
+                        v = raw[0]
+                        if v != 0:
+                            self._coin_seen_alive.add(c["addr"])
+                        collected = (v == 0) and (c["addr"] in self._coin_seen_alive)
+                    if armed and collected:
+                        new_idx.add(c["idx"])
+
+        if new_idx:
+            collected_idx |= new_idx
+            collected_ids |= {c["id"] for c in coins if c["idx"] in new_idx}
+            if bundle != 1:
+                self._coins_collected.setdefault(li, set()).update(new_idx)
+                self._coins_dirty = True
+
+        # ── SUPPRESSION (despawn) — re-assert collected value EVERY tick ──
+        writes = []
+        for c in coins:
+            if c["idx"] not in collected_idx:
+                continue
+            kind = c["kind"]
+            if kind == "miniboss":
+                continue                       # must respawn for its Boss token
+            if kind == "plane_box":
+                planes = _area_planes.get((level_id, c["area"]))
+                if planes and planes.issubset(collected_ids):
+                    writes.append((c["addr"], [0], "MainRAM"))
+                continue
+            if c["size"] == 4:                 # regular: rewrite 0x80000000 (coins
+                writes.append((c["addr"], [0x00, 0x00, 0x00, 0x80], "MainRAM"))
+            else:                              # enemy / plane: rewrite 0
+                writes.append((c["addr"], [0], "MainRAM"))
+
+        # ── CHECK ISSUANCE (mode-dependent) ──
+        if bundle == 1:
+            send = {c["id"] for c in coins if c["idx"] in new_idx} - self.checked_locations
+            if send:
+                self.checked_locations |= send
+                await ctx.send_msgs([{"cmd": "LocationChecks", "locations": list(send)}])
+        else:
+            maxc  = len(coins)
+            total = len(collected_idx)
+            send  = set()
+            if bundle == 0:                    # ALL: one bundle for the whole level
+                if total >= maxc:
+                    lid = self._location_map(ctx).get(f"{level_name} - Coin Bundle 1")
+                    if lid is not None:
+                        send.add(lid)
+            else:
+                # Bundle bn completes at min(bn*bundle, maxc); the partial last
+                # bundle (when maxc % bundle != 0) needs ALL coins. Mirrors the
+                # apworld's ceil(maxc/bundle) bundle layout.
+                full_bundles  = maxc // bundle
+                bundles_done  = min(total // bundle, full_bundles)
+                if (maxc % bundle) and total >= maxc:
+                    bundles_done += 1
+                for bn in range(1, bundles_done + 1):
+                    lid = self._location_map(ctx).get(f"{level_name} - Coin Bundle {bn}")
+                    if lid is not None:
+                        send.add(lid)
+            # Dedup against the SERVER-authoritative set and re-derive every tick:
+            # a dropped send simply re-fires next tick (idempotent, self-healing).
+            send -= set(ctx.checked_locations)
+            if send:
+                await ctx.send_msgs([{"cmd": "LocationChecks", "locations": list(send)}])
+
+        # ── PERSIST the per-coin set (bundled modes only, after load) ──
+        if bundle != 1 and self._coins_dirty and self._coins_loaded and self._coins_key:
+            self._coins_dirty = False
+            payload = {str(k): sorted(v) for k, v in self._coins_collected.items() if v}
+            try:
+                await ctx.send_msgs([{
+                    "cmd": "Set",
+                    "key": self._coins_key,
+                    "default": {},
+                    "want_reply": False,
+                    "operations": [{"operation": "replace", "value": payload}],
+                }])
+            except Exception:
+                self._coins_dirty = True       # retry next tick
+
+        if writes:
+            try:
+                await write(ctx.bizhawk_ctx, writes)
+            except Exception:
+                pass
 
     async def _handle_death_link(self, ctx: "BizHawkClientContext") -> None:
         data = await read(ctx.bizhawk_ctx, [BUZZ_DEATH_ADDR, SHARED_DEATH_LINK_QUEUE,

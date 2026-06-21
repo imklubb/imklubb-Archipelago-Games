@@ -25,11 +25,13 @@ class GameMode(Choice):
 class Skips(Choice):
     """Determines the logic for certain checks.
     Easy is incredibly easy skips that anyone can do.
-    Hard is for the glitch hunters and rule breakers out there."""
+    Hard is for the glitch hunters and rule breakers out there.
+    Insane is for the most demanding tricks, on top of all Easy and Hard skips."""
     display_name = "Skips"
     option_off = 0
     option_easy = 1
     option_hard = 2
+    option_insane = 3
     default = 0
 
 
@@ -259,7 +261,7 @@ class CoinsanityChecksBundleSize(Choice):
     option_20 = 20
     option_25 = 25
     option_all = 0
-    default = 5
+    default = 1
 
 
 class CoinsanityReceivedBundleSize(Choice):
@@ -309,6 +311,18 @@ class HintBlockSanity(Toggle):
 # TRAPS AND FILLER
 # ============================================================
 
+class MissingToyBundleSize(Choice):
+    """How the missing toys are RECEIVED. 1 = each toy arrives individually (five
+    separate "Sheep" / "Soldier" / etc. items per level, the original behaviour).
+    5 = each level's toys arrive together as a single item (e.g. one "5 Sheep")
+    that grants all five at once. The in-level toy CHECK locations are identical
+    either way; only the received items change."""
+    display_name = "Missing Toy Bundle Size"
+    option_1 = 1
+    option_5 = 5
+    default = 1
+
+
 class FillerReplacedWithTraps(Range):
     """Determines the percentage of filler items that will be replaced
     with traps."""
@@ -352,9 +366,17 @@ class InvincibleEnemiesTrapWeight(TrapWeight):
     display_name = "Invincible Enemies Trap Weight"
 
 
+class DizzyBuzzTrapWeight(TrapWeight):
+    """I don't feel so good..."""
+    display_name = "Dizzy Buzz Trap Weight"
+
+
 class FillerWeight(Choice):
-    """Base class for filler weights. (No 'off' — Archipelago must always have
-    filler items available to fill empty locations.)"""
+    """Base class for filler weights. Set to 'off' to never see this filler. If
+    EVERY filler (including Determination to Save Woody) is set to 'off',
+    Determination to Save Woody is forced to High automatically, since Archipelago
+    must always have filler available to fill empty locations."""
+    option_off = 0
     option_low = 1
     option_medium = 2
     option_high = 3
@@ -370,25 +392,41 @@ class OneLifeFillerWeight(FillerWeight):
 class ExtraBatteryFillerWeight(FillerWeight):
     """How often Extra Battery appears among the filler items."""
     display_name = "Extra Battery Filler Weight"
-    default = 3  # High
+    default = 2  # Medium
 
 
 class InvincibleBuzzFillerWeight(FillerWeight):
     """How often Invincible Buzz appears among the filler items.
-    Grants Buzz 30 seconds of invincibility. Can't touch this!"""
+    Grants Buzz 15 seconds of invincibility. Can't touch this!"""
     display_name = "Invincible Buzz Filler Weight"
-    default = 2  # Medium
+    default = 1  # Low
+
+
+class DeterminationFillerWeight(Choice):
+    """How often "Determination to Save Woody" appears among the filler items.
+    It does absolutely nothing when received — pure flavor filler. Set to 'off'
+    if you'd rather never see it. Defaults high so seeds heavy on useful filler
+    get diluted with something that gives no advantage."""
+    display_name = "Determination to Save Woody Filler Weight"
+    option_off = 0
+    option_low = 1
+    option_medium = 2
+    option_high = 3
+    default = 3  # High
+
+
+class LocalFiller(DefaultOnToggle):
+    """Force THIS slot's own dynamic filler (1 Life, Extra Battery, Invincible
+    Buzz, Determination to Save Woody) to be placed in your own world instead of
+    being sent to other players. Handy when this game produces a lot of filler and
+    you'd rather find more of it yourself, or when sharing a multiworld with games
+    that have far fewer locations. Traps are unaffected and still travel normally."""
+    display_name = "Local Filler"
 
 
 # ============================================================
 # QOL
 # ============================================================
-
-class CollectEnemyCoinsAutomatically(DefaultOnToggle):
-    """Does exactly as it says. Highly recommended if you're playing
-    Coinsanity."""
-    display_name = "Collect Enemy Coins Automatically"
-
 
 class SkipCutscenes(DefaultOnToggle):
     """Sets all the cutscene flags to 'watched' when starting the game.
@@ -515,6 +553,7 @@ class ToyStory2Options(PerGameCommonOptions):
     # Game
     game_mode:                          GameMode
     skips:                              Skips
+    missing_toy_bundle_size:            MissingToyBundleSize
     # Pizza Planet Tokens
     pizza_planet_token_pool:            PizzaPlanetTokenPool
     # Open Mode
@@ -547,11 +586,13 @@ class ToyStory2Options(PerGameCommonOptions):
     damage_buzz_trap_weight:            DamageBuzzTrapWeight
     freeze_buzz_trap_weight:            FreezeBuzzTrapWeight
     invincible_enemies_trap_weight:     InvincibleEnemiesTrapWeight
+    dizzy_buzz_trap_weight:             DizzyBuzzTrapWeight
     one_life_filler_weight:             OneLifeFillerWeight
     extra_battery_filler_weight:        ExtraBatteryFillerWeight
     invincible_buzz_filler_weight:      InvincibleBuzzFillerWeight
+    determination_filler_weight:        DeterminationFillerWeight
+    local_filler:                       LocalFiller
     # QOL
-    collect_enemy_coins_automatically:  CollectEnemyCoinsAutomatically
     skip_cutscenes:                     SkipCutscenes
     disc_launcher_fill_pockets:         DiscLauncherFillPockets
     on_screen_item_feed:                OnScreenItemFeed
@@ -575,6 +616,7 @@ ts2_option_groups = [
     OptionGroup("Game", [
         GameMode,
         Skips,
+        MissingToyBundleSize,
     ]),
     OptionGroup("Pizza Planet Tokens", [
         PizzaPlanetTokenPool,
@@ -612,12 +654,14 @@ ts2_option_groups = [
         DamageBuzzTrapWeight,
         FreezeBuzzTrapWeight,
         InvincibleEnemiesTrapWeight,
+        DizzyBuzzTrapWeight,
         OneLifeFillerWeight,
         ExtraBatteryFillerWeight,
         InvincibleBuzzFillerWeight,
+        DeterminationFillerWeight,
+        LocalFiller,
     ]),
     OptionGroup("QOL", [
-        CollectEnemyCoinsAutomatically,
         SkipCutscenes,
         DisableFallingAnimation,
         AutoSave,

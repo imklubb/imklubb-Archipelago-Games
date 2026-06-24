@@ -465,6 +465,12 @@ for _loc in ALL_LOCATIONS:
         _loc.misc,
     )
 
+# Conditional misc gate: "50 Coins and <move-expr> if Coinsanity is off" -- the
+# extra requirement applies only when Coinsanity is disabled (with it on, coins
+# carry over across resets so the extra movement isn't strictly needed).
+import re as _re
+_COINOFF_RE = _re.compile(r"^50 Coins and (.+) if Coinsanity is off$")
+
 def _reach(state, player, name, skips):
     """Movement/gadget reachability for a location (logic + skip tiers), no misc."""
     c = _COMPILED.get(name)
@@ -498,12 +504,19 @@ def location_access_rule(name, world):
     player = world.player
     level  = _COMPILED[name][0]
     misc   = _COMPILED[name][5]
+    _m = _COINOFF_RE.match(misc or "")
+    coinoff_extra = _parse(_m.group(1)) if _m else None   # extra move when Coinsanity off
     def fn(state):
         skips = world.options.skips.value
         if not _reach(state, player, name, skips):
             return False
-        if misc == "50 Coins":
-            return _fifty_coins_ok(state, player, level, skips, world)
+        if misc == "50 Coins" or coinoff_extra is not None:
+            if not _fifty_coins_ok(state, player, level, skips, world):
+                return False
+            if coinoff_extra is not None and not world.options.coinsanity.value:
+                if not _ev(coinoff_extra, state, player, level):
+                    return False
+            return True
         if misc == "5 Missing Toys":
             return has_all_level_toys(state, player, level)
         if misc.startswith("Missing "):

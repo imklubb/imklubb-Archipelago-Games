@@ -846,7 +846,9 @@ class ToyStory2Client(BizHawkClient):
     async def validate_rom(self, ctx: "BizHawkClientContext") -> bool:
         """Check for Toy Story 2. We confirm via the shared-memory sentinel that
         our Lua writes (0xAB at 0x1FFFD0). The Lua sets this on its first frame,
-        so the player must have both Lua scripts running."""
+        so the player must have ts2.lua loaded in BizHawk's Lua console. Note
+        this does NOT verify the disc region/revision -- a non NTSC-U copy will
+        pass here and then misbehave, since every address is region-specific."""
         try:
             sentinel = await read(ctx.bizhawk_ctx, [VALIDATE_ADDR])
             if sentinel[0][0] == 0xAB:

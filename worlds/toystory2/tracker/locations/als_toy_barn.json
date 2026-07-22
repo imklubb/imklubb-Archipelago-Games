@@ -1,0 +1,796 @@
+[
+ {
+  "name": "Al's Toy Barn",
+  "children": [
+   {
+    "name": "Hamm's 50 Coins Token",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Hamm's 50 Coins Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 1021,
+      "y": 345
+     }
+    ]
+   },
+   {
+    "name": "Missing Toys Token",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Missing Toys Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 652,
+      "y": 713
+     }
+    ]
+   },
+   {
+    "name": "Race Token (+1)",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Race Token"
+     },
+     {
+      "name": "Al's Toy Barn - Chick - Complete Race"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 853,
+      "y": 280
+     }
+    ]
+   },
+   {
+    "name": "Hidden Token",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Hidden Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 1098,
+      "y": 266
+     }
+    ]
+   },
+   {
+    "name": "Boss Token",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Boss Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 299,
+      "y": 317
+     }
+    ]
+   },
+   {
+    "name": "Chick (Gumball Machines)",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Chick - Gumball Machines"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 499,
+      "y": 1034
+     }
+    ]
+   },
+   {
+    "name": "Chick (Shipping Boxes) (+1)",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Chick - Shipping Boxes"
+     },
+     {
+      "name": "Al's Toy Barn - Battery - Cardboard Boxes"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 648,
+      "y": 396
+     }
+    ]
+   },
+   {
+    "name": "Chick (Near Basketballs) (+1)",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Chick - Near Basketballs"
+     },
+     {
+      "name": "Al's Toy Barn - Life - Tennis Ball Isle"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 652,
+      "y": 489
+     }
+    ]
+   },
+   {
+    "name": "Chick (End of Long Aisle)",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Chick - End of Long Aisle"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 343,
+      "y": 710
+     }
+    ]
+   },
+   {
+    "name": "Missing Arm",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Missing Arm"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 914,
+      "y": 893
+     }
+    ]
+   },
+   {
+    "name": "Give Potato Head His Arm",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Give Potato Head His Arm"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 542,
+      "y": 936
+     }
+    ]
+   },
+   {
+    "name": "Green Laser",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Green Laser"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 671,
+      "y": 779
+     }
+    ]
+   },
+   {
+    "name": "Battery (Gumball Machine)",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Battery - Gumball Machine"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 1021,
+      "y": 1034
+     }
+    ]
+   },
+   {
+    "name": "Battery (Ventilation Shaft)",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Battery - Ventilation Shaft"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 402,
+      "y": 794
+     }
+    ]
+   },
+   {
+    "name": "Battery (Between Bicycles)",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Battery - Between Bicycles"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 698,
+      "y": 596
+     }
+    ]
+   },
+   {
+    "name": "Battery (Boss Arena)",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Battery - Boss Arena"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 369,
+      "y": 245
+     }
+    ]
+   },
+   {
+    "name": "Talk to Rex",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Talk to Rex"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 533,
+      "y": 276
+     }
+    ]
+   },
+   {
+    "name": "Hint Block (Hay Bale Ride)",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Hint Block - Hay Bale Ride"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 711,
+      "y": 1034
+     }
+    ]
+   },
+   {
+    "name": "Trampoline (+7)",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Coin - Race Hallway - Trampoline"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Race Hallway - Floating Zurg Robot"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Race Hallway - Above Merchandise #1"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Race Hallway - Above Merchandise #2"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Race Hallway - Above Merchandise #3"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Race Hallway - Shopping Cart"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Race Hallway - 1st Buzz Shelf"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Race Hallway - 2nd Buzz Shelf"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 1031,
+      "y": 453
+     }
+    ]
+   },
+   {
+    "name": "Box near Basketballs (+10)",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Coin - Toy Aisles - Box near Basketballs"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Toy Aisles - Hula Hoop Aisle"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Toy Aisles - Plane #1"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Toy Aisles - Plane #2"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Toy Aisles - Plane Box"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Toy Aisles - Last Aisle in Wall"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Toy Aisles - End of Aisles by Chick"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Ventilation Shaft - Floating Zurg Robot"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Toy Aisles - Bike Shelves #1"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Toy Aisles - Bike Shelves #2"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Toy Aisles - Bike Shelves #3"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 267,
+      "y": 498
+     }
+    ]
+   },
+   {
+    "name": "Plane #1 (Checkout) (+26)",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - Plane #1"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - Plane #2"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - Plane Box"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - Floating Zurg Robot #1"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - Floating Zurg Robot #2"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - Propeller Zurg Robot #1"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - Box Step"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - 1st Counter #1"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - 1st Counter #2"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - 1st Counter #3"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - 1st Counter #4"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - 1st Cash Register"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - 2nd Cash Register"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - 3rd Cash Register"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - Propeller Zurg Robot #2"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - 4th Cash Register"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - Shopping Cart"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - SE Gumball Machines #1"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - SE Gumball Machines #2"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - SE Gumball Machines #3"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - Hay Bale Ride #1"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - Hay Bale Ride #2"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - Hay Bale Ride #3"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - Hay Bale Ride #4"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - Hay Bale Ride #5"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - SW Gumball Machines #1"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Checkout - SW Gumball Machines #2"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 384,
+      "y": 866
+     }
+    ]
+   },
+   {
+    "name": "Propeller Zurg Robot (+7)",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Coin - Outside Office - Propeller Zurg Robot"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Office - Floating Zurg Robot"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Office - Chair"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Office - Table #1"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Office - Table #2"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Office - Drawer Lock #1"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Office - Drawer Lock #2"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Office - Drawer Lock #3"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 1129,
+      "y": 225
+     }
+    ]
+   },
+   {
+    "name": "Floating Zurg Robot #1 (Shipping) (+13)",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Coin - Shipping - Floating Zurg Robot #1"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Shipping - Floating Zurg Robot #2"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Shipping - Hover Boot Path #1"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Shipping - Hover Boot Path #2"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Shipping - Hover Boot Path #3"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Shipping - Hover Boot Path #4"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Shipping - Little Box on Big Box Tower"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Shipping - Tall Stack near Battery"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Shipping - Tallest Stack near Chick"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Shipping - Middle Box"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Shipping - Floor Box near Rex"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Shipping - Box in Wall near Rex"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Shipping - Boss Arena Entry"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Shipping - Under Box Lifts"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 777,
+      "y": 127
+     }
+    ]
+   },
+   {
+    "name": "Near Battery (+2)",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Coin - Boss Arena - Near Battery"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Boss Arena - Near Door"
+     },
+     {
+      "name": "Al's Toy Barn - Coin - Boss Arena - Corner Opposite Battery"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 421,
+      "y": 201
+     }
+    ]
+   },
+   {
+    "name": "Coin Bundles",
+    "sections": [
+     {
+      "name": "Al's Toy Barn - Coin Bundle 1"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 2"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 3"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 4"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 5"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 6"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 7"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 8"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 9"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 10"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 11"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 12"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 13"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 14"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 15"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 16"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 17"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 18"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 19"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 20"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 21"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 22"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 23"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 24"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 25"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 26"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 27"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 28"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 29"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 30"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 31"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 32"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 33"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 34"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 35"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 36"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 37"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 38"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 39"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 40"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 41"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 42"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 43"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 44"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 45"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 46"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 47"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 48"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 49"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 50"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 51"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 52"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 53"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 54"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 55"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 56"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 57"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 58"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 59"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 60"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 61"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 62"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 63"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 64"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 65"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 66"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 67"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 68"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 69"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 70"
+     },
+     {
+      "name": "Al's Toy Barn - Coin Bundle 71"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_toy_barn",
+      "x": 1387,
+      "y": 422
+     }
+    ]
+   }
+  ]
+ }
+]

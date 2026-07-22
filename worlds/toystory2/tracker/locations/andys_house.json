@@ -1,0 +1,1033 @@
+[
+ {
+  "name": "Andy's House",
+  "children": [
+   {
+    "name": "Hamm's 50 Coins Token",
+    "sections": [
+     {
+      "name": "Andy's House - Hamm's 50 Coins Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 411,
+      "y": 375
+     }
+    ]
+   },
+   {
+    "name": "Missing Toys Token",
+    "sections": [
+     {
+      "name": "Andy's House - Missing Toys Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 779,
+      "y": 310
+     }
+    ]
+   },
+   {
+    "name": "Race Token (+2)",
+    "sections": [
+     {
+      "name": "Andy's House - Race Token"
+     },
+     {
+      "name": "Andy's House - Sheep - Garage"
+     },
+     {
+      "name": "Andy's House - Battery - Garage"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 333,
+      "y": 724
+     }
+    ]
+   },
+   {
+    "name": "Hidden Token",
+    "sections": [
+     {
+      "name": "Andy's House - Hidden Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 621,
+      "y": 982
+     }
+    ]
+   },
+   {
+    "name": "Boss Token",
+    "sections": [
+     {
+      "name": "Andy's House - Boss Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 1263,
+      "y": 348
+     }
+    ]
+   },
+   {
+    "name": "Sheep (Basement)",
+    "sections": [
+     {
+      "name": "Andy's House - Sheep - Basement"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 228,
+      "y": 1044
+     }
+    ]
+   },
+   {
+    "name": "Sheep (Living Room) (+1)",
+    "sections": [
+     {
+      "name": "Andy's House - Sheep - Living Room"
+     },
+     {
+      "name": "Andy's House - Life - Living Room"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 618,
+      "y": 168
+     }
+    ]
+   },
+   {
+    "name": "Sheep (Kitchen)",
+    "sections": [
+     {
+      "name": "Andy's House - Sheep - Kitchen"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 962,
+      "y": 353
+     }
+    ]
+   },
+   {
+    "name": "Sheep (Attic)",
+    "sections": [
+     {
+      "name": "Andy's House - Sheep - Attic"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 1263,
+      "y": 163
+     }
+    ]
+   },
+   {
+    "name": "Missing Ear",
+    "sections": [
+     {
+      "name": "Andy's House - Missing Ear"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 286,
+      "y": 168
+     }
+    ]
+   },
+   {
+    "name": "Give Potato Head His Ear",
+    "sections": [
+     {
+      "name": "Andy's House - Give Potato Head His Ear"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 228,
+      "y": 828
+     }
+    ]
+   },
+   {
+    "name": "Life (Crib) (+1)",
+    "sections": [
+     {
+      "name": "Andy's House - Life - Crib"
+     },
+     {
+      "name": "Andy's House - Hint Block - Andy's Room Crib"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 812,
+      "y": 805
+     }
+    ]
+   },
+   {
+    "name": "Life (Garage) (+1)",
+    "sections": [
+     {
+      "name": "Andy's House - Life - Garage"
+     },
+     {
+      "name": "Andy's House - Hint Block - Top of Garage"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 333,
+      "y": 556
+     }
+    ]
+   },
+   {
+    "name": "Green Laser",
+    "sections": [
+     {
+      "name": "Andy's House - Green Laser"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 407,
+      "y": 650
+     }
+    ]
+   },
+   {
+    "name": "Battery (Andy's Room) (+1)",
+    "sections": [
+     {
+      "name": "Andy's House - Battery - Andy's Room"
+     },
+     {
+      "name": "Andy's House - Hint Block - Andy's Room Dresser Shelf"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 1243,
+      "y": 803
+     }
+    ]
+   },
+   {
+    "name": "Battery (Attic) (+1)",
+    "sections": [
+     {
+      "name": "Andy's House - Battery - Attic"
+     },
+     {
+      "name": "Andy's House - Hint Block - Attic"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 1263,
+      "y": 508
+     }
+    ]
+   },
+   {
+    "name": "Battery (Basement)",
+    "sections": [
+     {
+      "name": "Andy's House - Battery - Basement"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 336,
+      "y": 950
+     }
+    ]
+   },
+   {
+    "name": "Battery (Living Room)",
+    "sections": [
+     {
+      "name": "Andy's House - Battery - Living Room"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 436,
+      "y": 168
+     }
+    ]
+   },
+   {
+    "name": "Battery (Handrail) (+1)",
+    "sections": [
+     {
+      "name": "Andy's House - Battery - Handrail"
+     },
+     {
+      "name": "Andy's House - Hint Block - Bottom of Stairs"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 294,
+      "y": 420
+     }
+    ]
+   },
+   {
+    "name": "Talk to Rex",
+    "sections": [
+     {
+      "name": "Andy's House - Talk to Rex"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 1066,
+      "y": 595
+     }
+    ]
+   },
+   {
+    "name": "Hint Block (Andy's Room Bookshelf)",
+    "sections": [
+     {
+      "name": "Andy's House - Hint Block - Andy's Room Bookshelf"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 923,
+      "y": 1003
+     }
+    ]
+   },
+   {
+    "name": "Hint Block (Andy's Room Bed)",
+    "sections": [
+     {
+      "name": "Andy's House - Hint Block - Andy's Room Bed"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 1243,
+      "y": 1002
+     }
+    ]
+   },
+   {
+    "name": "Hint Block (Top of Stairs)",
+    "sections": [
+     {
+      "name": "Andy's House - Hint Block - Top of Stairs"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 1066,
+      "y": 746
+     }
+    ]
+   },
+   {
+    "name": "Hint Block (Living Room Recliner)",
+    "sections": [
+     {
+      "name": "Andy's House - Hint Block - Living Room Recliner"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 614,
+      "y": 375
+     }
+    ]
+   },
+   {
+    "name": "On Chair (+13)",
+    "sections": [
+     {
+      "name": "Andy's House - Coin - Andy's Room - On Chair"
+     },
+     {
+      "name": "Andy's House - Coin - Hallway - Plant #1"
+     },
+     {
+      "name": "Andy's House - Coin - Andy's Room - Propeller Zurg Robot"
+     },
+     {
+      "name": "Andy's House - Coin - Andy's Room - Bouncing Zurg Robot"
+     },
+     {
+      "name": "Andy's House - Coin - Top of Stairs - Bouncing Zurg Robot #1"
+     },
+     {
+      "name": "Andy's House - Coin - Andy's Room - Desk"
+     },
+     {
+      "name": "Andy's House - Coin - Andy's Room - Bed"
+     },
+     {
+      "name": "Andy's House - Coin - Andy's Room - Dresser"
+     },
+     {
+      "name": "Andy's House - Coin - Andy's Room - Crib #1"
+     },
+     {
+      "name": "Andy's House - Coin - Andy's Room - Crib #2"
+     },
+     {
+      "name": "Andy's House - Coin - Hallway - Plant #2"
+     },
+     {
+      "name": "Andy's House - Coin - Hallway - Table by Rex"
+     },
+     {
+      "name": "Andy's House - Coin - Hallway - Attic Cord #1"
+     },
+     {
+      "name": "Andy's House - Coin - Hallway - Attic Cord #2"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 1152,
+      "y": 1065
+     }
+    ]
+   },
+   {
+    "name": "Box near Faucet (+20)",
+    "sections": [
+     {
+      "name": "Andy's House - Coin - Garage - Box near Faucet"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - Between Saws"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - Propeller Zurg Robot #1"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - Bouncing Zurg Robot #1"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - Bouncing Zurg Robot #2"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - Bouncing Zurg Robot #3"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - Lower Middle Shelf"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - Between Drills #1"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - Between Drills #2"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - Between Car & Trash Can #1"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - Between Car & Trash Can #2"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - Top of Car #1"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - Top of Car #2"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - Ceiling Light"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - High Upper Shelf #1"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - High Upper Shelf #2"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - High Upper Shelf #3"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - Bouncing Zurg Robot #4"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - Bouncing Zurg Robot #5"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - Propeller Zurg Robot #2"
+     },
+     {
+      "name": "Andy's House - Coin - Garage - Propeller Zurg Robot #3"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 563,
+      "y": 554
+     }
+    ]
+   },
+   {
+    "name": "Floor near Stove #1 (+15)",
+    "sections": [
+     {
+      "name": "Andy's House - Coin - Kitchen - Floor near Stove #1"
+     },
+     {
+      "name": "Andy's House - Coin - Kitchen - Floor near Stove #2"
+     },
+     {
+      "name": "Andy's House - Coin - Kitchen - Floor Puddle #2"
+     },
+     {
+      "name": "Andy's House - Coin - Kitchen - Floor Puddle #1"
+     },
+     {
+      "name": "Andy's House - Coin - Kitchen - Bouncing Zurg Robot #1"
+     },
+     {
+      "name": "Andy's House - Coin - Kitchen - High Chair #1"
+     },
+     {
+      "name": "Andy's House - Coin - Kitchen - High Chair #2"
+     },
+     {
+      "name": "Andy's House - Coin - Kitchen - Counter near Microwave #1"
+     },
+     {
+      "name": "Andy's House - Coin - Kitchen - Counter near Microwave #2"
+     },
+     {
+      "name": "Andy's House - Coin - Kitchen - Counter near Jars #1"
+     },
+     {
+      "name": "Andy's House - Coin - Kitchen - Counter near Jars #2"
+     },
+     {
+      "name": "Andy's House - Coin - Kitchen - Top of Fridge"
+     },
+     {
+      "name": "Andy's House - Coin - Kitchen - Top Cabinets #1"
+     },
+     {
+      "name": "Andy's House - Coin - Kitchen - Top Cabinets #2"
+     },
+     {
+      "name": "Andy's House - Coin - Kitchen - Bouncing Zurg Robot #2"
+     },
+     {
+      "name": "Andy's House - Coin - Kitchen - Propeller Zurg Robot"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 928,
+      "y": 123
+     }
+    ]
+   },
+   {
+    "name": "Stairs #1 (+19)",
+    "sections": [
+     {
+      "name": "Andy's House - Coin - Basement - Stairs #1"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - Stairs #2"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - Stairs #3"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - Floor Goop #1"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - Floor Goop #2"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - Floor Goop #3"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - Floor Goop #4"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - Floor Goop #5"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - Propeller Zurg Robot"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - Bouncing Zurg Robot #1"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - Mid-air between Boxes"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - Zipline"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - Bouncing Zurg Robot #2"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - Bouncing Zurg Robot #3"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - 1st Lightbulb Cord"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - 2nd Lightbulb Cord"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - Top of Boxes near Battery"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - 3rd Lightbulb Cord"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - Shelf near Token #1"
+     },
+     {
+      "name": "Andy's House - Coin - Basement - Shelf near Token #2"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 536,
+      "y": 1047
+     }
+    ]
+   },
+   {
+    "name": "Reclining Chair (+12)",
+    "sections": [
+     {
+      "name": "Andy's House - Coin - Living Room - Reclining Chair"
+     },
+     {
+      "name": "Andy's House - Coin - Living Room - Green Couch #1"
+     },
+     {
+      "name": "Andy's House - Coin - Living Room - Green Couch #2"
+     },
+     {
+      "name": "Andy's House - Coin - Living Room - Green Couch #3"
+     },
+     {
+      "name": "Andy's House - Coin - Living Room - Propeller Zurg Robot #1"
+     },
+     {
+      "name": "Andy's House - Coin - Living Room - Propeller Zurg Robot #2"
+     },
+     {
+      "name": "Andy's House - Coin - Living Room - Shelf near Kitchen"
+     },
+     {
+      "name": "Andy's House - Coin - Living Room - Side Table near Window"
+     },
+     {
+      "name": "Andy's House - Coin - Living Room - Bouncing Zurg Robot #1"
+     },
+     {
+      "name": "Andy's House - Coin - Living Room - Bouncing Zurg Robot #2"
+     },
+     {
+      "name": "Andy's House - Coin - Living Room - Corner Bookshelf #1"
+     },
+     {
+      "name": "Andy's House - Coin - Living Room - Corner Bookshelf #2"
+     },
+     {
+      "name": "Andy's House - Coin - Living Room - Top of Window"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 564,
+      "y": 122
+     }
+    ]
+   },
+   {
+    "name": "Boss Arena (+8)",
+    "sections": [
+     {
+      "name": "Andy's House - Coin - Attic - Boss Arena"
+     },
+     {
+      "name": "Andy's House - Coin - Attic - W Boxes #2"
+     },
+     {
+      "name": "Andy's House - Coin - Attic - W Boxes #1"
+     },
+     {
+      "name": "Andy's House - Coin - Attic - N Boxes #1"
+     },
+     {
+      "name": "Andy's House - Coin - Attic - N Boxes #2"
+     },
+     {
+      "name": "Andy's House - Coin - Attic - Beams near Battery"
+     },
+     {
+      "name": "Andy's House - Coin - Attic - Beams Left Side"
+     },
+     {
+      "name": "Andy's House - Coin - Attic - Beams Right side"
+     },
+     {
+      "name": "Andy's House - Coin - Attic - Bouncing Zurg Robot"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 1197,
+      "y": 615
+     }
+    ]
+   },
+   {
+    "name": "Coin Bundles",
+    "sections": [
+     {
+      "name": "Andy's House - Coin Bundle 1"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 2"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 3"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 4"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 5"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 6"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 7"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 8"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 9"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 10"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 11"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 12"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 13"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 14"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 15"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 16"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 17"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 18"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 19"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 20"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 21"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 22"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 23"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 24"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 25"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 26"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 27"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 28"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 29"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 30"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 31"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 32"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 33"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 34"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 35"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 36"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 37"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 38"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 39"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 40"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 41"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 42"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 43"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 44"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 45"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 46"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 47"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 48"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 49"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 50"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 51"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 52"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 53"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 54"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 55"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 56"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 57"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 58"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 59"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 60"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 61"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 62"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 63"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 64"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 65"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 66"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 67"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 68"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 69"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 70"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 71"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 72"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 73"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 74"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 75"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 76"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 77"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 78"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 79"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 80"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 81"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 82"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 83"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 84"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 85"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 86"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 87"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 88"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 89"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 90"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 91"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 92"
+     },
+     {
+      "name": "Andy's House - Coin Bundle 93"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "andys_house",
+      "x": 1423,
+      "y": 934
+     }
+    ]
+   }
+  ]
+ }
+]

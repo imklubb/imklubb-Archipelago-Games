@@ -1,0 +1,676 @@
+[
+ {
+  "name": "Elevator Hop",
+  "children": [
+   {
+    "name": "Hamm's 50 Coins Token",
+    "sections": [
+     {
+      "name": "Elevator Hop - Hamm's 50 Coins Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 214,
+      "y": 806
+     }
+    ]
+   },
+   {
+    "name": "Missing Toys Token (+1)",
+    "sections": [
+     {
+      "name": "Elevator Hop - Missing Toys Token"
+     },
+     {
+      "name": "Elevator Hop - Hidden Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 607,
+      "y": 354
+     }
+    ]
+   },
+   {
+    "name": "Race Token",
+    "sections": [
+     {
+      "name": "Elevator Hop - Race Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 1236,
+      "y": 467
+     }
+    ]
+   },
+   {
+    "name": "Boss Token",
+    "sections": [
+     {
+      "name": "Elevator Hop - Boss Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 1062,
+      "y": 884
+     }
+    ]
+   },
+   {
+    "name": "Mouse (Electrical Room) (+1)",
+    "sections": [
+     {
+      "name": "Elevator Hop - Mouse - Electrical Room"
+     },
+     {
+      "name": "Elevator Hop - Missing Foot"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 320,
+      "y": 806
+     }
+    ]
+   },
+   {
+    "name": "Mouse (Next to Rex) (+2)",
+    "sections": [
+     {
+      "name": "Elevator Hop - Mouse - Next to Rex"
+     },
+     {
+      "name": "Elevator Hop - Green Laser"
+     },
+     {
+      "name": "Elevator Hop - Talk to Rex"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 603,
+      "y": 620
+     }
+    ]
+   },
+   {
+    "name": "Mouse (Control Room) (+1)",
+    "sections": [
+     {
+      "name": "Elevator Hop - Mouse - Control Room"
+     },
+     {
+      "name": "Elevator Hop - Hint Block - Control Room"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 528,
+      "y": 227
+     }
+    ]
+   },
+   {
+    "name": "Mouse (Side of Elevator Shaft)",
+    "sections": [
+     {
+      "name": "Elevator Hop - Mouse - Side of Elevator Shaft"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 607,
+      "y": 457
+     }
+    ]
+   },
+   {
+    "name": "Mouse (Top of Elevator)",
+    "sections": [
+     {
+      "name": "Elevator Hop - Mouse - Top of Elevator"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 1061,
+      "y": 597
+     }
+    ]
+   },
+   {
+    "name": "Give Potato Head His Foot",
+    "sections": [
+     {
+      "name": "Elevator Hop - Give Potato Head His Foot"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 793,
+      "y": 847
+     }
+    ]
+   },
+   {
+    "name": "Hint Block (East Shortcut Fan)",
+    "sections": [
+     {
+      "name": "Elevator Hop - Hint Block - East Shortcut Fan"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 603,
+      "y": 1009
+     }
+    ]
+   },
+   {
+    "name": "Hint Block (West Shortcut Fan)",
+    "sections": [
+     {
+      "name": "Elevator Hop - Hint Block - West Shortcut Fan"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 603,
+      "y": 767
+     }
+    ]
+   },
+   {
+    "name": "Floating Zurg Robot (+4)",
+    "sections": [
+     {
+      "name": "Elevator Hop - Coin - Shaft Gr Floor - Floating Zurg Robot"
+     },
+     {
+      "name": "Elevator Hop - Coin - Shaft Gr Floor - Bunker near Potato Head"
+     },
+     {
+      "name": "Elevator Hop - Coin - Shaft Gr Floor - Bunker near Hamm's Room"
+     },
+     {
+      "name": "Elevator Hop - Coin - Shaft Gr Floor - S Shortcut Fan"
+     },
+     {
+      "name": "Elevator Hop - Coin - Shaft Gr Floor - Next to Potato Head"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 764,
+      "y": 969
+     }
+    ]
+   },
+   {
+    "name": "Entry (+4)",
+    "sections": [
+     {
+      "name": "Elevator Hop - Coin - Electrical Room - Entry"
+     },
+     {
+      "name": "Elevator Hop - Coin - Electrical Room - 1st Pole"
+     },
+     {
+      "name": "Elevator Hop - Coin - Electrical Room - 2nd Pole"
+     },
+     {
+      "name": "Elevator Hop - Coin - Electrical Room - Next to Hamm"
+     },
+     {
+      "name": "Elevator Hop - Coin - Electrical Room - End of Red Wire"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 163,
+      "y": 970
+     }
+    ]
+   },
+   {
+    "name": "After 1st Climb #1 (+24)",
+    "sections": [
+     {
+      "name": "Elevator Hop - Coin - Vents - After 1st Climb #1"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - Floating Zurg Robot #1"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - Snake #1"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - Snake #2"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - Snake #3"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - After 1st Climb #2"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - During 2nd Climb"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - Snake #4"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - Snake #5"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - Snake #6"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - Floating Zurg Robot #2"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - Next to Rex"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - Before 3rd Climb"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - During 3rd Climb"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - After 3rd Climb #1"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - Floating Zurg Robot #3"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - After 3rd Climb #2"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - Zurg Soldier #1"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - Snake #7"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - After 3rd Climb #3"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - Before 4th Climb"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - Zurg Soldier #2"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - During 4th Climb #1"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - During 4th Climb #2"
+     },
+     {
+      "name": "Elevator Hop - Coin - Vents - After 4th Climb"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 320,
+      "y": 386
+     }
+    ]
+   },
+   {
+    "name": "Next to Fan Switch (Control Room) (+4)",
+    "sections": [
+     {
+      "name": "Elevator Hop - Coin - Control Room - Next to Fan Switch"
+     },
+     {
+      "name": "Elevator Hop - Coin - Control Room - Stool Foot"
+     },
+     {
+      "name": "Elevator Hop - Coin - Control Room - Stool Seat"
+     },
+     {
+      "name": "Elevator Hop - Coin - Control Room - Desk"
+     },
+     {
+      "name": "Elevator Hop - Coin - Control Room - On Control System"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 736,
+      "y": 170
+     }
+    ]
+   },
+   {
+    "name": "Lowest S Wall (+4)",
+    "sections": [
+     {
+      "name": "Elevator Hop - Coin - Shaft Mid Floor - Lowest S Wall"
+     },
+     {
+      "name": "Elevator Hop - Coin - Shaft Mid Floor - S Wall opposite Control Room"
+     },
+     {
+      "name": "Elevator Hop - Coin - Shaft Mid Floor - W Platform Near Control Room"
+     },
+     {
+      "name": "Elevator Hop - Coin - Shaft Mid Floor - S Wall above Race Exits #1"
+     },
+     {
+      "name": "Elevator Hop - Coin - Shaft Mid Floor - S Wall above Race Exits #2"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 772,
+      "y": 549
+     }
+    ]
+   },
+   {
+    "name": "Lower Pole (+16)",
+    "sections": [
+     {
+      "name": "Elevator Hop - Coin - Shaft Top Floor - Lower Pole"
+     },
+     {
+      "name": "Elevator Hop - Coin - Shaft Top Floor - Higher Pole #1"
+     },
+     {
+      "name": "Elevator Hop - Coin - Shaft Top Floor - Higher Pole #2"
+     },
+     {
+      "name": "Elevator Hop - Coin - Shaft Top Floor - Next to Race Mouse"
+     },
+     {
+      "name": "Elevator Hop - Coin - Shaft Top Floor - Next to Fan Switch"
+     },
+     {
+      "name": "Elevator Hop - Coin - Shaft Top Floor - Boss Entryway"
+     },
+     {
+      "name": "Elevator Hop - Coin - Token Race - Main Path #1"
+     },
+     {
+      "name": "Elevator Hop - Coin - Token Race - Main Path #2"
+     },
+     {
+      "name": "Elevator Hop - Coin - Token Race - 2nd Exit"
+     },
+     {
+      "name": "Elevator Hop - Coin - Token Race - Main Path #3"
+     },
+     {
+      "name": "Elevator Hop - Coin - Token Race - Main Path #4"
+     },
+     {
+      "name": "Elevator Hop - Coin - Token Race - Main Path #5"
+     },
+     {
+      "name": "Elevator Hop - Coin - Token Race - Main Path #6"
+     },
+     {
+      "name": "Elevator Hop - Coin - Token Race - 3rd Exit #1"
+     },
+     {
+      "name": "Elevator Hop - Coin - Token Race - 3rd Exit #2"
+     },
+     {
+      "name": "Elevator Hop - Coin - Token Race - Main Path #7"
+     },
+     {
+      "name": "Elevator Hop - Coin - Token Race - Main Path #8"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 887,
+      "y": 549
+     }
+    ]
+   },
+   {
+    "name": "Spider Gunro",
+    "sections": [
+     {
+      "name": "Elevator Hop - Coin - Boss Arena - Spider Gunro"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 888,
+      "y": 965
+     }
+    ]
+   },
+   {
+    "name": "Coin Bundles",
+    "sections": [
+     {
+      "name": "Elevator Hop - Coin Bundle 1"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 2"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 3"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 4"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 5"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 6"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 7"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 8"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 9"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 10"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 11"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 12"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 13"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 14"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 15"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 16"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 17"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 18"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 19"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 20"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 21"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 22"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 23"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 24"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 25"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 26"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 27"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 28"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 29"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 30"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 31"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 32"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 33"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 34"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 35"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 36"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 37"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 38"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 39"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 40"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 41"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 42"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 43"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 44"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 45"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 46"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 47"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 48"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 49"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 50"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 51"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 52"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 53"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 54"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 55"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 56"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 57"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 58"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 59"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 60"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 61"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 62"
+     },
+     {
+      "name": "Elevator Hop - Coin Bundle 63"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "elevator_hop",
+      "x": 1417,
+      "y": 392
+     }
+    ]
+   }
+  ]
+ }
+]

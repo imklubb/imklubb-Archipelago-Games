@@ -24,7 +24,8 @@ class GameMode(Choice):
 
 class Skips(Choice):
     """Determines the logic for certain checks.
-    Easy is incredibly easy skips that anyone can do.
+    Easy is incredibly easy skips that anyone can do. They may require trial and error,
+    but you won't have to try for too long.
     Hard is for the glitch hunters and rule breakers out there.
     Insane is for the most demanding tricks, on top of all Easy and Hard skips."""
     display_name = "Skips"

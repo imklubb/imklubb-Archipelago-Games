@@ -1,0 +1,802 @@
+[
+ {
+  "name": "Construction Yard",
+  "children": [
+   {
+    "name": "Hamm's 50 Coins Token (+1)",
+    "sections": [
+     {
+      "name": "Construction Yard - Hamm's 50 Coins Token"
+     },
+     {
+      "name": "Construction Yard - Worker Tike - Wheelbarrow"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 442,
+      "y": 762
+     }
+    ]
+   },
+   {
+    "name": "Missing Toys Token",
+    "sections": [
+     {
+      "name": "Construction Yard - Missing Toys Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 848,
+      "y": 762
+     }
+    ]
+   },
+   {
+    "name": "Race Token",
+    "sections": [
+     {
+      "name": "Construction Yard - Race Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 463,
+      "y": 392
+     }
+    ]
+   },
+   {
+    "name": "Hidden Token (+2)",
+    "sections": [
+     {
+      "name": "Construction Yard - Hidden Token"
+     },
+     {
+      "name": "Construction Yard - Worker Tike - Filing Cabinets"
+     },
+     {
+      "name": "Construction Yard - Hint Block - Paint Can Room"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 1143,
+      "y": 713
+     }
+    ]
+   },
+   {
+    "name": "Boss Token",
+    "sections": [
+     {
+      "name": "Construction Yard - Boss Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 1021,
+      "y": 944
+     }
+    ]
+   },
+   {
+    "name": "Worker Tike (Bulldozer) (+2)",
+    "sections": [
+     {
+      "name": "Construction Yard - Worker Tike - Bulldozer"
+     },
+     {
+      "name": "Construction Yard - Life - Top of Bulldozer"
+     },
+     {
+      "name": "Construction Yard - Battery - Bulldozer"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 782,
+      "y": 478
+     }
+    ]
+   },
+   {
+    "name": "Worker Tike (Construction Floor 1)",
+    "sections": [
+     {
+      "name": "Construction Yard - Worker Tike - Construction Floor 1"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 216,
+      "y": 935
+     }
+    ]
+   },
+   {
+    "name": "Worker Tike (Boss Arena)",
+    "sections": [
+     {
+      "name": "Construction Yard - Worker Tike - Boss Arena"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 1212,
+      "y": 1031
+     }
+    ]
+   },
+   {
+    "name": "Missing Eye",
+    "sections": [
+     {
+      "name": "Construction Yard - Missing Eye"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 684,
+      "y": 904
+     }
+    ]
+   },
+   {
+    "name": "Give Potato Head His Eye",
+    "sections": [
+     {
+      "name": "Construction Yard - Give Potato Head His Eye"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 1143,
+      "y": 509
+     }
+    ]
+   },
+   {
+    "name": "Life (Roof of Green Building)",
+    "sections": [
+     {
+      "name": "Construction Yard - Life - Roof of Green Building"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 1019,
+      "y": 640
+     }
+    ]
+   },
+   {
+    "name": "Green Laser",
+    "sections": [
+     {
+      "name": "Construction Yard - Green Laser"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 668,
+      "y": 762
+     }
+    ]
+   },
+   {
+    "name": "Battery (Boss Arena Front Left)",
+    "sections": [
+     {
+      "name": "Construction Yard - Battery - Boss Arena Front Left"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 1108,
+      "y": 1031
+     }
+    ]
+   },
+   {
+    "name": "Battery (Boss Arena Back Left)",
+    "sections": [
+     {
+      "name": "Construction Yard - Battery - Boss Arena Back Left"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 1108,
+      "y": 861
+     }
+    ]
+   },
+   {
+    "name": "Battery (Boss Arena Back Right)",
+    "sections": [
+     {
+      "name": "Construction Yard - Battery - Boss Arena Back Right"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 936,
+      "y": 861
+     }
+    ]
+   },
+   {
+    "name": "Talk to Rex",
+    "sections": [
+     {
+      "name": "Construction Yard - Talk to Rex"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 1143,
+      "y": 300
+     }
+    ]
+   },
+   {
+    "name": "Floor Near Hamm #1 (+35)",
+    "sections": [
+     {
+      "name": "Construction Yard - Coin - SW Area - Floor Near Hamm #1"
+     },
+     {
+      "name": "Construction Yard - Coin - SW Area - Floor Near Hamm #2"
+     },
+     {
+      "name": "Construction Yard - Coin - SW Area - Fence Corner"
+     },
+     {
+      "name": "Construction Yard - Coin - Construction Base - SW Corner"
+     },
+     {
+      "name": "Construction Yard - Coin - Construction Base - NW Corner"
+     },
+     {
+      "name": "Construction Yard - Coin - Construction Base - North Side"
+     },
+     {
+      "name": "Construction Yard - Coin - Construction Base - Far from NE"
+     },
+     {
+      "name": "Construction Yard - Coin - Bulldozer - Front Left Tire"
+     },
+     {
+      "name": "Construction Yard - Coin - Bulldozer - Floor to the Right"
+     },
+     {
+      "name": "Construction Yard - Coin - Bulldozer - Underneath #1"
+     },
+     {
+      "name": "Construction Yard - Coin - Bulldozer - Underneath #2"
+     },
+     {
+      "name": "Construction Yard - Coin - Outside Office - Bottom of Ramp"
+     },
+     {
+      "name": "Construction Yard - Coin - Outside Office - Under Ramp"
+     },
+     {
+      "name": "Construction Yard - Coin - Outside Office - SW Corner"
+     },
+     {
+      "name": "Construction Yard - Coin - Outside Office - SE Corner"
+     },
+     {
+      "name": "Construction Yard - Coin - Outside Office - NE Corner"
+     },
+     {
+      "name": "Construction Yard - Coin - Outside Office - North Side"
+     },
+     {
+      "name": "Construction Yard - Coin - Outside Office - Toolbox"
+     },
+     {
+      "name": "Construction Yard - Coin - Outside Office - Middle of Ramp"
+     },
+     {
+      "name": "Construction Yard - Coin - Outside Office - Top of Ramp"
+     },
+     {
+      "name": "Construction Yard - Coin - NE Area - Between Puddle & Bulldozer"
+     },
+     {
+      "name": "Construction Yard - Coin - NE Area - Between Sand & Fence"
+     },
+     {
+      "name": "Construction Yard - Coin - NE Area - North of Puddle"
+     },
+     {
+      "name": "Construction Yard - Coin - Ground Floor - Floating Zurg Robot #1"
+     },
+     {
+      "name": "Construction Yard - Coin - SW Area - Air Near Construction"
+     },
+     {
+      "name": "Construction Yard - Coin - Ground Floor - Floating Zurg Robot #2"
+     },
+     {
+      "name": "Construction Yard - Coin - SW Area - Pallet"
+     },
+     {
+      "name": "Construction Yard - Coin - Ground Floor - Zurg Car #1"
+     },
+     {
+      "name": "Construction Yard - Coin - Ground Floor - Zurg Car #2"
+     },
+     {
+      "name": "Construction Yard - Coin - Ground Floor - Bouncing Zurg Robot #1"
+     },
+     {
+      "name": "Construction Yard - Coin - Ground Floor - Bouncing Zurg Robot #2"
+     },
+     {
+      "name": "Construction Yard - Coin - Ground Floor - Bouncing Zurg Robot #3"
+     },
+     {
+      "name": "Construction Yard - Coin - Ground Floor - Bouncing Zurg Robot #4"
+     },
+     {
+      "name": "Construction Yard - Coin - Ground Floor - Bouncing Zurg Robot #5"
+     },
+     {
+      "name": "Construction Yard - Coin - Ground Floor - Bouncing Zurg Robot #6"
+     },
+     {
+      "name": "Construction Yard - Coin - SW Area - Above Cinderblock"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 608,
+      "y": 606
+     }
+    ]
+   },
+   {
+    "name": "Floor #1 (+9)",
+    "sections": [
+     {
+      "name": "Construction Yard - Coin - Inside Office - Floor #1"
+     },
+     {
+      "name": "Construction Yard - Coin - Inside Office - Floor #2"
+     },
+     {
+      "name": "Construction Yard - Coin - Inside Office - Floor #3"
+     },
+     {
+      "name": "Construction Yard - Coin - Inside Office - Floor #4"
+     },
+     {
+      "name": "Construction Yard - Coin - Inside Office - Bucket of Poison"
+     },
+     {
+      "name": "Construction Yard - Coin - Inside Office - Bouncing Zurg Robot #1"
+     },
+     {
+      "name": "Construction Yard - Coin - Inside Office - Desk"
+     },
+     {
+      "name": "Construction Yard - Coin - Inside Office - Bouncing Zurg Robot #2"
+     },
+     {
+      "name": "Construction Yard - Coin - Inside Office - Paint Table"
+     },
+     {
+      "name": "Construction Yard - Coin - Outside Office - On Roof"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 1201,
+      "y": 787
+     }
+    ]
+   },
+   {
+    "name": "1st Step (+3)",
+    "sections": [
+     {
+      "name": "Construction Yard - Coin - Bulldozer - 1st Step"
+     },
+     {
+      "name": "Construction Yard - Coin - Bulldozer - 2nd Step"
+     },
+     {
+      "name": "Construction Yard - Coin - Bulldozer - 3rd Step"
+     },
+     {
+      "name": "Construction Yard - Coin - Bulldozer - Lift Right Side"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 884,
+      "y": 365
+     }
+    ]
+   },
+   {
+    "name": "Floating Zurg Robot #1 (Cement Pool) (+1)",
+    "sections": [
+     {
+      "name": "Construction Yard - Coin - Cement Pool - Floating Zurg Robot #1"
+     },
+     {
+      "name": "Construction Yard - Coin - Cement Pool - Floating Zurg Robot #2"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 463,
+      "y": 416
+     }
+    ]
+   },
+   {
+    "name": "NE (+5)",
+    "sections": [
+     {
+      "name": "Construction Yard - Coin - Floor 1 - NE"
+     },
+     {
+      "name": "Construction Yard - Coin - Floor 1 - SE"
+     },
+     {
+      "name": "Construction Yard - Coin - Floor 1 - Between Crushers"
+     },
+     {
+      "name": "Construction Yard - Coin - Floor 1 - SW"
+     },
+     {
+      "name": "Construction Yard - Coin - Floor 1 - NW"
+     },
+     {
+      "name": "Construction Yard - Coin - Floor 1 - Leap of Faith"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 349,
+      "y": 1074
+     }
+    ]
+   },
+   {
+    "name": "Floating Zurg Robot (+2)",
+    "sections": [
+     {
+      "name": "Construction Yard - Coin - Floor 2 - Floating Zurg Robot"
+     },
+     {
+      "name": "Construction Yard - Coin - Floor 2 - SW"
+     },
+     {
+      "name": "Construction Yard - Coin - Floor 2 - West Side"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 604,
+      "y": 1071
+     }
+    ]
+   },
+   {
+    "name": "South Side #1 (+8)",
+    "sections": [
+     {
+      "name": "Construction Yard - Coin - Floor 3 - South Side #1"
+     },
+     {
+      "name": "Construction Yard - Coin - Floor 3 - South Side #2"
+     },
+     {
+      "name": "Construction Yard - Coin - Floor 3 - North Chains"
+     },
+     {
+      "name": "Construction Yard - Coin - Floor 3 - By Ear"
+     },
+     {
+      "name": "Construction Yard - Coin - Floor 3 - Floating Zurg Robot #1"
+     },
+     {
+      "name": "Construction Yard - Coin - Floor 3 - Floating Zurg Robot #2"
+     },
+     {
+      "name": "Construction Yard - Coin - Floor 3 - Floating Zurg Robot #3"
+     },
+     {
+      "name": "Construction Yard - Coin - Floor 3 - NE High Up"
+     },
+     {
+      "name": "Construction Yard - Coin - Floor 3 - Center High Up"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 859,
+      "y": 1071
+     }
+    ]
+   },
+   {
+    "name": "East Side (+1)",
+    "sections": [
+     {
+      "name": "Construction Yard - Coin - Boss Arena - East Side"
+     },
+     {
+      "name": "Construction Yard - Coin - Floor 4 - Jackhammer"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 1120,
+      "y": 1074
+     }
+    ]
+   },
+   {
+    "name": "Coin Bundles",
+    "sections": [
+     {
+      "name": "Construction Yard - Coin Bundle 1"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 2"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 3"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 4"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 5"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 6"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 7"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 8"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 9"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 10"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 11"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 12"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 13"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 14"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 15"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 16"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 17"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 18"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 19"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 20"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 21"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 22"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 23"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 24"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 25"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 26"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 27"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 28"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 29"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 30"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 31"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 32"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 33"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 34"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 35"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 36"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 37"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 38"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 39"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 40"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 41"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 42"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 43"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 44"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 45"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 46"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 47"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 48"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 49"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 50"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 51"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 52"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 53"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 54"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 55"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 56"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 57"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 58"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 59"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 60"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 61"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 62"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 63"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 64"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 65"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 66"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 67"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 68"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 69"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 70"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 71"
+     },
+     {
+      "name": "Construction Yard - Coin Bundle 72"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "construction_yard",
+      "x": 1410,
+      "y": 427
+     }
+    ]
+   }
+  ]
+ }
+]

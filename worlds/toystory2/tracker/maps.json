@@ -1,0 +1,86 @@
+[
+  {
+    "name": "airport_infiltration",
+    "location_size": 24,
+    "location_border_thickness": 2,
+    "location_shape": "rect",
+    "img": "images/MAPS/Airport_Infiltration.png"
+  },
+  {
+    "name": "als_penthouse",
+    "location_size": 24,
+    "location_border_thickness": 2,
+    "location_shape": "rect",
+    "img": "images/MAPS/Al's_Penthouse.png"
+  },
+  {
+    "name": "als_space_land",
+    "location_size": 24,
+    "location_border_thickness": 2,
+    "location_shape": "rect",
+    "img": "images/MAPS/Al's_Space_Land.png"
+  },
+  {
+    "name": "als_toy_barn",
+    "location_size": 24,
+    "location_border_thickness": 2,
+    "location_shape": "rect",
+    "img": "images/MAPS/Al's_Toy_Barn.png"
+  },
+  {
+    "name": "alleys_and_gullies",
+    "location_size": 24,
+    "location_border_thickness": 2,
+    "location_shape": "rect",
+    "img": "images/MAPS/Alleys_and_Gullies.png"
+  },
+  {
+    "name": "andys_house",
+    "location_size": 24,
+    "location_border_thickness": 2,
+    "location_shape": "rect",
+    "img": "images/MAPS/Andy's_House.png"
+  },
+  {
+    "name": "andys_neighborhood",
+    "location_size": 24,
+    "location_border_thickness": 2,
+    "location_shape": "rect",
+    "img": "images/MAPS/Andy's_Neighborhood.png"
+  },
+  {
+    "name": "bosses",
+    "location_size": 24,
+    "location_border_thickness": 2,
+    "location_shape": "rect",
+    "img": "images/MAPS/Bosses.png"
+  },
+  {
+    "name": "construction_yard",
+    "location_size": 24,
+    "location_border_thickness": 2,
+    "location_shape": "rect",
+    "img": "images/MAPS/Construction_Yard.png"
+  },
+  {
+    "name": "elevator_hop",
+    "location_size": 24,
+    "location_border_thickness": 2,
+    "location_shape": "rect",
+    "img": "images/MAPS/Elevator_Hop.png"
+  },
+  {
+    "name": "level_select",
+    "location_size": 24,
+    "location_border_thickness": 2,
+    "location_shape": "rect",
+    "img": "images/MAPS/Level_Select.png"
+  },
+  {
+    "name": "tarmac_trouble",
+    "location_size": 24,
+    "location_border_thickness": 2,
+    "location_shape": "rect",
+    "img": "images/MAPS/Tarmac_Trouble.png"
+  }
+]

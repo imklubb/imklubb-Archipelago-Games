@@ -1,0 +1,892 @@
+[
+ {
+  "name": "Tarmac Trouble",
+  "children": [
+   {
+    "name": "Hamm's 50 Coins Token",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Hamm's 50 Coins Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 968,
+      "y": 968
+     }
+    ]
+   },
+   {
+    "name": "Missing Toys Token",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Missing Toys Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 1161,
+      "y": 442
+     }
+    ]
+   },
+   {
+    "name": "Race Token (+1)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Race Token"
+     },
+     {
+      "name": "Tarmac Trouble - Battery - Green Slime Maze"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 790,
+      "y": 603
+     }
+    ]
+   },
+   {
+    "name": "Hidden Token (+2)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Hidden Token"
+     },
+     {
+      "name": "Tarmac Trouble - Battery - Helicopter Pad"
+     },
+     {
+      "name": "Tarmac Trouble - Hint Block - Light Puzzle"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 652,
+      "y": 224
+     }
+    ]
+   },
+   {
+    "name": "Boss Token (+1)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Boss Token"
+     },
+     {
+      "name": "Tarmac Trouble - Battery - Boss Arena"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 464,
+      "y": 786
+     }
+    ]
+   },
+   {
+    "name": "Luggage (Top of Plane)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Luggage - Top of Plane"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 1001,
+      "y": 603
+     }
+    ]
+   },
+   {
+    "name": "Luggage (Zone 2 Cart)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Luggage - Zone 2 Cart"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 1032,
+      "y": 307
+     }
+    ]
+   },
+   {
+    "name": "Luggage (Zone 8)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Luggage - Zone 8"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 393,
+      "y": 435
+     }
+    ]
+   },
+   {
+    "name": "Luggage (Zone 6 Conveyor Belt)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Luggage - Zone 6 Conveyor Belt"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 661,
+      "y": 964
+     }
+    ]
+   },
+   {
+    "name": "Luggage (Zone 4)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Luggage - Zone 4"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 1167,
+      "y": 763
+     }
+    ]
+   },
+   {
+    "name": "Life (Zone 6)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Life - Zone 6"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 520,
+      "y": 932
+     }
+    ]
+   },
+   {
+    "name": "Green Laser",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Green Laser"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 480,
+      "y": 352
+     }
+    ]
+   },
+   {
+    "name": "Battery (Road Opposite Zone 8)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Battery - Road Opposite Zone 8"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 542,
+      "y": 508
+     }
+    ]
+   },
+   {
+    "name": "Battery (Zone 3)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Battery - Zone 3"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 1134,
+      "y": 383
+     }
+    ]
+   },
+   {
+    "name": "Talk to Rex",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Talk to Rex"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 973,
+      "y": 270
+     }
+    ]
+   },
+   {
+    "name": "Rex Cart (+9)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Coin - Zone 2 - Rex Cart"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 2 - Rex-less Cart"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Plane Road - #13 - Zone 2"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Plane Road - #14 - Zone 2"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 2 - Vulture #1"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 2 - Vulture #2"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 2 - Vulture #3"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 2 - Snake #1"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 2 - Snake #2"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 2 - Snake #3"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 1060,
+      "y": 213
+     }
+    ]
+   },
+   {
+    "name": "At Start (+9)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Coin - Zone 4 - At Start"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 4 - Middle"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 4 - By Luggage"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Plane Road - #1 - Zone 4"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Plane Road - #2 - Zone 4"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Plane Road - #3 - Zone 4"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 4 - Gunman #1"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 4 - Gunman #2"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 4 - Vulture"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 4 - Snake"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 1195,
+      "y": 863
+     }
+    ]
+   },
+   {
+    "name": "#4 (Zone 5) (+6)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Coin - Plane Road - #4 - Zone 5"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 5 - Near Zone 4"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 5 - Near Hamm"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 5 - Near Zone 6"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 5 - Vulture #1"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 5 - Gunman #1"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 5 - Gunman #2"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 923,
+      "y": 1063
+     }
+    ]
+   },
+   {
+    "name": "#5 (Zone 6) (+13)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Coin - Plane Road - #5 - Zone 6"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Plane Road - #6 - Zone 6"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Plane Road - #7 - Zone 6"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 6 - Near Slime"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 6 - Middle"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 6 - Behind to Conveyor Belt"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 6 - Snake #1"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 6 - Snake #2"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 6 - Snake #3"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 6 - Vulture #1"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 6 - Vulture #2"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 6 - Vulture #3"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 6 - Snake #4"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 6 - Gunman"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 517,
+      "y": 991
+     }
+    ]
+   },
+   {
+    "name": "#8 (Zone 7) (+9)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Coin - Plane Road - #8 - Zone 7"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 7 - Ground Near Zone 6"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 7 - Ground Near Zone 8"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 7 - Gunman"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 7 - Vulture"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 7 - Near Satellite Dish"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 7 - Boss Arena #1"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 7 - Boss Arena #2"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 7 - Boss Arena #3"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 7 - Boss Arena #4"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 321,
+      "y": 699
+     }
+    ]
+   },
+   {
+    "name": "#9 (Zone 8) (+12)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Coin - Plane Road - #9 - Zone 8"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Plane Road - #10 - Zone 8"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Plane Road - #11 - Zone 8"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 8 - Middle"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 8 - Near Zone 1"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 8 - Gunman #1"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 8 - Gunman #2"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 8 - Gunman #3"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 8 - Vulture #1"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 8 - Vulture #2"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 8 - Snake #1"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 8 - Snake #2"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 8 - Snake #3"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 403,
+      "y": 325
+     }
+    ]
+   },
+   {
+    "name": "#12 (Zone 1) (+11)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Coin - Plane Road - #12 - Zone 1"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 1 - Vulture"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 1 - Gunman #1"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 1 - Gunman #2"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 1 - Step to Helipad"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 1 - Helipad #1"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 1 - Helipad #2"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 1 - Helipad #3"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 1 - Helipad #4"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 1 - Helipad #5"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 1 - Helipad #6"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 1 - Helipad #7"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 688,
+      "y": 135
+     }
+    ]
+   },
+   {
+    "name": "#15 (Zone 3) (+8)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Coin - Plane Road - #15 - Zone 3"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Plane Road - #16 - Zone 3"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 3 - Near Slime"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 3 - Near Tikes"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 3 - Near Zone 2"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 3 - Snake"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 3 - Vulture #1"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 3 - Vulture #2"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Zone 3 - Gunman"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 1260,
+      "y": 510
+     }
+    ]
+   },
+   {
+    "name": "#1 (+2)",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Coin - Slime Maze - #1"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Slime Maze - #2"
+     },
+     {
+      "name": "Tarmac Trouble - Coin - Slime Maze - #3"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 790,
+      "y": 627
+     }
+    ]
+   },
+   {
+    "name": "Coin Bundles",
+    "sections": [
+     {
+      "name": "Tarmac Trouble - Coin Bundle 1"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 2"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 3"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 4"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 5"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 6"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 7"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 8"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 9"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 10"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 11"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 12"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 13"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 14"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 15"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 16"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 17"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 18"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 19"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 20"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 21"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 22"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 23"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 24"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 25"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 26"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 27"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 28"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 29"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 30"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 31"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 32"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 33"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 34"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 35"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 36"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 37"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 38"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 39"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 40"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 41"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 42"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 43"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 44"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 45"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 46"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 47"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 48"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 49"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 50"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 51"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 52"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 53"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 54"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 55"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 56"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 57"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 58"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 59"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 60"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 61"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 62"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 63"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 64"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 65"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 66"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 67"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 68"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 69"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 70"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 71"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 72"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 73"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 74"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 75"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 76"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 77"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 78"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 79"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 80"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 81"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 82"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 83"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 84"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 85"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 86"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 87"
+     },
+     {
+      "name": "Tarmac Trouble - Coin Bundle 88"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "tarmac_trouble",
+      "x": 1410,
+      "y": 409
+     }
+    ]
+   }
+  ]
+ }
+]

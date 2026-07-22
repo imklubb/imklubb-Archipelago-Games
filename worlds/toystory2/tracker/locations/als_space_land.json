@@ -1,0 +1,823 @@
+[
+ {
+  "name": "Al's Space Land",
+  "children": [
+   {
+    "name": "Hamm's 50 Coins Token (+1)",
+    "sections": [
+     {
+      "name": "Al's Space Land - Hamm's 50 Coins Token"
+     },
+     {
+      "name": "Al's Space Land - Alien - End of Zurg Aisle"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 120,
+      "y": 603
+     }
+    ]
+   },
+   {
+    "name": "Missing Toys Token",
+    "sections": [
+     {
+      "name": "Al's Space Land - Missing Toys Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 981,
+      "y": 600
+     }
+    ]
+   },
+   {
+    "name": "Race Token",
+    "sections": [
+     {
+      "name": "Al's Space Land - Race Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 710,
+      "y": 148
+     }
+    ]
+   },
+   {
+    "name": "Hidden Token (+1)",
+    "sections": [
+     {
+      "name": "Al's Space Land - Hidden Token"
+     },
+     {
+      "name": "Al's Space Land - Talk to Rex"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 181,
+      "y": 873
+     }
+    ]
+   },
+   {
+    "name": "Boss Token",
+    "sections": [
+     {
+      "name": "Al's Space Land - Boss Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 1050,
+      "y": 930
+     }
+    ]
+   },
+   {
+    "name": "Alien (Ballpit)",
+    "sections": [
+     {
+      "name": "Al's Space Land - Alien - Ballpit"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 333,
+      "y": 873
+     }
+    ]
+   },
+   {
+    "name": "Alien (Planet Mobile) (+1)",
+    "sections": [
+     {
+      "name": "Al's Space Land - Alien - Planet Mobile"
+     },
+     {
+      "name": "Al's Space Land - Life - Planet Mobile"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 794,
+      "y": 937
+     }
+    ]
+   },
+   {
+    "name": "Alien (End of Race) (+1)",
+    "sections": [
+     {
+      "name": "Al's Space Land - Alien - End of Race"
+     },
+     {
+      "name": "Al's Space Land - Battery - Race Blue Shelf"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 1034,
+      "y": 634
+     }
+    ]
+   },
+   {
+    "name": "Alien (Middle of Zurg Aisle)",
+    "sections": [
+     {
+      "name": "Al's Space Land - Alien - Middle of Zurg Aisle"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 180,
+      "y": 159
+     }
+    ]
+   },
+   {
+    "name": "Green Laser",
+    "sections": [
+     {
+      "name": "Al's Space Land - Green Laser"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 567,
+      "y": 526
+     }
+    ]
+   },
+   {
+    "name": "Battery (Boss Arena)",
+    "sections": [
+     {
+      "name": "Al's Space Land - Battery - Boss Arena"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 1180,
+      "y": 835
+     }
+    ]
+   },
+   {
+    "name": "Battery (Arcade Cabinet)",
+    "sections": [
+     {
+      "name": "Al's Space Land - Battery - Arcade Cabinet"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 132,
+      "y": 1030
+     }
+    ]
+   },
+   {
+    "name": "Battery (Blue Shelves)",
+    "sections": [
+     {
+      "name": "Al's Space Land - Battery - Blue Shelves"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 596,
+      "y": 142
+     }
+    ]
+   },
+   {
+    "name": "Battery (Red Shelf)",
+    "sections": [
+     {
+      "name": "Al's Space Land - Battery - Red Shelf"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 297,
+      "y": 159
+     }
+    ]
+   },
+   {
+    "name": "Small Box at Entry (Race Aisle) (+28)",
+    "sections": [
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - Small Box at Entry"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - Zurg Car #1"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - Zurg Car #2"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - Zurg Car #3"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - Zurg Car #4"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - Zurg Soldier #1"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - Zurg Soldier #2"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - Zurg Soldier #3"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - Stacked Box at Entry"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - Bouncing Zurg Robot"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - 1st Blue Shelf"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - Propeller Zurg Robot #1"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - 2nd Blue Shelf"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - Propeller Zurg Robot #2"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - Boxed Alien"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - Propeller Zurg Robot #3"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - 3rd Blue Shelf"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - 1st Rope"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - 2nd Rope #1"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - 2nd Rope #2"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - 3rd Rope"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - 4th Rope #1"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - 4th Rope #2"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - 5th Rope"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - 6th Rope #1"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - 6th Rope #2"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - 7th Rope #1"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - 7th Rope #2"
+     },
+     {
+      "name": "Al's Space Land - Coin - Race Aisle - Shelf at End of Race"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 932,
+      "y": 511
+     }
+    ]
+   },
+   {
+    "name": "Small Box at Entry (Zurg Aisle) (+24)",
+    "sections": [
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - Small Box at Entry"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - Bouncing Zurg Robot #1"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - Zurg Soldier"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - Stacked Box at Entry"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - Jump to Pole Vault"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - Propeller Zurg Robot"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - High Blue Shelf around Corner"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - Red Zurg Shelf"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - Bouncing Zurg Robot #2"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - Bouncing Zurg Robot #3"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - 1st Standalone Box"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - 2nd Standalone Box"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - 3rd Standalone Box"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - 1st Box Step to Rope"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - 2nd Box Step to Rope"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - 3rd Box Step to Rope"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - Blue Shelf before Rope"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - 1st Rope Slide"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - 2nd Rope Slide"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - Floating Zurg Robot #1"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - Floating Zurg Robot #2"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - Zurg Car"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - Between Walls of Boxes"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - Floating Zurg Robot #3"
+     },
+     {
+      "name": "Al's Space Land - Coin - Zurg Aisle - Bouncing Zurg Robot #4"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 383,
+      "y": 511
+     }
+    ]
+   },
+   {
+    "name": "Floating Zurg Robot (Central Room) (+15)",
+    "sections": [
+     {
+      "name": "Al's Space Land - Coin - Central Room - Floating Zurg Robot"
+     },
+     {
+      "name": "Al's Space Land - Coin - Central Room - Bouncing Zurg Robot"
+     },
+     {
+      "name": "Al's Space Land - Coin - Central Room - Propeller Zurg Robot"
+     },
+     {
+      "name": "Al's Space Land - Coin - Central Room - Zurg Car"
+     },
+     {
+      "name": "Al's Space Land - Coin - Central Room - Zurg Soldier"
+     },
+     {
+      "name": "Al's Space Land - Coin - Central Room - Boxes to Mobile"
+     },
+     {
+      "name": "Al's Space Land - Coin - Central Room - Mobile #1"
+     },
+     {
+      "name": "Al's Space Land - Coin - Central Room - Mobile #2"
+     },
+     {
+      "name": "Al's Space Land - Coin - Central Room - Mobile #3"
+     },
+     {
+      "name": "Al's Space Land - Coin - Central Room - Mobile #4"
+     },
+     {
+      "name": "Al's Space Land - Coin - Central Room - Mobile #5"
+     },
+     {
+      "name": "Al's Space Land - Coin - Central Room - Mobile #6"
+     },
+     {
+      "name": "Al's Space Land - Coin - Central Room - Mobile #7"
+     },
+     {
+      "name": "Al's Space Land - Coin - Central Room - Mobile #8"
+     },
+     {
+      "name": "Al's Space Land - Coin - Central Room - Boxes to Boss #1"
+     },
+     {
+      "name": "Al's Space Land - Coin - Central Room - Boxes to Boss #2"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 785,
+      "y": 1034
+     }
+    ]
+   },
+   {
+    "name": "Zurg Car (Arcade) (+18)",
+    "sections": [
+     {
+      "name": "Al's Space Land - Coin - Arcade - Zurg Car"
+     },
+     {
+      "name": "Al's Space Land - Coin - Arcade - Stool by 1st Cabinet"
+     },
+     {
+      "name": "Al's Space Land - Coin - Arcade - Bouncing Zurg Robot #1"
+     },
+     {
+      "name": "Al's Space Land - Coin - Arcade - Floating Zurg Robot"
+     },
+     {
+      "name": "Al's Space Land - Coin - Arcade - 1st Cabinet"
+     },
+     {
+      "name": "Al's Space Land - Coin - Arcade - 2nd Cabinet"
+     },
+     {
+      "name": "Al's Space Land - Coin - Arcade - 3rd Cabinet"
+     },
+     {
+      "name": "Al's Space Land - Coin - Arcade - Bouncing Zurg Robot #2"
+     },
+     {
+      "name": "Al's Space Land - Coin - Arcade - Propeller Zurg Robot #1"
+     },
+     {
+      "name": "Al's Space Land - Coin - Arcade - 4th Cabinet"
+     },
+     {
+      "name": "Al's Space Land - Coin - Arcade - Top of Claw Machine"
+     },
+     {
+      "name": "Al's Space Land - Coin - Arcade - Ball Pit Pole"
+     },
+     {
+      "name": "Al's Space Land - Coin - Arcade - Propeller Zurg Robot #2"
+     },
+     {
+      "name": "Al's Space Land - Coin - Arcade - Ball Pit Open Corner #1"
+     },
+     {
+      "name": "Al's Space Land - Coin - Arcade - Ball Pit Open Corner #2"
+     },
+     {
+      "name": "Al's Space Land - Coin - Arcade - Ball Pit Hidden Corner #1"
+     },
+     {
+      "name": "Al's Space Land - Coin - Arcade - Ball Pit Hidden Corner #2"
+     },
+     {
+      "name": "Al's Space Land - Coin - Arcade - Ball Pit Hidden Corner #3"
+     },
+     {
+      "name": "Al's Space Land - Coin - Arcade - Stool by Claw Machine"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 333,
+      "y": 779
+     }
+    ]
+   },
+   {
+    "name": "Coin Bundles",
+    "sections": [
+     {
+      "name": "Al's Space Land - Coin Bundle 1"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 2"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 3"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 4"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 5"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 6"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 7"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 8"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 9"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 10"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 11"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 12"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 13"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 14"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 15"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 16"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 17"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 18"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 19"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 20"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 21"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 22"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 23"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 24"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 25"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 26"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 27"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 28"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 29"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 30"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 31"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 32"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 33"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 34"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 35"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 36"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 37"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 38"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 39"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 40"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 41"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 42"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 43"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 44"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 45"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 46"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 47"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 48"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 49"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 50"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 51"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 52"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 53"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 54"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 55"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 56"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 57"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 58"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 59"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 60"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 61"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 62"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 63"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 64"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 65"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 66"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 67"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 68"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 69"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 70"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 71"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 72"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 73"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 74"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 75"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 76"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 77"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 78"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 79"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 80"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 81"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 82"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 83"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 84"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 85"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 86"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 87"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 88"
+     },
+     {
+      "name": "Al's Space Land - Coin Bundle 89"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_space_land",
+      "x": 1389,
+      "y": 408
+     }
+    ]
+   }
+  ]
+ }
+]

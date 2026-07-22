@@ -1,0 +1,943 @@
+[
+ {
+  "name": "Alleys and Gullies",
+  "children": [
+   {
+    "name": "Hamm's 50 Coins Token",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Hamm's 50 Coins Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 537,
+      "y": 967
+     }
+    ]
+   },
+   {
+    "name": "Missing Toys Token",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Missing Toys Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 688,
+      "y": 589
+     }
+    ]
+   },
+   {
+    "name": "Race Token",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Race Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 1016,
+      "y": 205
+     }
+    ]
+   },
+   {
+    "name": "Hidden Token",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Hidden Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 351,
+      "y": 1042
+     }
+    ]
+   },
+   {
+    "name": "Boss Token",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Boss Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 672,
+      "y": 209
+     }
+    ]
+   },
+   {
+    "name": "Duck (Pool Behind Construction) (+2)",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Duck - Pool Behind Construction"
+     },
+     {
+      "name": "Alleys and Gullies - Life - Pool Behind Construction"
+     },
+     {
+      "name": "Alleys and Gullies - Battery - Behind Construction"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 263,
+      "y": 976
+     }
+    ]
+   },
+   {
+    "name": "Duck (Hidden Near Race)",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Duck - Hidden Near Race"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 884,
+      "y": 152
+     }
+    ]
+   },
+   {
+    "name": "Duck (Incline Parasol)",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Duck - Incline Parasol"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 537,
+      "y": 1042
+     }
+    ]
+   },
+   {
+    "name": "Life (Lily Pad Behind Race)",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Life - Lily Pad Behind Race"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 884,
+      "y": 205
+     }
+    ]
+   },
+   {
+    "name": "Green Laser",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Green Laser"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 771,
+      "y": 513
+     }
+    ]
+   },
+   {
+    "name": "Battery (Boss Arena)",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Battery - Boss Arena"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 609,
+      "y": 264
+     }
+    ]
+   },
+   {
+    "name": "Talk to Rex",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Talk to Rex"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 1073,
+      "y": 346
+     }
+    ]
+   },
+   {
+    "name": "Stream #1 (Pipe Near Rex) (+34)",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Stream #1 - Pipe Near Rex"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Stream #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Stream #3"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Stream #4"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Stream #5"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Stream #6"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Stream #7"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Stream #8"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Stream #9"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Stream #10"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Stream #11"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Stream #12"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Stream #13"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Stream #14"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Stream #15 - Pipe Near Market"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Stream #16 - Side Pipe"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Small Box"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Plane #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Plane #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Plane #3"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Plane #4"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Bouncing Zurg Robot #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Bouncing Zurg Robot #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Bouncing Zurg Robot #3"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Bouncing Zurg Robot #4"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Zurg Boat #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Plane Box #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Plane Box #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Zurg Boat #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Bigger Box"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Zipline Near Market #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Zipline Near Market #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Dumpster Near Market"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Dumpster Near Ladders"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 2 Balconies - SW Ladder to 2nd Floor"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 889,
+      "y": 446
+     }
+    ]
+   },
+   {
+    "name": "Zurg Boat #1 (Rain River) (+5)",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Coin - Rain River - Zurg Boat #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Rain River - Zurg Boat #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Rain River - By Slinky #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Rain River - By Slinky #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Rain River - Near Duck #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Rain River - Near Duck #2"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 1131,
+      "y": 115
+     }
+    ]
+   },
+   {
+    "name": "Plane #1 (Market) (+25)",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Coin - Market - Plane #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - Plane #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - Plane Box"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - Bouncing Zurg Robot"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - Propeller Zurg Robot #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - Zurg Soldier"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - Propeller Zurg Robot #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - Propeller Zurg Robot #3"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - Hamm's Umbrella #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - Hamm's Umbrella #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - Hamm's Umbrella #3"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - Hamm's Umbrella #4"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - Hamm's Umbrella #5"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - Hamm's Umbrella #6"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - Hamm's Umbrella #7"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - Hamm's Umbrella #8"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - Awning above Melons"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - 2nd Umbrella #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - 2nd Umbrella #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - 2nd Umbrella #3"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - 2nd Umbrella #4"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - 2nd Umbrella #5"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - 2nd Umbrella #6"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - 2nd Umbrella #7"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - 2nd Umbrella #8"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Market - Awning Near Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 451,
+      "y": 835
+     }
+    ]
+   },
+   {
+    "name": "SE Ladder #1 (+10)",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Coin - Floor 1 Balconies - SE Ladder #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 1 Balconies - SE Ladder #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 1 Balconies - SE Guardrail"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 1 Balconies - 1st Zipline #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 1 Balconies - 1st Zipline #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 1 Balconies - N Guardrail #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 1 Balconies - Bouncing Zurg Robot"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 1 Balconies - N Guardrail #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 1 Balconies - N Windowsill"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 1 Balconies - 2nd Zipline"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 1 Balconies - SW Guardrail"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 263,
+      "y": 449
+     }
+    ]
+   },
+   {
+    "name": "Duck (Window Sill) (+1)",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Duck - Window Sill"
+     },
+     {
+      "name": "Alleys and Gullies - Battery - Balcony Fence"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 168,
+      "y": 561
+     }
+    ]
+   },
+   {
+    "name": "Tall Trash Can (+10)",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Coin - Central Hub - Tall Trash Can"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 2 Balconies - SW Balcony"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 2 Balconies - Bouncing Zurg Robot #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 2 Balconies - SW Guardrail"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 2 Balconies - 1st Zipline #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 2 Balconies - 1st Zipline #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 2 Balconies - Bouncing Zurg Robot #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 2 Balconies - AC Unit"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 2 Balconies - SE Pipe Climb #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 2 Balconies - SE Pipe Climb #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 2 Balconies - SE Pipe Climb #3"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 192,
+      "y": 561
+     }
+    ]
+   },
+   {
+    "name": "Life (Window Sill) (+1)",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Life - Window Sill"
+     },
+     {
+      "name": "Alleys and Gullies - Duck - Rain Gutter"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 342,
+      "y": 559
+     }
+    ]
+   },
+   {
+    "name": "2nd Zipline #1 (+11)",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Coin - Floor 3 Windowsills - 2nd Zipline #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 3 Windowsills - 2nd Zipline #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 3 Windowsills - 2nd Zipline #3"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 3 Windowsills - 3rd Zipline #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 3 Windowsills - 3rd Zipline #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 3 Windowsills - 3rd Zipline #3"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 3 Windowsills - SW Pole Climb #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 3 Windowsills - SW Pole Climb #2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 3 Windowsills - SW Pole Climb #3"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 3 Windowsills - Pole to Rain Gutter"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 3 Windowsills - Rain Gutter Jump #1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Floor 3 Windowsills - Rain Gutter Jump #2"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 366,
+      "y": 559
+     }
+    ]
+   },
+   {
+    "name": "Clowntop (+1)",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Coin - Boss Arena - Clowntop"
+     },
+     {
+      "name": "Alleys and Gullies - Coin - Boss Arena - Corner"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 785,
+      "y": 115
+     }
+    ]
+   },
+   {
+    "name": "Coin Bundles",
+    "sections": [
+     {
+      "name": "Alleys and Gullies - Coin Bundle 1"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 2"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 3"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 4"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 5"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 6"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 7"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 8"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 9"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 10"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 11"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 12"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 13"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 14"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 15"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 16"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 17"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 18"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 19"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 20"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 21"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 22"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 23"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 24"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 25"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 26"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 27"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 28"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 29"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 30"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 31"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 32"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 33"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 34"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 35"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 36"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 37"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 38"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 39"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 40"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 41"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 42"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 43"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 44"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 45"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 46"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 47"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 48"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 49"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 50"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 51"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 52"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 53"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 54"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 55"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 56"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 57"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 58"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 59"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 60"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 61"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 62"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 63"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 64"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 65"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 66"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 67"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 68"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 69"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 70"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 71"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 72"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 73"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 74"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 75"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 76"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 77"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 78"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 79"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 80"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 81"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 82"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 83"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 84"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 85"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 86"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 87"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 88"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 89"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 90"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 91"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 92"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 93"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 94"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 95"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 96"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 97"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 98"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 99"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 100"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 101"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 102"
+     },
+     {
+      "name": "Alleys and Gullies - Coin Bundle 103"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "alleys_and_gullies",
+      "x": 1388,
+      "y": 413
+     }
+    ]
+   }
+  ]
+ }
+]

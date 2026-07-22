@@ -1,0 +1,775 @@
+[
+ {
+  "name": "Al's Penthouse",
+  "children": [
+   {
+    "name": "Hamm's 50 Coins Token (+1)",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Hamm's 50 Coins Token"
+     },
+     {
+      "name": "Al's Penthouse - Hint Block - Bathtub"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 172,
+      "y": 525
+     }
+    ]
+   },
+   {
+    "name": "Missing Toys Token",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Missing Toys Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 418,
+      "y": 806
+     }
+    ]
+   },
+   {
+    "name": "Race Token",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Race Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 686,
+      "y": 806
+     }
+    ]
+   },
+   {
+    "name": "Hidden Token (+3)",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Hidden Token"
+     },
+     {
+      "name": "Al's Penthouse - Critter - Train Bed"
+     },
+     {
+      "name": "Al's Penthouse - Battery - Train Bed"
+     },
+     {
+      "name": "Al's Penthouse - Hint Block - Train Bed"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 1081,
+      "y": 806
+     }
+    ]
+   },
+   {
+    "name": "Boss Token",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Boss Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 1231,
+      "y": 363
+     }
+    ]
+   },
+   {
+    "name": "Critter (Living Room)",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Critter - Living Room"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 857,
+      "y": 655
+     }
+    ]
+   },
+   {
+    "name": "Critter (Kitchen)",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Critter - Kitchen"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 581,
+      "y": 655
+     }
+    ]
+   },
+   {
+    "name": "Critter (Bathroom)",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Critter - Bathroom"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 261,
+      "y": 229
+     }
+    ]
+   },
+   {
+    "name": "Critter (Woody Room)",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Critter - Woody Room"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 1092,
+      "y": 233
+     }
+    ]
+   },
+   {
+    "name": "Life (Fireplace)",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Life - Fireplace"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 477,
+      "y": 417
+     }
+    ]
+   },
+   {
+    "name": "Green Laser",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Green Laser"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 670,
+      "y": 229
+     }
+    ]
+   },
+   {
+    "name": "Battery (Under Table)",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Battery - Under Table"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 857,
+      "y": 492
+     }
+    ]
+   },
+   {
+    "name": "Battery (Bathroom)",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Battery - Bathroom"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 399,
+      "y": 525
+     }
+    ]
+   },
+   {
+    "name": "Battery (Kitchen)",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Battery - Kitchen"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 443,
+      "y": 655
+     }
+    ]
+   },
+   {
+    "name": "Battery (Television)",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Battery - Television"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 933,
+      "y": 260
+     }
+    ]
+   },
+   {
+    "name": "Talk to Rex",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Talk to Rex"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 491,
+      "y": 590
+     }
+    ]
+   },
+   {
+    "name": "Behind Door (+12)",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Coin - Bedroom - Behind Door"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bedroom - Vulture"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bedroom - Gunman #1"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bedroom - Gunman #2"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bedroom - On Bed"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bedroom - Left Pillow"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bedroom - Right Pillow"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bedroom - 1st Train Switch"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bedroom - 2nd Train Switch"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bedroom - 3rd Train Switch"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bedroom - Train Bed Roof #1"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bedroom - Train Bed Roof #2"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bedroom - Train Bed Roof #3"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 1183,
+      "y": 1002
+     }
+    ]
+   },
+   {
+    "name": "Center Table (+15)",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Coin - Woody Room - Center Table"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Woody Room - Gunman #1"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Woody Room - Gunman #2"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Woody Room - Above Lunchbox"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Woody Room - Above West Display #1"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Woody Room - Above West Display #2"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Woody Room - Vulture #1"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Woody Room - Vulture #2"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Woody Room - Snake #1"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Woody Room - TV"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Woody Room - Snake #2"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Woody Room - Above North Display"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Woody Room - Cannon Kill Switch"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Woody Room - Boss Arena #1"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Woody Room - Boss Arena #2"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Woody Room - Boss Arena #3"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 1213,
+      "y": 186
+     }
+    ]
+   },
+   {
+    "name": "Vulture (Hallway)",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Coin - Hallway - Vulture"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 999,
+      "y": 593
+     }
+    ]
+   },
+   {
+    "name": "Gunman #1 (Kitchen) (+15)",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Coin - Kitchen - Gunman #1"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Kitchen - Snake #1"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Kitchen - Fridge Door"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Kitchen - Jesse Countertop #1"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Kitchen - Jesse Countertop #2"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Kitchen - By Scale"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Kitchen - Snake #2"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Kitchen - Top of Fridge"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Kitchen - East High Shelf"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Kitchen - Critter Shelf"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Kitchen - Snake #3"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Kitchen - Gunman #2"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Kitchen - Vulture"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Kitchen - Stove #1"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Kitchen - Stove #2"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Kitchen - By Coffee Maker"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 515,
+      "y": 1002
+     }
+    ]
+   },
+   {
+    "name": "Vulture #1 (Living Room) (+15)",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Coin - Living Room - Vulture #1"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Living Room - Table with Cannon"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Living Room - Table by Couch"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Living Room - Snake #1"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Living Room - East Railing"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Living Room - Between Railings"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Living Room - West Railing"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Living Room - Fireplace Mantel #1"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Living Room - Fireplace Mantel #2"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Living Room - Snake #2"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Living Room - Long Upper Shelf #1"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Living Room - Vulture #2"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Living Room - Long Upper Shelf #2"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Living Room - Long Upper Shelf #3"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Living Room - Cannon Kill Switch"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Living Room - Bathroom Lock"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 791,
+      "y": 186
+     }
+    ]
+   },
+   {
+    "name": "Gunman (+9)",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Coin - Bathroom - Gunman"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bathroom - Floor near Sponges #1"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bathroom - Floor near Sponges #2"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bathroom - Counter #1"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bathroom - Counter #2"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bathroom - Cannon Kill Switch"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bathroom - Near Showerhead"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bathroom - Cabinet #1"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bathroom - Cabinet #2"
+     },
+     {
+      "name": "Al's Penthouse - Coin - Bathroom - Next to Cannon"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 339,
+      "y": 186
+     }
+    ]
+   },
+   {
+    "name": "Coin Bundles",
+    "sections": [
+     {
+      "name": "Al's Penthouse - Coin Bundle 1"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 2"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 3"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 4"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 5"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 6"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 7"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 8"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 9"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 10"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 11"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 12"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 13"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 14"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 15"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 16"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 17"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 18"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 19"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 20"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 21"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 22"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 23"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 24"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 25"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 26"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 27"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 28"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 29"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 30"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 31"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 32"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 33"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 34"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 35"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 36"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 37"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 38"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 39"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 40"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 41"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 42"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 43"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 44"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 45"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 46"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 47"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 48"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 49"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 50"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 51"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 52"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 53"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 54"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 55"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 56"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 57"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 58"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 59"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 60"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 61"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 62"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 63"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 64"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 65"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 66"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 67"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 68"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 69"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 70"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 71"
+     },
+     {
+      "name": "Al's Penthouse - Coin Bundle 72"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "als_penthouse",
+      "x": 1434,
+      "y": 434
+     }
+    ]
+   }
+  ]
+ }
+]

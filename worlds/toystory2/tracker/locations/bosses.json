@@ -1,0 +1,217 @@
+[
+ {
+  "name": "Bosses",
+  "children": [
+   {
+    "name": "Defeat Reward 1 (+1)",
+    "sections": [
+     {
+      "name": "Bombs Away! - Defeat Reward 1"
+     },
+     {
+      "name": "Bombs Away! - Defeat Reward 2"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "bosses",
+      "x": 399,
+      "y": 412
+     }
+    ]
+   },
+   {
+    "name": "Battery (Back Right)",
+    "sections": [
+     {
+      "name": "Bombs Away! - Battery - Back Right"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "bosses",
+      "x": 497,
+      "y": 234
+     }
+    ]
+   },
+   {
+    "name": "Battery (Back Left)",
+    "sections": [
+     {
+      "name": "Bombs Away! - Battery - Back Left"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "bosses",
+      "x": 304,
+      "y": 234
+     }
+    ]
+   },
+   {
+    "name": "Battery (Front Left)",
+    "sections": [
+     {
+      "name": "Bombs Away! - Battery - Front Left"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "bosses",
+      "x": 304,
+      "y": 603
+     }
+    ]
+   },
+   {
+    "name": "Battery (Front Right)",
+    "sections": [
+     {
+      "name": "Bombs Away! - Battery - Front Right"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "bosses",
+      "x": 497,
+      "y": 603
+     }
+    ]
+   },
+   {
+    "name": "Defeat Reward 1 (+2)",
+    "sections": [
+     {
+      "name": "Slime Time - Defeat Reward 1"
+     },
+     {
+      "name": "Slime Time - Defeat Reward 2"
+     },
+     {
+      "name": "Slime Time - Green Laser"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "bosses",
+      "x": 797,
+      "y": 412
+     }
+    ]
+   },
+   {
+    "name": "Defeat Reward 1 (+1)",
+    "sections": [
+     {
+      "name": "Toy Barn Encounter - Defeat Reward 1"
+     },
+     {
+      "name": "Toy Barn Encounter - Defeat Reward 2"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "bosses",
+      "x": 1251,
+      "y": 412
+     }
+    ]
+   },
+   {
+    "name": "Battery (South)",
+    "sections": [
+     {
+      "name": "Toy Barn Encounter - Battery - South"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "bosses",
+      "x": 1251,
+      "y": 580
+     }
+    ]
+   },
+   {
+    "name": "Battery (North)",
+    "sections": [
+     {
+      "name": "Toy Barn Encounter - Battery - North"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "bosses",
+      "x": 1251,
+      "y": 244
+     }
+    ]
+   },
+   {
+    "name": "Battery (East)",
+    "sections": [
+     {
+      "name": "Toy Barn Encounter - Battery - East"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "bosses",
+      "x": 1413,
+      "y": 412
+     }
+    ]
+   },
+   {
+    "name": "Battery (West)",
+    "sections": [
+     {
+      "name": "Toy Barn Encounter - Battery - West"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "bosses",
+      "x": 1089,
+      "y": 412
+     }
+    ]
+   },
+   {
+    "name": "Defeat Reward 1 (+1)",
+    "sections": [
+     {
+      "name": "The Evil Emperor Zurg - Defeat Reward 1"
+     },
+     {
+      "name": "The Evil Emperor Zurg - Defeat Reward 2"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "bosses",
+      "x": 520,
+      "y": 890
+     }
+    ]
+   },
+   {
+    "name": "Defeat GOAL",
+    "sections": [
+     {
+      "name": "Prospector Showdown - Defeat GOAL"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "bosses",
+      "x": 1051,
+      "y": 890
+     }
+    ]
+   }
+  ]
+ }
+]

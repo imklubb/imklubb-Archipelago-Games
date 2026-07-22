@@ -165,6 +165,12 @@ SHARED_REX_SEED_HIGH            = (0x1FF97C, 1, "MainRAM")
 # On-screen item feed buffer (safe scratch region, not the game-used 0x1FFFxx top)
 FEED_SEQ_ADDR                   = (0x1FFA00, 1, "MainRAM")
 FEED_TEXT_BASE                  = 0x1FFA01
+# Normal-mode music map (22 bytes, index = natural track id, value = track to
+# play instead). Lives in 0x1FFBxx, which is clear of the item-feed text buffer
+# at 0x1FFA01-0x1FFA80. The valid flag is written LAST-ish and gates the Lua.
+MUSIC_MAP_VALID_ADDR            = (0x1FFB00, 1, "MainRAM")
+MUSIC_MAP_BASE                  = 0x1FFB01
+MUSIC_MAP_LEN                   = 22
 # Lua bumps this counter on each debounced Select press; the client advances the
 # feed mode (Off->Sent->Received->Both->Off) whenever the value changes.
 FEED_CYCLE_ADDR                 = (0x1FF970, 1, "MainRAM")
@@ -1115,6 +1121,20 @@ class ToyStory2Client(BizHawkClient):
             # Connection generation (stable; bumped once per connect in on_package)
             (SHARED_CONN_GEN[0],         [new_gen],              "MainRAM"),
         ]
+
+        # Normal-mode music map, rolled at generation with the seed's RNG and
+        # shipped in slot_data, so the shuffle is identical on every reconnect.
+        # Written before the sentinel-bearing batch above is flushed. An empty /
+        # malformed map leaves the valid flag at 0 and the Lua falls back to
+        # rolling its own (old behaviour), so an older seed still works.
+        music_map = sd.get("music_normal_map") or []
+        if len(music_map) == MUSIC_MAP_LEN and all(
+                isinstance(v, int) and 0 <= v <= 255 for v in music_map):
+            writes.append((MUSIC_MAP_BASE, list(music_map), "MainRAM"))
+            writes.append((MUSIC_MAP_VALID_ADDR[0], [1], "MainRAM"))
+        else:
+            writes.append((MUSIC_MAP_VALID_ADDR[0], [0], "MainRAM"))
+
         await write(ctx.bizhawk_ctx, writes)
 
     # ── PROCESS RECEIVED ITEMS ────────────────────────────────

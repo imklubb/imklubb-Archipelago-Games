@@ -312,6 +312,42 @@ class ToyStory2Web(WebWorld):
     )]
 
 
+# ── UNIVERSAL TRACKER MAP PAGE ────────────────────────────────
+# Tab names the client publishes to ts2_current_level_<slot> (see LEVEL_TO_TAB
+# in ts2_client.py) mapped to their index in tracker/maps.json. Anything
+# unrecognised -- including the empty default before the first level loads --
+# falls back to Level Select, which is what the client itself does for level
+# ids outside 1-15.
+_UT_MAP_ORDER = (
+    "airport_infiltration", "als_penthouse", "als_space_land", "als_toy_barn",
+    "alleys_and_gullies", "andys_house", "andys_neighborhood", "bosses",
+    "construction_yard", "elevator_hop", "level_select", "tarmac_trouble",
+)
+_UT_TAB_TO_MAP = {
+    "Andy's House": "andys_house",
+    "Andy's Neighborhood": "andys_neighborhood",
+    "Construction Yard": "construction_yard",
+    "Alleys and Gullies": "alleys_and_gullies",
+    "Al's Toy Barn": "als_toy_barn",
+    "Al's Space Land": "als_space_land",
+    "Elevator Hop": "elevator_hop",
+    "Al's Penthouse": "als_penthouse",
+    "Airport Infiltration": "airport_infiltration",
+    "Tarmac Trouble": "tarmac_trouble",
+    "Bosses": "bosses",
+    "Level Select": "level_select",
+}
+
+
+def map_page_index(tab: str) -> int:
+    """Auto-tab: current level name -> index of that map in tracker/maps.json."""
+    slug = _UT_TAB_TO_MAP.get(tab, "level_select")
+    try:
+        return _UT_MAP_ORDER.index(slug)
+    except ValueError:
+        return _UT_MAP_ORDER.index("level_select")
+
+
 class ToyStory2World(World):
     """
     Buzz Lightyear is on a mission to rescue Woody from the evil Al McWhiggin!
@@ -329,6 +365,42 @@ class ToyStory2World(World):
     # generate_early override every option from slot_data to match the real seed.
     # Without this flag UT requires the player's yaml in the Players folder.
     ut_can_gen_without_yaml: ClassVar[bool] = True
+
+    # Universal Tracker map page: renders the PopTracker-style visual maps as a
+    # second tab alongside UT's in-logic location list. The data under tracker/
+    # is generated from the PopTracker pack (same maps, same pin coordinates),
+    # with each section carrying the FULL Archipelago location name so UT can
+    # match it. map_page_setting_key reuses the auto-tab key the client already
+    # publishes every tick (ts2_current_level_<slot>), so the map follows the
+    # player between levels with no extra client work. Coins are covered in both
+    # modes: at coinsanity_checks_bundle_size == 1 each coin is its own check
+    # under its DESCRIPTIVE name, so those pins sit on the exact coin positions;
+    # at larger sizes the seed instead creates "Coin Bundle N" aggregates, which
+    # span several coins and so have no single position -- those are collected
+    # onto one "Coin Bundles" pin per level, placed where the PopTracker pack
+    # puts its coin counter. Both name sets are emitted for every level; UT drops
+    # any section that isn't among this seed's locations, so exactly one of the
+    # two shows up and the other silently disappears.
+    tracker_world: ClassVar = {
+        "map_page_folder": "tracker",
+        "map_page_maps": "maps.json",
+        "map_page_locations": [
+            "locations/andys_house.json",
+            "locations/andys_neighborhood.json",
+            "locations/construction_yard.json",
+            "locations/alleys_and_gullies.json",
+            "locations/als_toy_barn.json",
+            "locations/als_space_land.json",
+            "locations/elevator_hop.json",
+            "locations/als_penthouse.json",
+            "locations/airport_infiltration.json",
+            "locations/tarmac_trouble.json",
+            "locations/bosses.json",
+            "locations/level_select.json",
+        ],
+        "map_page_setting_key": "ts2_current_level_{player}",
+        "map_page_index": map_page_index,
+    }
 
     # Built at class level — includes ALL possible locations and items
     # Dynamic ones (coin bundles) are added in create_regions
@@ -994,6 +1066,7 @@ class ToyStory2World(World):
             "music_randomizer_mode":            options.music_randomizer_mode.value,
             "oops_all_bangers_song":            options.oops_all_bangers_song.value,
             "skip_song":                        options.skip_song.value,
+            "music_normal_map":                 self._build_music_normal_map(options),
             # Death Link
             "death_link":                       options.death_link.value,
             # Traps
@@ -1004,6 +1077,44 @@ class ToyStory2World(World):
             "freeze_buzz_trap_weight":          options.freeze_buzz_trap_weight.value,
             "invincible_enemies_trap_weight":   options.invincible_enemies_trap_weight.value,
         }
+
+    # ── MUSIC RANDOMIZER (NORMAL MODE) ────────────────────────
+    # Track ids 0-21 (see TRACK_NAMES in the Lua). Normal mode shuffles this
+    # subset one-to-one; 17 (Game Over), 20 (Title Screen) and 21 (Level
+    # Complete) are deliberately excluded and always map to themselves.
+    MUSIC_NORMAL_POOL = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                         11, 12, 13, 14, 15, 16, 18, 19)
+    MUSIC_TRACK_COUNT = 22
+
+    def _build_music_normal_map(self, options) -> list:
+        """Build the one-to-one 'normal' music mapping HERE at generation time,
+        using this world's seeded RNG, and ship it in slot_data.
+
+        Previously the Lua rolled this itself with math.random, which is never
+        seeded -- so every script reload reshuffled and a player's music changed
+        on any disconnect/reconnect. Generating it here makes it a property of
+        the seed: identical on every reconnect, identical for anyone else
+        looking at the same slot, and visible in the spoiler log.
+
+        Returns a flat 22-entry list where index = the game's natural track id
+        and the value = the track to play instead. Entries outside the shuffled
+        pool are identity. Returns [] when normal mode isn't selected (chaos and
+        oops-all-bangers don't use a map), so the client knows to skip it.
+        """
+        if options.music_randomizer_mode.value != 1:  # 1 == normal
+            return []
+        pool = list(self.MUSIC_NORMAL_POOL)
+        # Derangement: no track may map to itself, matching the Lua's old
+        # rejection loop. Re-roll until there are no fixed points.
+        while True:
+            shuffled = pool[:]
+            self.random.shuffle(shuffled)
+            if all(a != b for a, b in zip(pool, shuffled)):
+                break
+        mapping = list(range(self.MUSIC_TRACK_COUNT))  # identity baseline
+        for orig, new in zip(pool, shuffled):
+            mapping[orig] = new
+        return mapping
 
     # ── UNIVERSAL TRACKER SUPPORT ─────────────────────────────
     @staticmethod

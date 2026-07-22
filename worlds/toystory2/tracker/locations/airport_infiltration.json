@@ -1,0 +1,730 @@
+[
+ {
+  "name": "Airport Infiltration",
+  "children": [
+   {
+    "name": "Hamm's 50 Coins Token",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Hamm's 50 Coins Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 479,
+      "y": 935
+     }
+    ]
+   },
+   {
+    "name": "Missing Toys Token",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Missing Toys Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 1484,
+      "y": 279
+     }
+    ]
+   },
+   {
+    "name": "Race Token",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Race Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 922,
+      "y": 543
+     }
+    ]
+   },
+   {
+    "name": "Hidden Token (+1)",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Hidden Token"
+     },
+     {
+      "name": "Airport Infiltration - Battery - Near Hidden Token"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 1243,
+      "y": 472
+     }
+    ]
+   },
+   {
+    "name": "Boss Token (+1)",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Boss Token"
+     },
+     {
+      "name": "Airport Infiltration - Battery - Boss Arena"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 234,
+      "y": 395
+     }
+    ]
+   },
+   {
+    "name": "Passenger Tike (Near Start)",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Passenger Tike - Near Start"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 922,
+      "y": 935
+     }
+    ]
+   },
+   {
+    "name": "Passenger Tike (Top of Conveyor Belts)",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Passenger Tike - Top of Conveyor Belts"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 922,
+      "y": 266
+     }
+    ]
+   },
+   {
+    "name": "Passenger Tike (Near Boss Arena)",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Passenger Tike - Near Boss Arena"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 376,
+      "y": 299
+     }
+    ]
+   },
+   {
+    "name": "Passenger Tike (Top of Jet)",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Passenger Tike - Top of Jet"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 1130,
+      "y": 266
+     }
+    ]
+   },
+   {
+    "name": "Passenger Tike (Scaffolding)",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Passenger Tike - Scaffolding"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 1133,
+      "y": 543
+     }
+    ]
+   },
+   {
+    "name": "Missing Mouth",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Missing Mouth"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 1347,
+      "y": 386
+     }
+    ]
+   },
+   {
+    "name": "Give Potato Head His Mouth",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Give Potato Head His Mouth"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 75,
+      "y": 570
+     }
+    ]
+   },
+   {
+    "name": "Green Laser",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Green Laser"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 1243,
+      "y": 308
+     }
+    ]
+   },
+   {
+    "name": "Battery (Luggage Pile)",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Battery - Luggage Pile"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 171,
+      "y": 395
+     }
+    ]
+   },
+   {
+    "name": "Talk to Rex",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Talk to Rex"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 75,
+      "y": 299
+     }
+    ]
+   },
+   {
+    "name": "Near Start #1 (+18)",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - Near Start #1"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - Near Start #2"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - Between Snakes"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - Suitcase on Floor"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - Gunman #1"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - Gunman #2"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - Gunman #3"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - Snake #1"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - Snake #2"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - Snake #3"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - 1st Conveyor Belt"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - Vulture"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - 2nd Conveyor Belt"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - 3rd Conveyor Belt #1"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - 3rd Conveyor Belt #2"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - Near Hamm"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - 1st X-Ray"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - 2nd X-Ray"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Starting Room - 3rd X-Ray"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 860,
+      "y": 1021
+     }
+    ]
+   },
+   {
+    "name": "Vulture #1 (C.Belt Room) (+23)",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - Vulture #1"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - Snake"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - Gunman #1"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - Gunman #2"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - Gunman #3"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - Entry Conveyor Belt"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - Under Entry Conveyor Belt"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - Near Airplane Room"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - 2nd Floor Belt #1"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - 2nd Floor Belt #2"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - 2nd Floor Belt #3"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - 3rd Floor Belts #1"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - 3rd Floor Belts #2"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - Gunman #4"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - Gunman #5"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - Vulture #2"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - 4th Floor Belts #1"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - 4th Floor Belts #2"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - 4th Floor Belts #3"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - 4th Floor Belts #4"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - Top SE Corner Light"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - 5th Floor Belts #1"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - 5th Floor Belts #2"
+     },
+     {
+      "name": "Airport Infiltration - Coin - C.Belt Room - 5th Floor Belts #3"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 911,
+      "y": 201
+     }
+    ]
+   },
+   {
+    "name": "Gunman #1 (Airplane Room) (+21)",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - Gunman #1"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - Gunman #2"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - Gunman #3"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - NW Corner"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - Oil Spill near NW"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - Oil Spill near Green Laser"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - Snake #1"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - Snake #2"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - Pushable Wheel"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - 1st Wing Seesaw"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - 2nd Wing Seesaw"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - Lower Red Tail Wing"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - Upper Red Tail Wing #1"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - Upper Red Tail Wing #2"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - East Scaffolding"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - East Scaffolding Steps"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - Platform by Cockpit"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - Snake #3"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - West Scaffolding Steps"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - Scaffolding over Passenger"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - NE Corner"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Airplane Room - Near SE Corner"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 1443,
+      "y": 198
+     }
+    ]
+   },
+   {
+    "name": "Vulture #1 (Luggage Room) (+6)",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Coin - Luggage Room - Vulture #1"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Luggage Room - Vulture #2"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Luggage Room - SE Corner"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Luggage Room - By Metal Doors"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Luggage Room - Canadian Cargo"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Luggage Room - Lower East Suitcase"
+     },
+     {
+      "name": "Airport Infiltration - Coin - Luggage Room - Near Top of Luggage"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 369,
+      "y": 201
+     }
+    ]
+   },
+   {
+    "name": "Coin Bundles",
+    "sections": [
+     {
+      "name": "Airport Infiltration - Coin Bundle 1"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 2"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 3"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 4"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 5"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 6"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 7"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 8"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 9"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 10"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 11"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 12"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 13"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 14"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 15"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 16"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 17"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 18"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 19"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 20"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 21"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 22"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 23"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 24"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 25"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 26"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 27"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 28"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 29"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 30"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 31"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 32"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 33"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 34"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 35"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 36"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 37"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 38"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 39"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 40"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 41"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 42"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 43"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 44"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 45"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 46"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 47"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 48"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 49"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 50"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 51"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 52"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 53"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 54"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 55"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 56"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 57"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 58"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 59"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 60"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 61"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 62"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 63"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 64"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 65"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 66"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 67"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 68"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 69"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 70"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 71"
+     },
+     {
+      "name": "Airport Infiltration - Coin Bundle 72"
+     }
+    ],
+    "map_locations": [
+     {
+      "map": "airport_infiltration",
+      "x": 220,
+      "y": 885
+     }
+    ]
+   }
+  ]
+ }
+]

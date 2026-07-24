@@ -342,7 +342,7 @@ ALL_LOCATIONS: List[Loc] = [
     Loc('Construction Yard - Coin - Floor 4 - Jackhammer', 'Construction Yard', 'Coinsanity', 72, 0x0C3D5A, 'Floor 4', 'miniboss', 'Floor 4', 'Double Jump and Ledge Grab and Stomp and Pole Climb and Disc Launcher', 'Double Jump and Disc Launcher', '', '', ''),
     Loc("Construction Yard - Hamm's 50 Coins Token", 'Construction Yard', 'Base AP', 0, None, '', '', '', 'Push and Double Jump and Ledge Grab', 'Double Jump', '', '', '50 Coins'),
     Loc('Construction Yard - Missing Toys Token', 'Construction Yard', 'Base AP', 0, None, '', '', '', 'Double Jump', '', '', '', '5 Missing Toys'),
-    Loc('Construction Yard - Race Token', 'Construction Yard', 'Base AP', 0, None, '', '', '', 'Double Jump and Ledge Grab', '(always)', '', '', ''),
+    Loc('Construction Yard - Race Token', 'Construction Yard', 'Base AP', 0, None, '', '', '', 'Double Jump and Ledge Grab', 'Double Jump', '', '', ''),
     Loc('Construction Yard - Hidden Token', 'Construction Yard', 'Base AP', 0, None, '', '', '', 'Double Jump and Ledge Grab and Pole Climb and Stomp and Push', 'Stomp and Double Jump and Ledge Grab and Push', '', '', ''),
     Loc('Construction Yard - Boss Token', 'Construction Yard', 'Base AP', 0, None, '', '', '', 'Double Jump and Ledge Grab and Stomp and Pole Climb and Disc Launcher', 'Double Jump and Disc Launcher', '', '', ''),
     Loc('Construction Yard - Worker Tike (Wheelbarrow)', 'Construction Yard', 'Base AP', 0, None, '', '', '', 'Double Jump and Push and Ledge Grab', 'Double Jump', '', '', ''),

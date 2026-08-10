@@ -1,0 +1,142 @@
+[
+  {
+    "addr": 5328832,
+    "released": 4294932736,
+    "held": 4043274496
+  },
+  {
+    "addr": 5328960,
+    "released": 4294932736,
+    "held": 4043274496
+  },
+  {
+    "addr": 5329112,
+    "released": 4294932736,
+    "held": 4043274496
+  },
+  {
+    "addr": 5730360,
+    "released": 0,
+    "held": 3
+  },
+  {
+    "addr": 5730592,
+    "released": 0,
+    "held": 3
+  },
+  {
+    "addr": 6351972,
+    "released": 0,
+    "held": 1
+  },
+  {
+    "addr": 6351976,
+    "released": 0,
+    "held": 1
+  },
+  {
+    "addr": 4269712,
+    "released": 0,
+    "held": 1065353216
+  },
+  {
+    "addr": 4269716,
+    "released": 0,
+    "held": 1065353216
+  },
+  {
+    "addr": 4269720,
+    "released": 0,
+    "held": 1065353216
+  },
+  {
+    "addr": 4269724,
+    "released": 0,
+    "held": 1065353216
+  },
+  {
+    "addr": 6357624,
+    "released": 255,
+    "held": 0
+  },
+  {
+    "addr": 6357628,
+    "released": 0,
+    "held": 255
+  },
+  {
+    "addr": 6351924,
+    "released": 1132396544,
+    "held": 0
+  },
+  {
+    "addr": 6351928,
+    "released": 0,
+    "held": 1132396544
+  },
+  {
+    "addr": 6351936,
+    "released": 1132396544,
+    "held": 0
+  },
+  {
+    "addr": 6351940,
+    "released": 0,
+    "held": 1132396544
+  },
+  {
+    "addr": 5329208,
+    "released": 0,
+    "held": 32760
+  },
+  {
+    "addr": 5329212,
+    "released": 0,
+    "held": 32760
+  },
+  {
+    "addr": 5329220,
+    "released": 0,
+    "held": 32760
+  },
+  {
+    "addr": 5329224,
+    "released": 0,
+    "held": 32760
+  },
+  {
+    "addr": 5734348,
+    "released": 0,
+    "held": 32760
+  },
+  {
+    "addr": 5734580,
+    "released": 0,
+    "held": 32760
+  },
+  {
+    "addr": 5735044,
+    "released": 0,
+    "held": 32760
+  },
+  {
+    "addr": 5735276,
+    "released": 0,
+    "held": 32760
+  },
+  {
+    "addr": 5328848,
+    "released": 0,
+    "held": 4294967295
+  },
+  {
+    "addr": 5328976,
+    "released": 0,
+    "held": 4294967295
+  },
+  {
+    "addr": 5329128,
+    "released": 0,
+    "held": 4294967295
+  }
+]

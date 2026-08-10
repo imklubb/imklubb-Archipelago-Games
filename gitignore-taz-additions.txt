@@ -1,0 +1,21 @@
+Append these lines to the END of Archipelago's own .gitignore.
+
+Do not replace the file -- run `git restore .gitignore` first to get
+Archipelago's back, then paste this at the bottom. Archipelago's already
+covers host.yaml, *.apworld, __pycache__/, venv/, logs/ and /output/, and
+losing those is why replacing it was a problem.
+
+------------------------------ paste below ------------------------------
+
+# --- Taz: Wanted -------------------------------------------------------
+# RAM dumps. 32MB each of console memory, rebuildable in a minute with
+# tools/taz_ramdump.py. These must never be committed.
+*.bin
+
+# Written by the client, per-machine.
+taz_wanted_states/
+enemylist.txt
+roster.txt
+
+# Build output
+dist/

@@ -1,0 +1,2 @@
+# Nothing beyond what Archipelago already provides. PINE support lives in
+# pcsx2_interface/pine.py, which is vendored rather than installed.

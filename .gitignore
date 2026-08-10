@@ -199,3 +199,17 @@ _speedups.html
 .LSOverride
 Thumbs.db
 [Dd]esktop.ini
+
+# --- Taz: Wanted -------------------------------------------------------
+# RAM dumps. 32MB each of console memory, rebuildable in a minute with
+# tools/taz_ramdump.py. These must never be committed.
+*.bin
+
+# Written by the client, per-machine.
+taz_wanted_states/
+enemylist.txt
+roster.txt
+
+# Build output
+dist/
+

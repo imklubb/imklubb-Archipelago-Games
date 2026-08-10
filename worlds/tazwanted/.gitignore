@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+*.apworld
+taz_client_state_*.json

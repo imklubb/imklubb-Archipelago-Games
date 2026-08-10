@@ -1,0 +1,428 @@
+{
+ "5": {
+  "name": "Zooney Tunes",
+  "radius": 1220,
+  "catchers": [
+   {
+    "pos": [
+     -2549.2,
+     33.5,
+     -4980.5
+    ],
+    "name": "In Pen Near Entrance"
+   },
+   {
+    "pos": [
+     -3922.3,
+     -62.0,
+     -520.2
+    ],
+    "name": "Crossroads at Start"
+   },
+   {
+    "pos": [
+     3846.6,
+     37.3,
+     93.1
+    ],
+    "name": "Near Watchtower Poster"
+   },
+   {
+    "pos": [
+     -2948.7,
+     59.8,
+     7998.9
+    ],
+    "name": "Across Wooden Jump Ramp"
+   },
+   {
+    "pos": [
+     -167.8,
+     1209.5,
+     8501.4
+    ],
+    "name": "On Top of Hill"
+   },
+   {
+    "pos": [
+     3931.8,
+     1155.7,
+     6354.6
+    ],
+    "name": "Above Bee Hive Poster"
+   }
+  ]
+ },
+ "3": {
+  "name": "Yosemite Zoo",
+  "radius": 800.0,
+  "catchers": [
+   {
+    "pos": [
+     -5993.3,
+     -3861.3,
+     -5592.0
+    ],
+    "name": "Tutorial 4"
+   }
+  ]
+ },
+ "4": {
+  "name": "Ice Burg",
+  "radius": 1320,
+  "catchers": [
+   {
+    "pos": [
+     1107.9,
+     -2424.7,
+     -4817.6
+    ],
+    "name": "At Base of Christmas Tree"
+   },
+   {
+    "pos": [
+     4069.5,
+     -1921.0,
+     -1032.2
+    ],
+    "name": "Walkway Leading To Igloos"
+   },
+   {
+    "pos": [
+     1534.0,
+     -1555.7,
+     2325.6
+    ],
+    "name": "On Bridge"
+   },
+   {
+    "pos": [
+     2382.1,
+     -1384.8,
+     5511.5
+    ],
+    "name": "In Front of Skating Rink"
+   },
+   {
+    "pos": [
+     -8047.0,
+     -1366.2,
+     5359.3
+    ],
+    "name": "Near Cable Car Poster"
+   },
+   {
+    "pos": [
+     8269.6,
+     -1853.4,
+     -7393.5
+    ],
+    "name": "Near Christmas House By Star Poster"
+   }
+  ]
+ },
+ "6": {
+  "name": "Looney Lagoon",
+  "radius": 1500.0,
+  "catchers": [
+   {
+    "pos": [
+     13024.8,
+     -3809.5,
+     3677.6
+    ],
+    "name": "Near Giant Sink"
+   },
+   {
+    "pos": [
+     2063.2,
+     -2659.2,
+     5118.2
+    ],
+    "name": "Halfway Up Mountain"
+   },
+   {
+    "pos": [
+     -2357.5,
+     -3733.2,
+     8077.2
+    ],
+    "name": "In Front of Changing Booths"
+   },
+   {
+    "pos": [
+     4566.5,
+     -2716.9,
+     -519.7
+    ],
+    "name": "Near Bridge Leading to Entrance"
+   }
+  ]
+ },
+ "10": {
+  "name": "Samsonian Museum",
+  "radius": 800.0,
+  "catchers": [
+   {
+    "pos": [
+     -14172.9,
+     196.6,
+     -1777.5
+    ],
+    "name": "Hallway of Paintings"
+   }
+  ]
+ },
+ "9": {
+  "name": "Looningdale's",
+  "radius": 1500.0,
+  "catchers": [
+   {
+    "pos": [
+     -5280.4,
+     -322.6,
+     6038.3
+    ],
+    "name": "Second Floor of Lobby"
+   },
+   {
+    "pos": [
+     -16642.1,
+     -2824.0,
+     675.9
+    ],
+    "name": "Sporting Goods Department"
+   },
+   {
+    "pos": [
+     5274.7,
+     -822.7,
+     -2096.4
+    ],
+    "name": "Toy Department North"
+   },
+   {
+    "pos": [
+     7667.0,
+     -822.7,
+     3353.2
+    ],
+    "name": "Toy Department South"
+   }
+  ]
+ },
+ "11": {
+  "name": "Bank of Samerica",
+  "radius": 1100,
+  "catchers": [
+   {
+    "pos": [
+     -885.4,
+     -12250.6,
+     3666.3
+    ],
+    "name": "Ground Floor Between Buildings"
+   },
+   {
+    "pos": [
+     -6365.2,
+     -12316.7,
+     1958.1
+    ],
+    "name": "Ground Floor Red Building"
+   },
+   {
+    "pos": [
+     -10553.0,
+     -12315.1,
+     4555.8
+    ],
+    "name": "Ground Floor Left of Red Building"
+   },
+   {
+    "pos": [
+     4914.9,
+     12070.0,
+     4824.4
+    ],
+    "name": "Top of Green Building Center"
+   },
+   {
+    "pos": [
+     7603.4,
+     11942.5,
+     4288.8
+    ],
+    "name": "Top of Green Building North"
+   },
+   {
+    "pos": [
+     6300.4,
+     12071.5,
+     1321.6
+    ],
+    "name": "Top of Green Building South"
+   }
+  ]
+ },
+ "14": {
+  "name": "Taz: Haunted",
+  "radius": 1500.0,
+  "catchers": [
+   {
+    "pos": [
+     2865.3,
+     -1943.9,
+     -4311.2
+    ],
+    "name": "Entrance"
+   },
+   {
+    "pos": [
+     -1230.9,
+     -740.2,
+     -2167.1
+    ],
+    "name": "Overlooking Saloon"
+   },
+   {
+    "pos": [
+     1905.0,
+     -1691.3,
+     9400.0
+    ],
+    "name": "Near Waterwheel"
+   },
+   {
+    "pos": [
+     12376.9,
+     -1141.8,
+     12233.5
+    ],
+    "name": "Below Gong Poster"
+   }
+  ]
+ },
+ "15": {
+  "name": "Cartoon Strip-Mine",
+  "radius": 1500.0,
+  "catchers": [
+   {
+    "pos": [
+     5054.9,
+     3158.6,
+     4324.4
+    ],
+    "name": "Near Entrance to Inner Mines"
+   },
+   {
+    "pos": [
+     4727.3,
+     4503.6,
+     -4766.8
+    ],
+    "name": "Below Spotlight Poster Building"
+   },
+   {
+    "pos": [
+     2173.2,
+     1803.8,
+     11003.1
+    ],
+    "name": "Near Roller Coaster Start Point"
+   },
+   {
+    "pos": [
+     1425.9,
+     -17185.4,
+     -69435.4
+    ],
+    "name": "Near Gold Vault"
+   }
+  ]
+ },
+ "16": {
+  "name": "Granny Canyon",
+  "radius": 1500.0,
+  "catchers": [
+   {
+    "pos": [
+     -6815.7,
+     -4467.7,
+     -2866.5
+    ],
+    "name": "Near Train Electrical Box"
+   },
+   {
+    "pos": [
+     5238.1,
+     -4455.3,
+     6178.1
+    ],
+    "name": "Start of South Winding Road"
+   },
+   {
+    "pos": [
+     115.6,
+     -3401.1,
+     8759.3
+    ],
+    "name": "Midpoint of South Winding Road"
+   },
+   {
+    "pos": [
+     7933.3,
+     -2668.1,
+     8814.5
+    ],
+    "name": "Above Gas Station"
+   }
+  ]
+ },
+ "18": {
+  "name": "Tazland A-maze-ment Park",
+  "radius": 1500.0,
+  "catchers": [
+   {
+    "pos": [
+     14908.3,
+     647.2,
+     4004.0
+    ],
+    "name": "Forest Maze Ground Floor West"
+   },
+   {
+    "pos": [
+     9412.3,
+     648.0,
+     3271.5
+    ],
+    "name": "Forest Maze Ground Floor East"
+   },
+   {
+    "pos": [
+     -2882.2,
+     5108.0,
+     -2629.2
+    ],
+    "name": "Crossroads After Giant Bridge"
+   },
+   {
+    "pos": [
+     -5917.4,
+     5093.3,
+     477.6
+    ],
+    "name": "Start of Right Path After Giant Bridge"
+   },
+   {
+    "pos": [
+     -12709.5,
+     5052.9,
+     2737.6
+    ],
+    "name": "End of Right Path After Giant Bridge"
+   }
+  ]
+ }
+}

@@ -1,0 +1,369 @@
+{
+ "kind": "live",
+ "seconds": 155.15,
+ "interval": 0.02,
+ "transitions": [
+  {
+   "lid": 14,
+   "gs": 1,
+   "taz": 6931856,
+   "actor": 6931856,
+   "st": 6932752,
+   "state": 10,
+   "handler": 0,
+   "request": 255,
+   "pos": [
+    -578.3,
+    -3559.1,
+    16516.4
+   ],
+   "anim": 6530576,
+   "flags": 4096,
+   "costume_obj": 8594992,
+   "t": 0.0,
+   "state_name": "IDLE"
+  },
+  {
+   "lid": 14,
+   "gs": 1,
+   "taz": 6931856,
+   "actor": 6931856,
+   "st": 6932752,
+   "state": 0,
+   "handler": 0,
+   "request": 255,
+   "pos": [
+    -578.3,
+    -3559.1,
+    16516.4
+   ],
+   "anim": 6530576,
+   "flags": 4096,
+   "costume_obj": 8594992,
+   "t": 1.434,
+   "state_name": "MOVE"
+  },
+  {
+   "lid": 14,
+   "gs": 1,
+   "taz": 6931856,
+   "actor": 6931856,
+   "st": 6932752,
+   "state": 12,
+   "handler": 0,
+   "request": 255,
+   "pos": [
+    -690.7,
+    -3558.6,
+    16721.9
+   ],
+   "anim": 6530576,
+   "flags": 4096,
+   "costume_obj": 8594992,
+   "t": 1.742,
+   "state_name": "SPINUP"
+  },
+  {
+   "lid": 14,
+   "gs": 1,
+   "taz": 6931856,
+   "actor": 6931856,
+   "st": 6932752,
+   "state": 13,
+   "handler": 0,
+   "request": 255,
+   "pos": [
+    -720.1,
+    -3557.6,
+    17107.3
+   ],
+   "anim": 6527536,
+   "flags": 4096,
+   "costume_obj": 8594992,
+   "t": 1.97,
+   "state_name": "SPIN"
+  },
+  {
+   "lid": 14,
+   "gs": 1,
+   "taz": 6931856,
+   "actor": 6931856,
+   "st": 6932752,
+   "state": 93,
+   "handler": 0,
+   "request": 255,
+   "pos": [
+    -851.9,
+    -3559.9,
+    20019.4
+   ],
+   "anim": 6530576,
+   "flags": 4096,
+   "costume_obj": 8594992,
+   "t": 3.327,
+   "state_name": "ZAPPEDINTOMOUSE"
+  },
+  {
+   "lid": 14,
+   "gs": 1,
+   "taz": 6931856,
+   "actor": 6931856,
+   "st": 6932752,
+   "state": 81,
+   "handler": 0,
+   "request": 255,
+   "pos": [
+    -851.9,
+    -3559.9,
+    20019.4
+   ],
+   "anim": 6527536,
+   "flags": 4096,
+   "costume_obj": 8594992,
+   "t": 3.491,
+   "state_name": "MOUSE"
+  },
+  {
+   "lid": 14,
+   "gs": 1,
+   "taz": 6931856,
+   "actor": 6931856,
+   "st": 6932752,
+   "state": 94,
+   "handler": 0,
+   "request": 255,
+   "pos": [
+    1339.8,
+    -3463.0,
+    23321.6
+   ],
+   "anim": 6527536,
+   "flags": 4096,
+   "costume_obj": 8594992,
+   "t": 12.137,
+   "state_name": "ZAPPEDINTOBALL"
+  },
+  {
+   "lid": 14,
+   "gs": 1,
+   "taz": 6931856,
+   "actor": 6931856,
+   "st": 6932752,
+   "state": 82,
+   "handler": 0,
+   "request": 255,
+   "pos": [
+    1339.8,
+    -3463.0,
+    23321.6
+   ],
+   "anim": 6523168,
+   "flags": 0,
+   "costume_obj": 8594992,
+   "t": 12.157,
+   "state_name": "BALL"
+  },
+  {
+   "lid": 14,
+   "gs": 1,
+   "taz": 6931856,
+   "actor": 6931856,
+   "st": 6932752,
+   "state": 82,
+   "handler": 0,
+   "request": 255,
+   "pos": [
+    4310.1,
+    -4022.9,
+    13377.9
+   ],
+   "anim": 6523168,
+   "flags": 2050,
+   "costume_obj": 8594992,
+   "t": 19.921,
+   "state_name": "BALL"
+  },
+  {
+   "lid": 14,
+   "gs": 1,
+   "taz": 6931856,
+   "actor": 6931856,
+   "st": 6932752,
+   "state": 82,
+   "handler": 0,
+   "request": 0,
+   "pos": [
+    -706.6,
+    -3494.0,
+    16760.3
+   ],
+   "anim": 6523168,
+   "flags": 2050,
+   "costume_obj": 8594992,
+   "t": 21.459,
+   "state_name": "BALL"
+  },
+  {
+   "lid": 14,
+   "gs": 1,
+   "taz": 6931856,
+   "actor": 6931856,
+   "st": 6932752,
+   "state": 0,
+   "handler": 0,
+   "request": 255,
+   "pos": [
+    -718.0,
+    -3558.4,
+    16770.0
+   ],
+   "anim": 6523168,
+   "flags": 0,
+   "costume_obj": 8594992,
+   "t": 21.536,
+   "state_name": "MOVE"
+  },
+  {
+   "lid": 14,
+   "gs": 1,
+   "taz": 6931856,
+   "actor": 6931856,
+   "st": 6932752,
+   "state": 8,
+   "handler": 0,
+   "request": 255,
+   "pos": [
+    -718.0,
+    -3528.9,
+    16770.0
+   ],
+   "anim": 6523168,
+   "flags": 0,
+   "costume_obj": 8594992,
+   "t": 26.274,
+   "state_name": "JUMP"
+  },
+  {
+   "lid": 14,
+   "gs": 1,
+   "taz": 6931856,
+   "actor": 6931856,
+   "st": 6932752,
+   "state": 0,
+   "handler": 0,
+   "request": 255,
+   "pos": [
+    -937.4,
+    -3558.8,
+    16610.4
+   ],
+   "anim": 6523168,
+   "flags": 0,
+   "costume_obj": 8594992,
+   "t": 26.992,
+   "state_name": "MOVE"
+  },
+  {
+   "lid": 14,
+   "gs": 1,
+   "taz": 6931856,
+   "actor": 6931856,
+   "st": 6932752,
+   "state": 8,
+   "handler": 0,
+   "request": 255,
+   "pos": [
+    -937.4,
+    -3529.4,
+    16610.4
+   ],
+   "anim": 6523168,
+   "flags": 0,
+   "costume_obj": 8594992,
+   "t": 27.237,
+   "state_name": "JUMP"
+  },
+  {
+   "lid": 14,
+   "gs": 1,
+   "taz": 6931856,
+   "actor": 6931856,
+   "st": 6932752,
+   "state": 0,
+   "handler": 0,
+   "request": 255,
+   "pos": [
+    -969.4,
+    -3558.9,
+    16590.4
+   ],
+   "anim": 6523168,
+   "flags": 0,
+   "costume_obj": 8594992,
+   "t": 27.954,
+   "state_name": "MOVE"
+  },
+  {
+   "lid": 14,
+   "gs": 1,
+   "taz": 6931856,
+   "actor": 6931856,
+   "st": 6932752,
+   "state": 39,
+   "handler": 0,
+   "request": 255,
+   "pos": [
+    -969.4,
+    -3558.9,
+    16590.4
+   ],
+   "anim": 6523168,
+   "flags": 0,
+   "costume_obj": 8594992,
+   "t": 148.471,
+   "state_name": "GOTOSLEEP"
+  },
+  {
+   "lid": 14,
+   "gs": 1,
+   "taz": 6931856,
+   "actor": 6931856,
+   "st": 6932752,
+   "state": 40,
+   "handler": 0,
+   "request": 255,
+   "pos": [
+    -969.4,
+    -3558.9,
+    16590.4
+   ],
+   "anim": 6523168,
+   "flags": 0,
+   "costume_obj": 8594992,
+   "t": 148.492,
+   "state_name": "SLEEP"
+  }
+ ],
+ "judged": true,
+ "client_tick": 0.1,
+ "deathlink_verdicts": [
+  {
+   "t": 22.06,
+   "kind": "void_out"
+  }
+ ],
+ "held_seconds": 0.0,
+ "state_ticks": {
+  "0x00 MOVE": 6126,
+  "0x08 JUMP": 70,
+  "0x0A IDLE": 70,
+  "0x0C SPINUP": 9,
+  "0x0D SPIN": 66,
+  "0x27 GOTOSLEEP": 1,
+  "0x28 SLEEP": 323,
+  "0x51 MOUSE": 422,
+  "0x52 BALL": 455,
+  "0x5D ZAPPEDINTOMOUSE": 8,
+  "0x5E ZAPPEDINTOBALL": 1
+ }
+}

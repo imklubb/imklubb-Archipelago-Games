@@ -1,0 +1,14 @@
+{
+  "stolen": {
+    "when": "2026-08-05 03:14:10",
+    "node": 6365392,
+    "obj": 6363296,
+    "from_page": 9046656,
+    "level": 3,
+    "slot": "B",
+    "freed_itself": true,
+    "node_size": 96,
+    "obj_size": 48
+  },
+  "stub_base": 32507904
+}

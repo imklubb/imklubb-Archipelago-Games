@@ -1,57 +1,69 @@
 # imklubb's Archipelago worlds
 
 A fork of [Archipelago](https://github.com/ArchipelagoMW/Archipelago) holding
-the worlds I maintain. Everything upstream is unchanged; my work lives in
-`worlds/`.
+the source for the worlds I maintain. Everything upstream is unchanged; my work
+lives in `worlds/`.
 
-## The worlds
+**This repository is the source. It is not where you download anything.**
 
-| Game | Platform | Version | Guide |
-|---|---|---|---|
-| **Taz: Wanted** | PS2, via PCSX2 | 1.0.0 | [README](worlds/tazwanted/README.md) · [setup](worlds/tazwanted/docs/setup_en.md) |
-| **Toy Story 2** | | | |
+## Downloads
 
-## Downloading
+| Game | Get the apworld | Tracker |
+|---|---|---|
+| **Taz: Wanted** | [Archipelago-Taz-Wanted](https://github.com/imklubb/Archipelago-Taz-Wanted/releases/latest) | [Taz-Wanted-Poptracker](https://github.com/imklubb/Taz-Wanted-Poptracker) |
+| **Toy Story 2** | [Archipelago-Toy-Story-2](https://github.com/imklubb/Archipelago-Toy-Story-2/releases/latest) | [Toy-Story-2-Poptracker](https://github.com/imklubb/Toy-Story-2-Poptracker/releases/latest) |
 
-You do not need this repository to play. Go to
-**[Releases](https://github.com/imklubb/imklubb-Archipelago-Games/releases)**
-and download the `.apworld` for the game you want, then double-click it.
+Each of those has its own setup guide and its own issue tracker. Bug reports
+belong there, next to the version they are about.
 
-Releases are tagged per game, because both worlds ship from here:
+## What is in here
 
-- `taz-1.0.0` — Taz: Wanted
-- `ts2-2.1.2` — Toy Story 2
+```
+worlds/tazwanted/     the Taz: Wanted world
+worlds/toystory2/     the Toy Story 2 world
+tools/                Taz research tools and test suites, ~50 scripts
+```
 
-So the newest Taz release is the newest tag beginning `taz-`, regardless of
-what is marked "Latest".
+## Running the Taz tests
 
-## Trackers
-
-**Taz: Wanted** has a PopTracker pack with all eleven maps, 195 pins and full
-auto-tracking: https://github.com/imklubb/Taz-Wanted-Poptracker
-
-Install it once and PopTracker offers you every future update by itself. The
-Taz client also has the same maps built in on its own tab, if you would rather
-not run a second program.
-
-## Reporting a bug
-
-[Issues](https://github.com/imklubb/imklubb-Archipelago-Games/issues). Say
-which game and which version, and attach the client log from `logs/` if you
-have one — it records far more than the client window shows.
-
-## For contributors
-
-`tools/` holds the Taz research and test suites, around fifty scripts. The
-`*_test.py` ones run offline with no emulator:
+All offline. No emulator, no ROM, no save file.
 
 ```
 python tools/taz_catcher_test.py sim
 python tools/taz_powerup_test.py sim
 python tools/taz_savefile_test.py
+python tools/taz_sandwich_test.py
+python tools/taz_health_test.py
+python tools/taz_notify_test.py
+python tools/taz_door_test.py
+python tools/taz_goal_test.py
+python tools/taz_pool_test.py
+python tools/taz_coaster_test.py sim
+python tools/taz_nospin_test.py sim
 ```
 
-Building a release is in [GITHUB_WALKTHROUGH.md](GITHUB_WALKTHROUGH.md).
+Several of the non-test tools have a `check` verb that verifies their
+assumptions about the game's memory against a RAM dump, also with nothing
+running:
+
+```
+python tools/taz_enemylist.py check
+python tools/taz_trap.py check
+python tools/taz_secrets.py check
+```
+
+Take a dump first with `python tools/taz_ramdump.py --out ee_dump.bin`.
+
+## Building the Taz apworld
+
+```
+python tools/build_apworld.py
+```
+
+Writes `dist/tazwanted.apworld` and then checks it: one top-level folder, no
+bytecode, and the version inside matching `worlds/tazwanted/archipelago.json`.
+
+Release steps are in [GITHUB_WALKTHROUGH.md](GITHUB_WALKTHROUGH.md).
 
 ---
 

@@ -67,3 +67,6 @@ Costumes and bonus games are still shuffled.
 - The Hindenbird shows your remaining goal while you are standing in Tazland.
 - Bonus games need their unlock, whatever your sandwich count says.
 - Phone booths refuse you until the matching costume arrives.
+- To keep you out of the Hindenbird after doing Disco Volcano in Open Mode,
+  the game intentionally brings you back to Disco Volcano. To leave, simply
+  exit via the menu.

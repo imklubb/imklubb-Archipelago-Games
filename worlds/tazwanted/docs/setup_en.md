@@ -17,7 +17,7 @@ The client talks to the emulator through it; nothing works without it.
 2. Start PCSX2 and load the game. Get to the "Choose Language" part of the game.
 3. Connect it to the room, then to your slot.
 4. If it says "Start AP" with the version number at the bottom when
-   you're on the main menu. Then everything is working!
+   you're on the main menu, then everything is working!
 6. **Set the difficulty to match your yaml** before starting a file. The
    client warns you if they disagree, but by then some checks may already be
    unreachable.

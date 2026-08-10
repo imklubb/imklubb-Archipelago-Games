@@ -43,10 +43,10 @@ if the game ever looks out of step with what you own.
 
 ## Saving and reloading
 
-The client is the source of truth, not the save file. It records what it has
-sent and rebuilds your unlocks from the server every time it connects, so save
-states, reloading a file, and reconnecting mid-session are all safe. You cannot
-lose an item by reloading, and you cannot send a check twice.
+To pick up where you left off, I highly recommend restarting PCSX2
+and reconnecting the AP on the "Choose Language" screen again.
+Make sure you don't select an incorrect save file or connect
+on an incorrect save file or you'll release multiple checks on accident.
 
 ## Game modes
 

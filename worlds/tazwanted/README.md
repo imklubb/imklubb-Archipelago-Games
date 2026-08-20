@@ -12,7 +12,7 @@ full breakdown of what is randomized, and
 
 ## Set-Up
 
-The full guide is in [worlds/tazwanted/docs/setup_en.md]([worlds/tazwanted/docs/setup_en.md](https://github.com/imklubb/imklubb-Archipelago-Games/blob/main/worlds/tazwanted/docs/setup_en.md)),
+The full guide is in [worlds/tazwanted/docs/setup_en.md](https://github.com/imklubb/imklubb-Archipelago-Games/blob/main/worlds/tazwanted/docs/setup_en.md),
 and it is the same page Archipelago shows in its own setup list.
 
 ---

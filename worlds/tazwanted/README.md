@@ -10,17 +10,7 @@ full breakdown of what is randomized, and
 
 ---
 
-## Quick start
-
-1. Download `tazwanted.apworld` from
-   [Releases](https://github.com/imklubb/imklubb-Archipelago-Games/releases) -- pick the newest one whose tag starts `taz-`.
-2. Double-click it. Archipelago installs it. (If that does nothing, put it in
-   your Archipelago folder under `custom_worlds/`.)
-3. In PCSX2: **Settings → Advanced → Enable PINE**, slot `28011`.
-4. Generate a seed with a Taz Wanted yaml, or join someone else's.
-5. Archipelago Launcher → **Taz Wanted Client** → connect to the room.
-6. Start PCSX2, load the game, set the difficulty to match your yaml, and
-   start a new file.
+## Set-Up
 
 The full guide is in [worlds/tazwanted/docs/setup_en.md](worlds/tazwanted/docs/setup_en.md),
 and it is the same page Archipelago shows in its own setup list.
